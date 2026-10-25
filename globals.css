@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------
+   Tokens de marca de Petra (manual de marca).
+   En los componentes usá siempre el token, nunca el hex suelto.
+   ------------------------------------------------------------ */
+/* Versión nocturna: cielo de noche estrellado.
+   Los nombres de los tokens son los mismos que en la versión clara,
+   así los componentes no cambian. */
+:root {
+  --surface: #0e1a33; /* cielo de fondo */
+  --surface-raised: #16264a; /* tarjetas y formulario */
+  --line: #2a3d66; /* bordes finos y divisores */
+  --line-strong: #6479a8; /* bordes de inputs */
+  --ink: #f3eee6; /* texto principal (crema) */
+  --ink-muted: #aeb7cb; /* texto secundario */
+  --azul: #1c79a4; /* marca: botón principal */
+  --azul-hover: #176690;
+  --on-azul: #ffffff;
+  --azul-text: #8ccbea; /* texto azul y links sobre noche */
+  --azul-soft: #17345a; /* fondos teñidos */
+  --noche: #0a1328; /* pie, más oscuro que el cielo */
+  --oliva: #6b7a3a;
+  --oliva-text: #c3cf86; /* texto verde sobre noche */
+  --oliva-soft: #2a331c; /* fondo de los badges */
+  --crema-claro: #f3eee6;
+  --estrella: #f3eee6;
+  --estrella-azul: #bfe0f2;
+  --vineta: #030814; /* color de los bordes oscurecidos */
+
+  --shadow-piedra: 0 1px 2px #0000004d, 0 4px 12px #00000059;
+  --focus-ring: 0 0 0 2px #0e1a33, 0 0 0 4px #8ccbea;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  /* Colores: bg-surface, text-ink, bg-azul, text-oliva-text, etc. */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-azul-hover: var(--azul-hover);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-azul: var(--azul);
+  --color-on-azul: var(--on-azul);
+  --color-azul-text: var(--azul-text);
+  --color-azul-soft: var(--azul-soft);
+  --color-noche: var(--noche);
+  --color-oliva: var(--oliva);
+  --color-oliva-text: var(--oliva-text);
+  --color-oliva-soft: var(--oliva-soft);
+  --color-crema-claro: var(--crema-claro);
+
+  /* Fuentes */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+
+  /* Esquinas firmes, como piedra tallada */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --shadow-piedra: var(--shadow-piedra);
+}
+
+/* Escala tipográfica */
+@utility type-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 46px;
+  letter-spacing: -0.02em;
+  @media (width >= 48rem) {
+    font-size: 48px;
+    line-height: 52px;
+  }
+}
+@utility type-titulo {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: -0.01em;
+}
+@utility type-subtitulo {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 28px;
+}
+@utility type-cuerpo {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+@utility type-boton {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+}
+@utility type-etiqueta {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  html {
+    background: var(--surface);
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    /* Transparente para que se vea el cielo estrellado de atrás */
+    background: transparent;
+    min-height: 100vh;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Foco de teclado visible en todo lo que se puede tocar */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible,
+  [tabindex]:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  /* Los radios y casillas reales quedan ocultos: el foco se muestra en el bloque */
+  .opcion:has(input:focus-visible) {
+    box-shadow: var(--focus-ring);
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  /* Viñeta: el fondo se oscurece del centro hacia los bordes.
+     Va detrás del contenido, así tarjetas y textos no cambian. */
+  .vineta {
+    background: radial-gradient(
+      ellipse 75% 70% at 50% 50%,
+      transparent 35%,
+      color-mix(in srgb, var(--vineta) 55%, transparent) 75%,
+      color-mix(in srgb, var(--vineta) 85%, transparent) 100%
+    );
+  }
+
+  /* Estrellas que titilan. Se apaga si la persona pidió menos movimiento. */
+  .titila {
+    animation: titilar 4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .titila {
+      animation: none;
+    }
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@keyframes titilar {
+  0%,
+  100% {
+    opacity: var(--o, 0.8);
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
