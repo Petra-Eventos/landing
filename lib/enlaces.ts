@@ -17,3 +17,8 @@ export const URL_PRIVACIDAD = `${SISTEMA}/privacidad`;
 export const URL_WHATSAPP = `https://wa.me/5491139561326?text=${encodeURIComponent(
   "Hola, quiero saber más de Petra para mi salón.",
 )}`;
+
+/** WhatsApp para quien quiere ser socio de Petra (gestión total del salón). */
+export const URL_SOCIOS = `https://wa.me/5491139561326?text=${encodeURIComponent(
+  "Hola, quiero ser socio de Petra y que gestionen todo mi salón.",
+)}`;
