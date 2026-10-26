@@ -1,6 +1,8 @@
 import {
   ArrowRight,
   Brain,
+  Clock,
+  Gauge,
   Camera,
   CircleDot,
   Crown,
@@ -25,6 +27,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
 import { Firma, Piedras } from "@/components/logo";
 import { Cielo } from "@/components/cielo";
 import {
@@ -62,6 +65,16 @@ const PARA_INVITADOS: { icono: LucideIcon; nombre: string; lista?: boolean }[] =
   { icono: Frame, nombre: "Marco para historias" },
 ];
 
+const EVENTOS = ["Casamientos", "Bautismos", "Cumpleaños", "XV", "Egresados", "Empresariales"];
+
+// Herramientas de la noche para quien coordina (catálogo del sistema).
+const PARA_COORDINADORA: { icono: LucideIcon; nombre: string; texto: string; lista?: boolean }[] = [
+  { icono: ListChecks, nombre: "Invitados y mesas", texto: "Quién viene y dónde se sienta, en el celular.", lista: true },
+  { icono: Gauge, nombre: "Panel del coordinador", texto: "El control remoto de la noche." },
+  { icono: Monitor, nombre: "Pantalla del salón", texto: "Lo que se ve en el proyector o la tele." },
+  { icono: Clock, nombre: "Cronograma de la noche", texto: "Cada momento de la fiesta, a horario." },
+];
+
 const POR_QUE: { icono: LucideIcon; titulo: string; texto: string }[] = [
   { icono: Palette, titulo: "Tu marca, siempre", texto: "Tu logo y tus colores. Petra no se ve." },
   { icono: Smartphone, titulo: "Desde el celular", texto: "Sin apps para bajar. Un link y listo." },
@@ -87,10 +100,10 @@ function CelularInvitado() {
   return (
     <div
       aria-hidden="true"
-      className="mx-auto w-full max-w-[300px] rounded-[40px] border border-line-strong bg-noche p-3 shadow-piedra"
+      className="mx-auto w-full max-w-[300px] rounded-[40px] border border-dorado/40 bg-noche p-3 shadow-piedra"
     >
       <div className="rounded-[30px] bg-surface-raised px-5 pt-6 pb-7">
-        <p className="type-etiqueta text-center text-oliva-text">Tu salón</p>
+        <p className="type-etiqueta text-center text-dorado">Tu salón</p>
         <p className="mt-3 text-center font-display text-[28px] leading-8 text-ink">XV de Sofía</p>
         <p className="mt-1 text-center text-[14px] text-ink-muted">Sábado 14 · 21:30</p>
         <div className="mt-6 flex flex-col gap-2.5">
@@ -98,13 +111,13 @@ function CelularInvitado() {
             Confirmar asistencia
           </span>
           <span className="flex min-h-11 items-center justify-between rounded-md border border-line px-4 text-[15px] text-ink">
-            Tu mesa <span className="font-display text-[20px] text-azul-text">7</span>
+            Tu mesa <span className="font-display text-[20px] text-dorado">7</span>
           </span>
           <span className="flex min-h-11 items-center gap-2 rounded-md border border-line px-4 text-[15px] text-ink">
-            <Camera size={18} strokeWidth={1.8} className="text-oliva-text" /> Subí tu foto a la pantalla
+            <Camera size={18} strokeWidth={1.8} className="text-dorado" /> Subí tu foto a la pantalla
           </span>
           <span className="flex min-h-11 items-center gap-2 rounded-md border border-line px-4 text-[15px] text-ink">
-            <Music size={18} strokeWidth={1.8} className="text-oliva-text" /> Pedí tu canción
+            <Music size={18} strokeWidth={1.8} className="text-dorado" /> Pedí tu canción
           </span>
         </div>
         <p className="mt-6 text-center text-[11px] text-ink-muted">Hecho con Petra</p>
@@ -127,7 +140,7 @@ export default function Home() {
         <nav aria-label="Acceso" className="flex items-center gap-1 sm:gap-3">
           <a
             href={URL_ENTRAR}
-            className="type-boton inline-flex min-h-11 items-center rounded-md px-3 text-azul-text underline-offset-4 hover:underline"
+            className="type-boton inline-flex min-h-11 items-center rounded-md px-3 text-ink underline-offset-4 hover:underline"
           >
             Entrar
           </a>
@@ -147,12 +160,12 @@ export default function Home() {
           aria-labelledby="titular"
         >
           <div>
-            <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm bg-oliva-soft px-3 py-1.5 text-oliva-text">
+            <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm bg-dorado-soft px-3 py-1.5 text-dorado">
               <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
               Herramientas digitales para salones
             </p>
             <h1 id="titular" className="type-display mt-6 text-ink">
-              Ofrecele a tus invitados <span className="text-azul-text">toda la tecnología que quieren.</span>
+              Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
             </h1>
             <p className="type-subtitulo mt-5 max-w-[520px] text-ink-muted">
               Con tu marca. Tu salón, el protagonista de cada fiesta.
@@ -165,6 +178,25 @@ export default function Home() {
           <CelularInvitado />
         </section>
 
+        {/* Dónde está Petra */}
+        <section className={`${contenedor} -mt-8 lg:-mt-12`} aria-labelledby="eventos">
+          <div className="border-y border-line py-6 text-center">
+            <h2 id="eventos" className="type-etiqueta text-ink-muted">
+              Petra está presente en
+            </h2>
+            <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 font-display text-[20px] leading-7 text-ink sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5 sm:text-[24px]">
+              {EVENTOS.map((evento, i) => (
+                <li key={evento} className="flex items-center justify-center gap-5">
+                  {i > 0 && (
+                    <span aria-hidden="true" className="hidden size-1.5 rounded-full bg-dorado sm:block" />
+                  )}
+                  {evento}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* Lo que tus invitados quieren */}
         <section className={contenedor} aria-labelledby="invitados">
           <h2 id="invitados" className="type-titulo max-w-[640px] text-ink">
@@ -175,12 +207,12 @@ export default function Home() {
               <li
                 key={nombre}
                 className={`inline-flex min-h-11 items-center gap-2 rounded-sm border px-4 text-[15px] ${
-                  lista ? "border-azul bg-azul-soft text-ink" : "border-line bg-surface-raised text-ink"
+                  lista ? "border-dorado/60 bg-dorado-soft text-ink" : "border-line bg-surface-raised text-ink"
                 }`}
               >
-                <Icono size={18} strokeWidth={1.8} className={lista ? "text-azul-text" : "text-oliva-text"} aria-hidden="true" />
+                <Icono size={18} strokeWidth={1.8} className={lista ? "text-dorado" : "text-azul-text"} aria-hidden="true" />
                 {nombre}
-                {lista && <span className="type-etiqueta text-azul-text">Ya</span>}
+                {lista && <span className="type-etiqueta text-dorado">Ya</span>}
               </li>
             ))}
           </ul>
@@ -193,6 +225,27 @@ export default function Home() {
               <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
             </a>
           </div>
+        </section>
+
+        {/* Coordinadora */}
+        <section className={contenedor} aria-labelledby="coordinadora">
+          <h2 id="coordinadora" className="type-titulo max-w-[640px] text-ink">
+            Dale a tu coordinadora <span className="text-dorado">más herramientas para la fiesta</span>
+          </h2>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {PARA_COORDINADORA.map(({ icono: Icono, nombre, texto, lista }) => (
+              <li key={nombre} className="rounded-lg border border-line bg-surface-raised p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="flex size-11 items-center justify-center rounded-md bg-azul-soft text-azul-text">
+                    <Icono size={22} strokeWidth={1.8} aria-hidden="true" />
+                  </span>
+                  {lista && <span className="type-etiqueta text-dorado">Ya</span>}
+                </div>
+                <h3 className="type-subtitulo mt-4 text-ink">{nombre}</h3>
+                <p className="type-cuerpo mt-1 text-ink-muted">{texto}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Por qué */}
@@ -227,7 +280,7 @@ export default function Home() {
               href={URL_WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-boton mt-6 inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-oliva-text underline-offset-4 hover:underline"
+              className="type-boton mt-6 inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-dorado underline-offset-4 hover:underline"
             >
               <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
               ¿Dudas? Escribinos por WhatsApp
@@ -237,9 +290,9 @@ export default function Home() {
 
         {/* Socios */}
         <section className={contenedor} aria-labelledby="socios">
-          <div className="grid items-center gap-8 rounded-xl border border-oliva bg-oliva-soft p-6 sm:p-10 md:grid-cols-[1fr_auto]">
+          <div className="grid items-center gap-8 rounded-xl border border-dorado/60 bg-dorado-soft p-6 sm:p-10 md:grid-cols-[1fr_auto]">
             <div>
-              <p className="type-etiqueta inline-flex items-center gap-1.5 text-oliva-text">
+              <p className="type-etiqueta inline-flex items-center gap-1.5 text-dorado">
                 <Crown size={14} strokeWidth={2} aria-hidden="true" />
                 Para ir más allá
               </p>
@@ -254,12 +307,35 @@ export default function Home() {
               href={URL_SOCIOS}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-boton inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-oliva px-7 py-3 text-[16px] text-surface transition-opacity hover:opacity-90 md:w-auto"
+              className="type-boton inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-dorado px-7 py-3 text-[16px] text-on-dorado transition-colors hover:bg-dorado-hover md:w-auto"
             >
               <Heart size={18} strokeWidth={2} aria-hidden="true" />
               Quiero ser socio
             </a>
           </div>
+        </section>
+
+        {/* Quién está detrás */}
+        <section id="creador" className={contenedor} aria-label="Quién creó Petra">
+          <figure className="mx-auto flex max-w-[760px] flex-col items-center gap-6 text-center sm:flex-row sm:items-center sm:gap-8 sm:text-left">
+            <Image
+              src="/rodrigo-torres.jpg"
+              alt="Rodrigo Torres, creador de Petra"
+              width={403}
+              height={449}
+              sizes="144px"
+              className="size-32 shrink-0 rounded-full border-2 border-dorado object-cover object-top shadow-piedra sm:size-36"
+            />
+            <div>
+              <blockquote className="font-display text-[22px] leading-8 text-ink sm:text-[24px]">
+                “Creé Petra para que cada salón pueda ofrecer una experiencia completa.”
+              </blockquote>
+              <figcaption className="mt-4">
+                <span className="type-subtitulo block text-dorado">Rodrigo Torres</span>
+                <span className="type-cuerpo block text-ink-muted">Creador de Petra</span>
+              </figcaption>
+            </div>
+          </figure>
         </section>
       </main>
 

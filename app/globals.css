@@ -1,35 +1,38 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------
-   Tokens de marca de Petra: los mismos valores que el MODO NOCHE del sistema
-   (sistema/src/app/globals.css, `:root[data-tema="noche"]`). Así, al pasar de la
-   landing al sistema, los colores y las esquinas son los mismos.
-   Si cambian en el sistema, se cambian acá también.
+   Tokens de marca de Petra · paleta "noche y oro":
+   azul noche profundo, el azul de la marca (#1C79A4) para la acción principal
+   y toques dorados para lo que se destaca. Sin celestes chillones.
    En los componentes usá siempre el token, nunca el hex suelto.
    ------------------------------------------------------------ */
 :root {
-  --surface: #0b1120; /* fondo (sistema: --crema en noche) */
-  --surface-raised: #121b2e; /* tarjetas (sistema: --papel) */
-  --line: #22304b; /* bordes finos (sistema: --linea) */
-  --line-strong: #35466a; /* bordes de botones secundarios (sistema: --linea-fuerte) */
-  --ink: #edf1f8; /* texto principal (sistema: --tinta) */
-  --ink-muted: #a2aec6; /* texto secundario (sistema: --tinta-suave) */
-  --azul: #4fb3e3; /* botón principal (sistema: --azul) */
-  --azul-hover: #74c6ee;
-  --on-azul: #061320; /* texto sobre el azul (sistema: --sobre-azul) */
-  --azul-text: #4fb3e3; /* texto azul y links */
-  --azul-soft: #12314a; /* fondos teñidos (sistema: --azul-suave) */
-  --noche: #0f1a33; /* pie (sistema: --noche) */
-  --oliva: #a9bb62;
-  --oliva-text: #a9bb62; /* texto verde (sistema: --oliva) */
-  --oliva-soft: #1f2a17; /* fondo de las etiquetas (sistema: --oliva-suave) */
-  --crema-claro: #f3eee6; /* sistema: --sobre-noche */
+  --surface: #070d1c; /* fondo: azul noche profundo */
+  --surface-raised: #0f1a33; /* tarjetas */
+  --line: #1f2d4f; /* bordes finos */
+  --line-strong: #34466f; /* bordes de botones secundarios */
+  --ink: #f3eee6; /* texto principal (crema de la marca) */
+  --ink-muted: #a8b1c6; /* texto secundario */
+  --azul: #1c79a4; /* botón principal: el azul de la marca */
+  --azul-hover: #2287b6;
+  --on-azul: #ffffff;
+  --azul-text: #8fb4cf; /* íconos y links: azul acero, suave */
+  --azul-soft: #13254a; /* fondos teñidos de azul */
+  --dorado: #d4b06a; /* toques dorados: destacados, etiquetas y socios */
+  --dorado-hover: #e2c286;
+  --on-dorado: #1a1306; /* texto sobre el dorado */
+  --dorado-soft: #2a2312; /* fondo de etiquetas doradas */
+  --noche: #050a16; /* pie, más oscuro que el fondo */
+  --oliva: #8c9a52;
+  --oliva-text: #b7c37c;
+  --oliva-soft: #1d2414;
+  --crema-claro: #f3eee6;
   --estrella: #f3eee6;
-  --estrella-azul: #bfe0f2;
-  --vineta: #030814; /* color de los bordes oscurecidos */
+  --estrella-azul: #e8d3a6; /* algunas estrellas, doradas */
+  --vineta: #02050d; /* color de los bordes oscurecidos */
 
-  --shadow-piedra: 0 1px 2px #00000066, 0 10px 30px #00000059;
-  --focus-ring: 0 0 0 2px #0b1120, 0 0 0 4px #4fb3e3;
+  --shadow-piedra: 0 1px 2px #00000080, 0 12px 32px #00000066;
+  --focus-ring: 0 0 0 2px #070d1c, 0 0 0 4px #d4b06a;
 
   color-scheme: dark;
 }
@@ -52,6 +55,10 @@
   --color-oliva-text: var(--oliva-text);
   --color-oliva-soft: var(--oliva-soft);
   --color-crema-claro: var(--crema-claro);
+  --color-dorado: var(--dorado);
+  --color-dorado-hover: var(--dorado-hover);
+  --color-on-dorado: var(--on-dorado);
+  --color-dorado-soft: var(--dorado-soft);
 
   /* Fuentes */
   --font-display: var(--font-fraunces), Georgia, serif;
