@@ -18,13 +18,13 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Petra · Herramientas digitales para salones de eventos",
+  title: "Petra · El sistema para tu salón de eventos",
   description:
-    "Invitación con RSVP, mesas con QR, menú para la cocina, presupuesto y encuesta. Con la marca de tu salón. Anotate al acceso anticipado.",
+    "El sistema para tu salón de eventos: calendario, invitados, mesas y cobros, con la marca de tu salón. Empezá gratis.",
   openGraph: {
-    title: "Petra · Herramientas digitales para salones de eventos",
+    title: "Petra · El sistema para tu salón de eventos",
     description:
-      "Invitación con RSVP, mesas con QR, menú para la cocina, presupuesto y encuesta. Con la marca de tu salón. Anotate al acceso anticipado.",
+      "El sistema para tu salón de eventos: calendario, invitados, mesas y cobros, con la marca de tu salón. Empezá gratis.",
     locale: "es_AR",
     type: "website",
   },

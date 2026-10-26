@@ -1,10 +1,9 @@
-# Petra · Landing de acceso anticipado
+# Petra · Landing
 
-Landing de una sola página para medir interés de salones de eventos.
-Hecha con Next.js 16, TypeScript, Tailwind 4 y zod.
+La página de presentación de Petra (petraeventos.com). Una sola página que cuenta qué es Petra y lleva al sistema:
+**"Crear mi cuenta gratis"** (`/registrarme`) y **"Entrar al sistema"** (`/entrar`).
 
-> ⚠️ **El formulario todavía no guarda datos.** Solo los muestra en los logs del servidor.
-> No publicar hasta conectarlo a Supabase (ver abajo).
+Hecha con Next.js 16, TypeScript y Tailwind 4. No tiene base de datos ni variables secretas.
 
 ## Verla en tu compu
 
@@ -15,33 +14,30 @@ npm install
 npm run dev
 ```
 
-Y abrí http://localhost:3000. Cuando alguien se anota, los datos aparecen en la terminal con `[anotado]`.
+Y abrí http://localhost:3000.
 
 ## Dónde está cada cosa
 
-| Archivo | Qué tiene |
-|---|---|
-| `app/page.tsx` | Todas las secciones y sus textos |
-| `app/globals.css` | Tokens de marca (colores de la versión nocturna, tipografía, esquinas) |
-| `components/cielo.tsx` | Cielo estrellado de fondo (estrellas, destellos y constelación) |
-| `components/logo.tsx` | Isotipo, firma y recurso de las piedras (no modificar) |
-| `components/formulario-acceso.tsx` | El formulario |
-| `lib/schema.ts` | Validación de los campos y mensajes de error |
-| `app/actions.ts` | Server Action que recibe el formulario (con campo trampa para bots) |
-| `lib/anotados.ts` | `guardarAnotado()`: **acá se conecta Supabase** |
-| `app/icon.svg` | Favicon |
-| `app/fonts/` | Fraunces y Manrope, incluidas en el proyecto (licencia OFL) |
+| Archivo                | Qué tiene                                                                    |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| `app/page.tsx`         | Todas las secciones y sus textos                                             |
+| `app/layout.tsx`       | Título y descripción para Google y WhatsApp                                  |
+| `app/globals.css`      | Tokens de marca (colores de la versión nocturna, tipografía, esquinas)       |
+| `components/cielo.tsx` | Cielo estrellado de fondo (estrellas, destellos y constelación)              |
+| `components/logo.tsx`  | Isotipo, firma y recurso de las piedras (no modificar)                       |
+| `lib/enlaces.ts`       | Links al sistema (registrarme, entrar, términos, privacidad) y al WhatsApp   |
+| `app/icon.svg`         | Favicon                                                                      |
+| `app/fonts/`           | Fraunces y Manrope, incluidas en el proyecto (licencia OFL)                  |
 
-## Para conectar el formulario
+## La dirección del sistema
 
-Solo hay que cambiar `lib/anotados.ts` (está marcado con `// TODO: conectar a Supabase (tabla anotados)`).
-El resto del formulario ya está listo. La tabla debería tener estas columnas:
-`nombre`, `salon`, `localidad`, `whatsapp`, `email` (opcional), `eventos_por_mes`,
-`herramientas` (lista), `acepta_charla` y la fecha.
+Los botones apuntan a `https://sistema-one-wheat.vercel.app`. Cuando el sistema tenga su dominio
+(por ejemplo `app.petraeventos.com`), se cambia en Vercel con la variable `NEXT_PUBLIC_URL_SISTEMA`,
+sin tocar el código.
 
 ## Notas
 
-- **Versión nocturna:** fondo de noche con estrellas. Las estrellas titilan, salvo que la persona tenga activado "reducir movimiento" en su celular o compu. Los colores se cambian todos desde `app/globals.css`.
-
+- **Versión nocturna:** fondo de noche con estrellas. Las estrellas titilan, salvo que la persona tenga activado
+  "reducir movimiento" en su celular o compu. Los colores se cambian todos desde `app/globals.css`.
 - Las fuentes están dentro del proyecto en vez de bajarse de Google Fonts: se ven igual y no dependen de Google.
-- No hay variables de entorno ni conexiones a ninguna cuenta.
+- El formulario de "acceso anticipado" se sacó: ahora cada salón se registra solo en el sistema.
