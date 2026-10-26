@@ -87,10 +87,10 @@ function CelularInvitado() {
   return (
     <div
       aria-hidden="true"
-      className="mx-auto w-full max-w-[300px] rounded-[40px] border border-line-strong bg-noche p-3 shadow-piedra"
+      className="mx-auto w-full max-w-[300px] rounded-[40px] border border-dorado/40 bg-noche p-3 shadow-piedra"
     >
       <div className="rounded-[30px] bg-surface-raised px-5 pt-6 pb-7">
-        <p className="type-etiqueta text-center text-oliva-text">Tu salón</p>
+        <p className="type-etiqueta text-center text-dorado">Tu salón</p>
         <p className="mt-3 text-center font-display text-[28px] leading-8 text-ink">XV de Sofía</p>
         <p className="mt-1 text-center text-[14px] text-ink-muted">Sábado 14 · 21:30</p>
         <div className="mt-6 flex flex-col gap-2.5">
@@ -98,13 +98,13 @@ function CelularInvitado() {
             Confirmar asistencia
           </span>
           <span className="flex min-h-11 items-center justify-between rounded-md border border-line px-4 text-[15px] text-ink">
-            Tu mesa <span className="font-display text-[20px] text-azul-text">7</span>
+            Tu mesa <span className="font-display text-[20px] text-dorado">7</span>
           </span>
           <span className="flex min-h-11 items-center gap-2 rounded-md border border-line px-4 text-[15px] text-ink">
-            <Camera size={18} strokeWidth={1.8} className="text-oliva-text" /> Subí tu foto a la pantalla
+            <Camera size={18} strokeWidth={1.8} className="text-dorado" /> Subí tu foto a la pantalla
           </span>
           <span className="flex min-h-11 items-center gap-2 rounded-md border border-line px-4 text-[15px] text-ink">
-            <Music size={18} strokeWidth={1.8} className="text-oliva-text" /> Pedí tu canción
+            <Music size={18} strokeWidth={1.8} className="text-dorado" /> Pedí tu canción
           </span>
         </div>
         <p className="mt-6 text-center text-[11px] text-ink-muted">Hecho con Petra</p>
@@ -127,7 +127,7 @@ export default function Home() {
         <nav aria-label="Acceso" className="flex items-center gap-1 sm:gap-3">
           <a
             href={URL_ENTRAR}
-            className="type-boton inline-flex min-h-11 items-center rounded-md px-3 text-azul-text underline-offset-4 hover:underline"
+            className="type-boton inline-flex min-h-11 items-center rounded-md px-3 text-ink underline-offset-4 hover:underline"
           >
             Entrar
           </a>
@@ -147,12 +147,12 @@ export default function Home() {
           aria-labelledby="titular"
         >
           <div>
-            <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm bg-oliva-soft px-3 py-1.5 text-oliva-text">
+            <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm bg-dorado-soft px-3 py-1.5 text-dorado">
               <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
               Herramientas digitales para salones
             </p>
             <h1 id="titular" className="type-display mt-6 text-ink">
-              Ofrecele a tus invitados <span className="text-azul-text">toda la tecnología que quieren.</span>
+              Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
             </h1>
             <p className="type-subtitulo mt-5 max-w-[520px] text-ink-muted">
               Con tu marca. Tu salón, el protagonista de cada fiesta.
@@ -175,12 +175,12 @@ export default function Home() {
               <li
                 key={nombre}
                 className={`inline-flex min-h-11 items-center gap-2 rounded-sm border px-4 text-[15px] ${
-                  lista ? "border-azul bg-azul-soft text-ink" : "border-line bg-surface-raised text-ink"
+                  lista ? "border-dorado/60 bg-dorado-soft text-ink" : "border-line bg-surface-raised text-ink"
                 }`}
               >
-                <Icono size={18} strokeWidth={1.8} className={lista ? "text-azul-text" : "text-oliva-text"} aria-hidden="true" />
+                <Icono size={18} strokeWidth={1.8} className={lista ? "text-dorado" : "text-azul-text"} aria-hidden="true" />
                 {nombre}
-                {lista && <span className="type-etiqueta text-azul-text">Ya</span>}
+                {lista && <span className="type-etiqueta text-dorado">Ya</span>}
               </li>
             ))}
           </ul>
@@ -227,7 +227,7 @@ export default function Home() {
               href={URL_WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-boton mt-6 inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-oliva-text underline-offset-4 hover:underline"
+              className="type-boton mt-6 inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-dorado underline-offset-4 hover:underline"
             >
               <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
               ¿Dudas? Escribinos por WhatsApp
@@ -237,9 +237,9 @@ export default function Home() {
 
         {/* Socios */}
         <section className={contenedor} aria-labelledby="socios">
-          <div className="grid items-center gap-8 rounded-xl border border-oliva bg-oliva-soft p-6 sm:p-10 md:grid-cols-[1fr_auto]">
+          <div className="grid items-center gap-8 rounded-xl border border-dorado/60 bg-dorado-soft p-6 sm:p-10 md:grid-cols-[1fr_auto]">
             <div>
-              <p className="type-etiqueta inline-flex items-center gap-1.5 text-oliva-text">
+              <p className="type-etiqueta inline-flex items-center gap-1.5 text-dorado">
                 <Crown size={14} strokeWidth={2} aria-hidden="true" />
                 Para ir más allá
               </p>
@@ -254,7 +254,7 @@ export default function Home() {
               href={URL_SOCIOS}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-boton inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-oliva px-7 py-3 text-[16px] text-surface transition-opacity hover:opacity-90 md:w-auto"
+              className="type-boton inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-dorado px-7 py-3 text-[16px] text-on-dorado transition-colors hover:bg-dorado-hover md:w-auto"
             >
               <Heart size={18} strokeWidth={2} aria-hidden="true" />
               Quiero ser socio
