@@ -1,6 +1,8 @@
 import {
   ArrowRight,
   Brain,
+  Clock,
+  Gauge,
   Camera,
   CircleDot,
   Crown,
@@ -61,6 +63,16 @@ const PARA_INVITADOS: { icono: LucideIcon; nombre: string; lista?: boolean }[] =
   { icono: MessageSquare, nombre: "Mensajes en pantalla" },
   { icono: Vote, nombre: "Votaciones" },
   { icono: Frame, nombre: "Marco para historias" },
+];
+
+const EVENTOS = ["Casamientos", "Bautismos", "Cumpleaños", "XV", "Egresados", "Empresariales"];
+
+// Herramientas de la noche para quien coordina (catálogo del sistema).
+const PARA_COORDINADORA: { icono: LucideIcon; nombre: string; texto: string; lista?: boolean }[] = [
+  { icono: ListChecks, nombre: "Invitados y mesas", texto: "Quién viene y dónde se sienta, en el celular.", lista: true },
+  { icono: Gauge, nombre: "Panel del coordinador", texto: "El control remoto de la noche." },
+  { icono: Monitor, nombre: "Pantalla del salón", texto: "Lo que se ve en el proyector o la tele." },
+  { icono: Clock, nombre: "Cronograma de la noche", texto: "Cada momento de la fiesta, a horario." },
 ];
 
 const POR_QUE: { icono: LucideIcon; titulo: string; texto: string }[] = [
@@ -166,6 +178,25 @@ export default function Home() {
           <CelularInvitado />
         </section>
 
+        {/* Dónde está Petra */}
+        <section className={`${contenedor} -mt-8 lg:-mt-12`} aria-labelledby="eventos">
+          <div className="border-y border-line py-6 text-center">
+            <h2 id="eventos" className="type-etiqueta text-ink-muted">
+              Petra está presente en
+            </h2>
+            <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 font-display text-[20px] leading-7 text-ink sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5 sm:text-[24px]">
+              {EVENTOS.map((evento, i) => (
+                <li key={evento} className="flex items-center justify-center gap-5">
+                  {i > 0 && (
+                    <span aria-hidden="true" className="hidden size-1.5 rounded-full bg-dorado sm:block" />
+                  )}
+                  {evento}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* Lo que tus invitados quieren */}
         <section className={contenedor} aria-labelledby="invitados">
           <h2 id="invitados" className="type-titulo max-w-[640px] text-ink">
@@ -194,6 +225,27 @@ export default function Home() {
               <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
             </a>
           </div>
+        </section>
+
+        {/* Coordinadora */}
+        <section className={contenedor} aria-labelledby="coordinadora">
+          <h2 id="coordinadora" className="type-titulo max-w-[640px] text-ink">
+            Dale a tu coordinadora <span className="text-dorado">más herramientas para la fiesta</span>
+          </h2>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {PARA_COORDINADORA.map(({ icono: Icono, nombre, texto, lista }) => (
+              <li key={nombre} className="rounded-lg border border-line bg-surface-raised p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="flex size-11 items-center justify-center rounded-md bg-azul-soft text-azul-text">
+                    <Icono size={22} strokeWidth={1.8} aria-hidden="true" />
+                  </span>
+                  {lista && <span className="type-etiqueta text-dorado">Ya</span>}
+                </div>
+                <h3 className="type-subtitulo mt-4 text-ink">{nombre}</h3>
+                <p className="type-cuerpo mt-1 text-ink-muted">{texto}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Por qué */}
