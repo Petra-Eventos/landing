@@ -276,8 +276,7 @@ export default function Home() {
             />
             <div>
               <blockquote className="font-display text-[22px] leading-8 text-ink sm:text-[24px]">
-                “Creé Petra para que cada salón sea el protagonista de sus fiestas, con tecnología simple y a su
-                medida.”
+                “Creé Petra para que cada salón pueda ofrecer una experiencia completa.”
               </blockquote>
               <figcaption className="mt-4">
                 <span className="type-subtitulo block text-dorado">Rodrigo Torres</span>
