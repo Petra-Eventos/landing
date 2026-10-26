@@ -12,6 +12,8 @@ import {
   Star,
   Users,
   Wallet,
+  Gamepad2,
+  Check,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Firma, Piedras } from "@/components/logo";
@@ -52,7 +54,9 @@ const PROMESAS = [
   },
 ];
 
-const HOY: { icono: LucideIcon; nombre: string; texto: string }[] = [
+// Lo que ya anda, separado por plan. Tiene que coincidir con el catálogo del sistema
+// (tabla herramientas: plan_minimo y estado "disponible").
+const GRATIS: { icono: LucideIcon; nombre: string; texto: string }[] = [
   {
     icono: CalendarDays,
     nombre: "Calendario de eventos",
@@ -60,13 +64,21 @@ const HOY: { icono: LucideIcon; nombre: string; texto: string }[] = [
   },
   {
     icono: ClipboardList,
-    nombre: "Ficha y planificador",
-    texto: "Fecha, horario, quién contrata y cada detalle de la fiesta, en tarjetas fáciles de completar.",
+    nombre: "Ficha de cada fiesta",
+    texto: "Fecha, horario, quién contrata y tus notas, en tarjetas fáciles de completar.",
   },
   {
+    icono: Smartphone,
+    nombre: "Tu equipo, con PIN",
+    texto: "Cada persona entra con su perfil y un PIN, y ve solo lo que le toca.",
+  },
+];
+
+const BASICO: { icono: LucideIcon; nombre: string; texto: string }[] = [
+  {
     icono: Users,
-    nombre: "Invitados y mesas",
-    texto: "La lista de invitados y el armado de mesas. Pegás la lista desde WhatsApp o Excel y listo.",
+    nombre: "Lista de invitados y mesas",
+    texto: "Con confirmaciones y armado de mesas. Pegás la lista desde WhatsApp o Excel y listo.",
   },
   {
     icono: Link2,
@@ -76,21 +88,43 @@ const HOY: { icono: LucideIcon; nombre: string; texto: string }[] = [
   {
     icono: Wallet,
     nombre: "Cobros y balance",
-    texto: "Qué vendiste, qué cobraste y qué falta cobrar de cada fiesta, con colores claros.",
-  },
-  {
-    icono: Smartphone,
-    nombre: "Tu equipo, con PIN",
-    texto: "Cada persona entra con su perfil y un PIN, y ve solo lo que le toca.",
+    texto: "El precio y los cobros de cada producto: qué vendiste, qué cobraste y qué falta cobrar.",
   },
 ];
 
-const PRONTO: { icono: LucideIcon; nombre: string }[] = [
-  { icono: MailCheck, nombre: "Invitación digital con confirmación" },
-  { icono: QrCode, nombre: "Buscador de mesa por QR" },
-  { icono: ChefHat, nombre: "Menús especiales para la cocina" },
-  { icono: Calculator, nombre: "Simulador de presupuesto" },
-  { icono: Star, nombre: "Encuesta y reseña después de la fiesta" },
+// Lo que viene, con el plan desde el que entra (mismo catálogo).
+const PRONTO: { icono: LucideIcon; nombre: string; plan: string }[] = [
+  { icono: MailCheck, nombre: "Invitación digital", plan: "Básico" },
+  { icono: QrCode, nombre: "Pase del invitado", plan: "Todos" },
+  { icono: ChefHat, nombre: "Menú especial para la cocina", plan: "Salón" },
+  { icono: Calculator, nombre: "Presupuestos", plan: "Salón" },
+  { icono: Star, nombre: "Encuesta después de la fiesta", plan: "Salón" },
+  { icono: Gamepad2, nombre: "Juegos: trivia, bingo y más", plan: "Salón y Completo" },
+];
+
+// Qué suma cada plan (los lemas son los mismos de Mi plan en el sistema).
+// Sin precios: todavía son de ejemplo; se pasan por WhatsApp.
+const PLANES = [
+  {
+    nombre: "Gratis",
+    lema: "Para empezar a ordenar tu salón.",
+    trae: ["Calendario y ficha de cada fiesta", "Notas y observaciones", "Tu equipo con PIN"],
+  },
+  {
+    nombre: "Básico",
+    lema: "Lo esencial para que cada fiesta salga redonda.",
+    trae: ["Todo lo del Gratis", "Lista de invitados y armado de mesas", "Link para tu cliente", "Cobros y balance"],
+  },
+  {
+    nombre: "Salón",
+    lema: "Para el salón que quiere sorprender en cada evento.",
+    trae: ["Todo lo del Básico", "Más productos para invitados", "Administración: cuotas, presupuestos y más"],
+  },
+  {
+    nombre: "Completo",
+    lema: "Todo Petra, con soporte personalizado.",
+    trae: ["Todo lo del Salón", "Juegos y pantalla en vivo", "Caja, costos y proveedores"],
+  },
 ];
 
 const PASOS = [
@@ -105,7 +139,7 @@ const PASOS = [
 const PREGUNTAS = [
   {
     p: "¿Cuánto cuesta?",
-    r: "Empezás gratis, sin tarjeta. Cuando quieras las herramientas para tus clientes e invitados, pasás a un plan pago. Escribinos y te contamos.",
+    r: "Empezás gratis, sin tarjeta. Los planes Básico, Salón y Completo se pagan por mes: escribinos por WhatsApp y te pasamos los precios. Cambiás de plan cuando quieras y no perdés nada de lo que cargaste.",
   },
   {
     p: "¿Mis clientes van a ver la marca Petra?",
@@ -194,15 +228,36 @@ export default function Home() {
           </ul>
         </section>
 
-        {/* 4. Lo que ya hace */}
+        {/* 4. Lo que ya hace, por plan */}
         <section className={contenedor} aria-labelledby="hoy">
           <h2 id="hoy" className="type-titulo max-w-[640px] text-ink">
             Lo que ya podés hacer con Petra
           </h2>
-          <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {HOY.map(({ icono: Icono, nombre, texto }) => (
-              <li key={nombre} className="flex flex-col rounded-lg border border-line bg-surface-raised p-6">
-                <Icono size={24} strokeWidth={1.5} className="text-azul-text" aria-hidden="true" />
+          <div className="mt-8 flex items-center gap-3">
+            <Badge>Gratis</Badge>
+            <p className="type-cuerpo text-ink-muted">Desde el primer día, sin pagar.</p>
+          </div>
+          <ul className="mt-4 grid gap-4 md:grid-cols-3">
+            {GRATIS.map(({ icono: Icono, nombre, texto }) => (
+              <li key={nombre} className="flex flex-col rounded-lg border border-line bg-surface-raised p-6 shadow-piedra">
+                <span className="flex size-11 items-center justify-center rounded-md bg-azul-soft text-azul-text">
+                  <Icono size={22} strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                <h3 className="type-subtitulo mt-5 text-ink">{nombre}</h3>
+                <p className="type-cuerpo mt-2 text-ink-muted">{texto}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 flex items-center gap-3">
+            <Badge tono="azul">Desde el plan Básico</Badge>
+            <p className="type-cuerpo text-ink-muted">Para tus clientes y sus invitados.</p>
+          </div>
+          <ul className="mt-4 grid gap-4 md:grid-cols-3">
+            {BASICO.map(({ icono: Icono, nombre, texto }) => (
+              <li key={nombre} className="flex flex-col rounded-lg border border-line bg-surface-raised p-6 shadow-piedra">
+                <span className="flex size-11 items-center justify-center rounded-md bg-azul-soft text-azul-text">
+                  <Icono size={22} strokeWidth={1.8} aria-hidden="true" />
+                </span>
                 <h3 className="type-subtitulo mt-5 text-ink">{nombre}</h3>
                 <p className="type-cuerpo mt-2 text-ink-muted">{texto}</p>
               </li>
@@ -212,7 +267,7 @@ export default function Home() {
 
         {/* 5. Lo que viene */}
         <section className={contenedor} aria-labelledby="pronto">
-          <div className="rounded-lg border border-line bg-surface-raised/60 p-6 md:p-8">
+          <div className="rounded-xl border border-line bg-surface-raised/60 p-6 md:p-8">
             <div className="flex flex-wrap items-center gap-3">
               <h2 id="pronto" className="type-titulo text-ink">
                 Lo que viene
@@ -223,17 +278,65 @@ export default function Home() {
               Herramientas para que tus clientes e invitados vivan la fiesta desde el celular.
             </p>
             <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              {PRONTO.map(({ icono: Icono, nombre }) => (
+              {PRONTO.map(({ icono: Icono, nombre, plan }) => (
                 <li key={nombre} className="type-cuerpo flex items-center gap-3 text-ink">
                   <Icono size={20} strokeWidth={1.5} className="shrink-0 text-oliva-text" aria-hidden="true" />
-                  {nombre}
+                  <span>
+                    {nombre}
+                    <span className="block text-[14px] leading-5 text-ink-muted">
+                      {plan === "Todos" ? "En todos los planes" : `Plan ${plan}`}
+                    </span>
+                  </span>
                 </li>
               ))}
             </ul>
           </div>
         </section>
 
-        {/* 6. Cómo se empieza */}
+        {/* 6. Planes */}
+        <section className={contenedor} aria-labelledby="planes">
+          <h2 id="planes" className="type-titulo text-ink">
+            Elegí cómo crece tu salón
+          </h2>
+          <p className="type-subtitulo mt-3 text-ink-muted">Empezás gratis y pasás de plan cuando quieras.</p>
+          <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {PLANES.map((plan, i) => (
+              <li
+                key={plan.nombre}
+                className={`flex flex-col rounded-xl border bg-surface-raised p-6 shadow-piedra ${
+                  i === 0 ? "border-oliva" : "border-line"
+                }`}
+              >
+                <h3 className="font-display text-[26px] leading-8 text-ink">{plan.nombre}</h3>
+                <p className="type-cuerpo mt-1 text-ink-muted">{plan.lema}</p>
+                <ul className="mt-5 flex flex-1 flex-col gap-2.5">
+                  {plan.trae.map((t) => (
+                    <li key={t} className="type-cuerpo flex items-start gap-2 text-ink">
+                      <Check size={18} strokeWidth={2.4} className="mt-0.5 shrink-0 text-oliva-text" aria-hidden="true" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                {i === 0 ? (
+                  <a href={URL_REGISTRARME} className={`${botonPrincipal} mt-6 w-full`}>
+                    Empezar gratis
+                  </a>
+                ) : (
+                  <a
+                    href={URL_WHATSAPP}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${botonSecundario} mt-6 w-full`}
+                  >
+                    Consultar precio
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* 7. Cómo se empieza */}
         <section className={contenedor} aria-labelledby="como-empezar">
           <h2 id="como-empezar" className="type-titulo text-ink">
             Empezás en un minuto
@@ -258,7 +361,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 7. Preguntas */}
+        {/* 8. Preguntas */}
         <section className={contenedor} aria-labelledby="preguntas">
           <h2 id="preguntas" className="type-titulo text-ink">
             Capaz te estás preguntando
@@ -281,11 +384,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 8. Acceso */}
+        {/* 9. Acceso */}
         <section className={contenedor} aria-labelledby="titulo-acceso">
           <div className="mx-auto max-w-[640px] text-center">
             <Piedras variante="clara" className="mx-auto mb-6 h-auto w-14" />
-            <div className="rounded-lg border border-line bg-surface-raised p-6 shadow-piedra sm:p-10">
+            <div className="rounded-xl border border-line bg-surface-raised p-6 shadow-piedra sm:p-10">
               <h2 id="titulo-acceso" className="type-titulo text-ink">
                 Probá Petra con tu salón
               </h2>
@@ -305,7 +408,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* 9. Cierre y pie */}
+      {/* 10. Cierre y pie */}
       <footer className="relative mt-14 overflow-hidden border-t border-line bg-noche text-ink lg:mt-24">
         <Cielo fijo={false} cantidad={90} semilla={21} conDestellos={false} />
         <div className={`${contenedor} relative py-14 lg:py-20`}>
