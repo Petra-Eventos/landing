@@ -25,6 +25,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
 import { Firma, Piedras } from "@/components/logo";
 import { Cielo } from "@/components/cielo";
 import {
@@ -260,6 +261,30 @@ export default function Home() {
               Quiero ser socio
             </a>
           </div>
+        </section>
+
+        {/* Quién está detrás */}
+        <section id="creador" className={contenedor} aria-label="Quién creó Petra">
+          <figure className="mx-auto flex max-w-[760px] flex-col items-center gap-6 text-center sm:flex-row sm:items-center sm:gap-8 sm:text-left">
+            <Image
+              src="/rodrigo-torres.jpg"
+              alt="Rodrigo Torres, creador de Petra"
+              width={403}
+              height={449}
+              sizes="144px"
+              className="size-32 shrink-0 rounded-full border-2 border-dorado object-cover object-top shadow-piedra sm:size-36"
+            />
+            <div>
+              <blockquote className="font-display text-[22px] leading-8 text-ink sm:text-[24px]">
+                “Creé Petra para que cada salón sea el protagonista de sus fiestas, con tecnología simple y a su
+                medida.”
+              </blockquote>
+              <figcaption className="mt-4">
+                <span className="type-subtitulo block text-dorado">Rodrigo Torres</span>
+                <span className="type-cuerpo block text-ink-muted">Creador de Petra</span>
+              </figcaption>
+            </div>
+          </figure>
         </section>
       </main>
 
