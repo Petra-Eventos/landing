@@ -18,13 +18,13 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Petra · Tu salón sobre la roca",
+  title: "Petra · Cotizador para salones de eventos",
   description:
-    "Que tus clientes no busquen nada afuera: invitación digital, lista de invitados, mesas, fotos y juegos con la marca de tu salón. Empezá gratis.",
+    "Tu salón cotiza solo, las 24 horas: tus clientes arman su fiesta, eligen los extras y ven el precio al instante, con la marca de tu salón. Empezá gratis.",
   openGraph: {
-    title: "Petra · Tu salón sobre la roca",
+    title: "Petra · Cotizador para salones de eventos",
     description:
-      "Que tus clientes no busquen nada afuera: invitación digital, lista de invitados, mesas, fotos y juegos con la marca de tu salón. Empezá gratis.",
+      "Tu salón cotiza solo, las 24 horas: tus clientes arman su fiesta, eligen los extras y ven el precio al instante, con la marca de tu salón. Empezá gratis.",
     locale: "es_AR",
     type: "website",
   },
