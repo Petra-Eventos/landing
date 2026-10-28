@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, X } from "lucide-react";
+import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, PartyPopper, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { DESTACADOS } from "@/lib/catalogo";
 
@@ -177,10 +177,32 @@ export function Simulador() {
   const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : BASE;
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
   const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
-  const elegirEvento = (id: IdEvento) => {
-    setIdEvento(id);
+  // Cada tipo de evento trae sus plantillas: al cambiarlo, los anfitriones arrancan por la primera.
+  const siguienteEvento = () => {
+    const i = EVENTOS.findIndex((e) => e.id === idEvento);
+    setIdEvento(EVENTOS[(i + 1) % EVENTOS.length].id);
     setNPlantilla(0);
   };
+  // El círculo al lado del celular: el staff cambia el tipo de evento y los anfitriones, la plantilla.
+  const circulo = puedePersonalizar
+    ? {
+        accion: siguientePlantilla,
+        titulo: "Cambiar plantilla",
+        ahora: plantilla.nombre,
+        Icono: Palette,
+        chip: `${(nPlantilla % plantillas.length) + 1} de ${plantillas.length}`,
+        ayuda: "Tocá el círculo para cambiar la plantilla.",
+      }
+    : perfil === "salon"
+      ? {
+          accion: siguienteEvento,
+          titulo: "Cambiar tipo de evento",
+          ahora: evento.nombre,
+          Icono: PartyPopper,
+          chip: evento.nombre,
+          ayuda: "Tocá el círculo para cambiar el tipo de evento.",
+        }
+      : null;
 
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[1fr_auto] lg:gap-14">
@@ -309,46 +331,24 @@ export function Simulador() {
         <p className="mt-2 mb-4 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
           {miradaActual.texto}
         </p>
-        {perfil === "salon" && (
-          <div className="mb-4">
-            <div role="group" aria-label="Tipo de evento" className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
-              {EVENTOS.map((e) => (
-                <button
-                  key={e.id}
-                  type="button"
-                  aria-pressed={idEvento === e.id}
-                  onClick={() => elegirEvento(e.id)}
-                  className={`min-h-9 rounded-[8px] border text-[13px] font-semibold transition-colors ${
-                    idEvento === e.id ? "border-dorado bg-dorado-soft text-dorado" : "border-transparent text-ink-muted hover:text-ink"
-                  }`}
-                >
-                  {e.nombre}
-                </button>
-              ))}
-            </div>
-            <p className="mt-2 text-center text-[12px] leading-5 text-ink-muted">
-              Cada tipo trae sus plantillas para los anfitriones.
-            </p>
-          </div>
-        )}
         <p className="sr-only">
           Vista previa de {actual.nombre} para {nombreSalon}, {evento.corto}, en la vista de {miradaActual.nombre.toLowerCase()}
           {producto === "invitacion" ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
         <div className="relative">
-          {puedePersonalizar && (
+          {circulo && (
             <div className="absolute top-40 -right-7 z-10 flex flex-col items-center gap-1.5 sm:-right-9">
               <button
                 type="button"
-                onClick={siguientePlantilla}
-                aria-label={`Cambiar plantilla. Ahora: ${plantilla.nombre}`}
-                title="Cambiar plantilla"
+                onClick={circulo.accion}
+                aria-label={`${circulo.titulo}. Ahora: ${circulo.ahora}`}
+                title={circulo.titulo}
                 className="flex size-14 items-center justify-center rounded-full border-2 border-dorado bg-dorado text-on-dorado shadow-piedra transition-transform hover:scale-105 active:scale-95"
               >
-                <Palette size={24} strokeWidth={1.8} aria-hidden="true" />
+                <circulo.Icono size={24} strokeWidth={1.8} aria-hidden="true" />
               </button>
               <span className="rounded-full bg-surface-raised px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-dorado shadow-piedra">
-                {nPlantilla % plantillas.length + 1} de {plantillas.length}
+                {circulo.chip}
               </span>
             </div>
           )}
@@ -389,9 +389,7 @@ export function Simulador() {
           </div>
         </div>
         </div>
-        {puedePersonalizar && (
-          <p className="mt-3 text-center text-[12px] text-ink-muted">Tocá el círculo para cambiar la plantilla.</p>
-        )}
+        {circulo && <p className="mt-3 text-center text-[12px] text-ink-muted">{circulo.ayuda}</p>}
       </div>
     </div>
   );
