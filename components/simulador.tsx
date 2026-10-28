@@ -1,9 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { Mail, LayoutGrid, ListChecks, Palette, PartyPopper } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import { DESTACADOS } from "@/lib/catalogo";
+import { Palette, PartyPopper } from "lucide-react";
 import { FondoFiesta, type IdFondo } from "@/components/fondos-fiesta";
 
 // Color del salón de ejemplo en el celular (dato del salón, no token de Petra).
@@ -136,15 +134,8 @@ const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
   { id: "invitado", nombre: "Los invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
 ];
 
-const ICONOS: Record<string, LucideIcon> = {
-  invitacion: Mail,
-  lista_invitados: ListChecks,
-  armado_mesas: LayoutGrid,
-};
-
-/** Simulador: el salón ve cómo queda cada producto en el celular, desde los tres lados. */
+/** Simulador: el salón ve cómo queda la invitación digital en el celular, desde los tres lados. */
 export function Simulador() {
-  const [producto, setProducto] = useState(DESTACADOS[0].id);
   const [perfil, setPerfil] = useState<Perfil>("salon");
   const [idEvento, setIdEvento] = useState<IdEvento>("xv");
   const [nPlantilla, setNPlantilla] = useState(0);
@@ -152,15 +143,14 @@ export function Simulador() {
 
   const color = COLOR_SALON;
   const nombreSalon = "Tu salón";
-  const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
   const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[0];
   const evento = EVENTOS.find((e) => e.id === idEvento) ?? EVENTOS[2];
   const plantillas = evento.plantillas;
   const plantilla = plantillas[nPlantilla % plantillas.length];
   // La plantilla se ve en la invitación de tus clientes (que la eligen) y de los invitados (que la reciben).
-  const conPlantilla = producto === "invitacion" && perfil !== "salon";
+  const conPlantilla = perfil !== "salon";
   const tema = conPlantilla ? plantilla : BASE;
-  const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
+  const puedePersonalizar = perfil === "cliente";
   const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
   // Cada tipo de evento trae sus plantillas: al cambiarlo, tus clientes arrancan por la primera.
   const siguienteEvento = () => {
@@ -190,38 +180,7 @@ export function Simulador() {
       : null;
 
   return (
-    <div className="grid items-start gap-10 lg:grid-cols-[1fr_auto] lg:gap-14">
-      {/* Controles */}
-      <div>
-        <div role="group" aria-label="Elegí un producto" className="grid grid-cols-3 gap-2 sm:gap-3">
-          {DESTACADOS.map((p) => {
-            const Icono = ICONOS[p.id] ?? Mail;
-            const activo = p.id === producto;
-            return (
-              <button
-                key={p.id}
-                type="button"
-                aria-pressed={activo}
-                onClick={() => setProducto(p.id)}
-                className={`flex flex-col items-start gap-1.5 rounded-lg border p-3 text-left transition-colors sm:gap-2 sm:p-4 ${
-                  activo ? "border-dorado bg-dorado-soft" : "border-line bg-surface-raised hover:border-line-strong"
-                }`}
-              >
-                <span className="flex w-full items-center justify-between">
-                  <Icono size={22} strokeWidth={1.7} className={activo ? "text-dorado" : "text-azul-text"} aria-hidden="true" />
-                  <span className="type-etiqueta hidden text-[10px] text-ink-muted sm:inline">
-                    {p.ya ? "Ya disponible" : "Próximamente"}
-                  </span>
-                </span>
-                <span className="text-[13px] leading-4 font-semibold text-ink sm:type-boton">{p.nombre}</span>
-                <span className="type-etiqueta text-[9px] text-ink-muted sm:hidden">{p.ya ? "Ya disponible" : "Próximamente"}</span>
-                <span className="hidden text-[13px] leading-5 text-ink-muted sm:block">{p.texto}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
+    <div>
       {/* Celular */}
       <div className="mx-auto w-[280px] sm:w-[300px]">
         <p id={idVistas} className="type-etiqueta mb-2 text-center text-dorado">
@@ -246,8 +205,9 @@ export function Simulador() {
           {miradaActual.texto}
         </p>
         <p className="sr-only">
-          Vista previa de {actual.nombre} para {nombreSalon}, {evento.corto}, en la vista de {miradaActual.nombre.toLowerCase()}
-          {producto === "invitacion" ? `, con la plantilla ${plantilla.nombre}` : ""}
+          Vista previa de la invitación digital para {nombreSalon}, {evento.corto}, en la vista de{" "}
+          {miradaActual.nombre.toLowerCase()}
+          {conPlantilla ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
         <div className="relative">
           {circulo && (
@@ -293,7 +253,7 @@ export function Simulador() {
               >
                 Vista {perfil === "salon" ? "de tu staff" : perfil === "cliente" ? "de tus clientes" : "de los invitados"}
               </span>
-              <Pantalla producto={producto} perfil={perfil} color={color} evento={evento} plantilla={plantilla} />
+              <Pantalla perfil={perfil} color={color} evento={evento} plantilla={plantilla} />
               <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
                 Hecho con Petra
               </p>
@@ -462,125 +422,21 @@ function VistaInvitacion({
   );
 }
 
-const INVITADOS = [
-  { nombre: "Familia Gómez", cantidad: 4, estado: "Confirmó" },
-  { nombre: "Tía Marta", cantidad: 1, estado: "Confirmó" },
-  { nombre: "Amigas del colegio", cantidad: 8, estado: "Pendiente" },
-  { nombre: "Familia Ruiz", cantidad: 3, estado: "Confirmó" },
-  { nombre: "Padrinos", cantidad: 2, estado: "No viene" },
-];
-
-function VistaLista({ color }: { color: string }) {
-  return (
-    <div>
-      <p className="font-display text-[22px] leading-7">Lista de invitados</p>
-      <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-        {[
-          ["86", "Confirmados"],
-          ["24", "Pendientes"],
-          ["120", "Invitados"],
-        ].map(([n, t]) => (
-          <div key={t} className="rounded-lg bg-white py-2 shadow-sm">
-            <p className="font-display text-[20px]" style={{ color }}>
-              {n}
-            </p>
-            <p className="text-[10px] text-[#56627a]">{t}</p>
-          </div>
-        ))}
-      </div>
-      <ul className="mt-4 flex flex-col divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
-        {INVITADOS.map((i) => (
-          <li key={i.nombre} className="flex items-center justify-between py-2.5 text-[13px]">
-            <span>
-              {i.nombre} <span className="text-[#56627a]">({i.cantidad})</span>
-            </span>
-            <span
-              className="rounded-full px-2 py-0.5 text-[11px] font-semibold"
-              style={
-                i.estado === "Confirmó"
-                  ? { backgroundColor: `${color}1f`, color }
-                  : { backgroundColor: "#f1ece4", color: "#56627a" }
-              }
-            >
-              {i.estado}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <span className="mt-3 flex min-h-10 items-center justify-center rounded-xl text-[14px] font-semibold text-white" style={{ backgroundColor: color }}>
-        + Agregar invitado
-      </span>
-    </div>
-  );
-}
-
-const MESAS = [
-  { n: 1, ocupadas: 10, lugares: 10 },
-  { n: 2, ocupadas: 8, lugares: 10 },
-  { n: 3, ocupadas: 10, lugares: 10 },
-  { n: 4, ocupadas: 6, lugares: 10 },
-  { n: 5, ocupadas: 9, lugares: 10 },
-  { n: 6, ocupadas: 4, lugares: 10 },
-];
-
-function VistaMesas({ color }: { color: string }) {
-  return (
-    <div>
-      <p className="font-display text-[22px] leading-7">Armado de mesas</p>
-      <p className="mt-1 text-[12px] text-[#56627a]">Tocá un invitado y elegí su mesa.</p>
-      <div className="mt-4 grid grid-cols-3 gap-3">
-        {MESAS.map((m) => {
-          const llena = m.ocupadas === m.lugares;
-          return (
-            <div key={m.n} className="flex flex-col items-center">
-              <span
-                className="flex size-16 items-center justify-center rounded-full border-2 font-display text-[20px]"
-                style={{ borderColor: color, backgroundColor: llena ? color : "white", color: llena ? "white" : color }}
-              >
-                {m.n}
-              </span>
-              <span className="mt-1 text-[11px] text-[#56627a]">
-                {m.ocupadas}/{m.lugares}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-      <div className="mt-4 rounded-lg bg-white p-3 text-[13px] shadow-sm">
-        <p className="font-semibold">Sin mesa: 6</p>
-        <p className="text-[#56627a]">Amigas del colegio, Tío Carlos…</p>
-      </div>
-    </div>
-  );
-}
-
-/** Qué pantalla mostrar según el producto y quién lo mira. */
+/** Qué pantalla de la invitación mostrar según quién la mira. */
 function Pantalla({
-  producto,
   perfil,
   color,
   evento,
   plantilla,
 }: {
-  producto: string;
   perfil: Perfil;
   color: string;
   evento: Evento;
   plantilla: Plantilla;
 }) {
-  if (producto === "invitacion") {
-    if (perfil === "salon") return <InvitacionSalon color={color} evento={evento} />;
-    if (perfil === "cliente") return <InvitacionCliente color={color} evento={evento} plantilla={plantilla} />;
-    return <VistaInvitacion color={color} evento={evento} plantilla={plantilla} />;
-  }
-  if (producto === "lista_invitados") {
-    if (perfil === "salon") return <ListaSalon color={color} evento={evento} />;
-    if (perfil === "cliente") return <VistaLista color={color} />;
-    return <ListaInvitado color={color} evento={evento} />;
-  }
-  if (perfil === "salon") return <MesasSalon color={color} evento={evento} />;
-  if (perfil === "cliente") return <VistaMesas color={color} />;
-  return <MesasInvitado color={color} />;
+  if (perfil === "salon") return <InvitacionSalon color={color} evento={evento} />;
+  if (perfil === "cliente") return <InvitacionCliente color={color} evento={evento} plantilla={plantilla} />;
+  return <VistaInvitacion color={color} evento={evento} plantilla={plantilla} />;
 }
 
 /** Fila de dato para las vistas del salón. */
@@ -632,76 +488,6 @@ function InvitacionCliente({ color, evento, plantilla }: { color: string; evento
         <span className="font-semibold">{plantilla.nombre}</span>
       </div>
       <BotonColor color={color}>Enviar por WhatsApp</BotonColor>
-    </div>
-  );
-}
-
-function ListaSalon({ color, evento }: { color: string; evento: Evento }) {
-  return (
-    <div>
-      <p className="font-display text-[20px] leading-7">Invitados · {evento.corto}</p>
-      <div className="mt-3 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
-        <Dato titulo="Invitados" valor="120" color={color} />
-        <Dato titulo="Confirmados" valor="86" color={color} />
-        <Dato titulo="Menores" valor="18" color={color} />
-        <Dato titulo="Menú especial" valor="7" color={color} />
-      </div>
-      <BotonColor color={color}>Descargar para Excel</BotonColor>
-    </div>
-  );
-}
-
-function ListaInvitado({ color, evento }: { color: string; evento: Evento }) {
-  return (
-    <div className="text-center">
-      <p className="text-[13px] text-[#56627a]">Hola, Familia Gómez</p>
-      <p className="mt-1 font-display text-[24px] leading-8">¿Vienen {evento.aLa}?</p>
-      <div className="mt-4 rounded-lg bg-white p-3 text-left text-[13px] shadow-sm">
-        <p className="flex justify-between">
-          <span>Personas</span>
-          <span className="font-semibold">4</span>
-        </p>
-        <p className="mt-2 flex justify-between">
-          <span>Menú especial</span>
-          <span className="font-semibold">1 celíaco</span>
-        </p>
-      </div>
-      <BotonColor color={color}>Sí, confirmamos</BotonColor>
-      <span className="mt-2 flex min-h-10 items-center justify-center rounded-xl border border-[#c9bfae] text-[14px]">
-        No podemos ir
-      </span>
-    </div>
-  );
-}
-
-function MesasSalon({ color, evento }: { color: string; evento: Evento }) {
-  return (
-    <div>
-      <p className="font-display text-[20px] leading-7">Mesas · {evento.corto}</p>
-      <div className="mt-3 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
-        <Dato titulo="Mesas" valor="12" color={color} />
-        <Dato titulo="Lugares" valor="120" color={color} />
-        <Dato titulo="Sentados" valor="114" color={color} />
-        <Dato titulo="Sin mesa" valor="6" color={color} />
-      </div>
-      <BotonColor color={color}>Ver el plano de mesas</BotonColor>
-    </div>
-  );
-}
-
-function MesasInvitado({ color }: { color: string }) {
-  return (
-    <div className="text-center">
-      <p className="text-[13px] text-[#56627a]">Hola, Tía Marta</p>
-      <p className="mt-1 text-[14px]">Tu mesa es la</p>
-      <span
-        className="mx-auto mt-2 flex size-24 items-center justify-center rounded-full font-display text-[44px] text-white"
-        style={{ backgroundColor: color }}
-      >
-        7
-      </span>
-      <p className="mt-4 text-[12px] font-semibold text-[#56627a]">Compartís mesa con</p>
-      <p className="mt-1 text-[13px]">Familia Ruiz, Abuela Elsa y 5 más</p>
     </div>
   );
 }

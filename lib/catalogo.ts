@@ -11,7 +11,7 @@ export type Categoria = "Organización" | "Fotos y video" | "Juegos" | "Pantalla
 
 export type Producto = { id: string; nombre: string; texto: string; plan: Plan; categoria: Categoria; ya?: boolean };
 
-/** Los 3 que se prueban en el simulador. */
+/** Las 3 apps principales: van primeras en la cuadrícula. */
 export const DESTACADOS: Producto[] = [
   { id: "invitacion", nombre: "Invitación digital", texto: "Con confirmación de asistencia en un toque.", plan: "Básico", categoria: "Organización" },
   {
@@ -65,7 +65,7 @@ export const OTROS: Producto[] = [
   { id: "tarjeta_agradecimiento", nombre: "Tarjeta de agradecimiento", texto: "Un gracias digital después de la fiesta.", plan: "Completo", categoria: "Recuerdos" },
 ];
 
-/** Todas las apps para invitados: las 3 del simulador primero. */
+/** Todas las apps para invitados: las 3 principales primero. */
 export const APPS: Producto[] = [...DESTACADOS, ...OTROS];
 
 export type PlanLanding = {
