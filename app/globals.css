@@ -76,27 +76,27 @@
 @utility type-display {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 32px;
-  line-height: 38px;
-  letter-spacing: -0.02em;
+  font-size: 36px;
+  line-height: 42px;
+  letter-spacing: -0.025em;
   @media (width >= 48rem) {
-    font-size: 40px;
-    line-height: 46px;
-  }
-  @media (width >= 80rem) {
     font-size: 46px;
     line-height: 52px;
+  }
+  @media (width >= 80rem) {
+    font-size: 58px;
+    line-height: 64px;
   }
 }
 @utility type-titulo {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 26px;
-  line-height: 32px;
-  letter-spacing: -0.015em;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.02em;
   @media (width >= 64rem) {
-    font-size: 32px;
-    line-height: 38px;
+    font-size: 38px;
+    line-height: 44px;
   }
 }
 @utility type-subtitulo {

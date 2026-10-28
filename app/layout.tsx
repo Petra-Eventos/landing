@@ -18,13 +18,13 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Petra · Herramientas digitales para tu salón de eventos",
+  title: "Petra · Tu salón sobre la roca",
   description:
-    "Ofrecele a tus invitados toda la tecnología que quieren, con la marca de tu salón. Empezá gratis.",
+    "Que tus clientes no busquen nada afuera: invitación digital, lista de invitados, mesas, fotos y juegos con la marca de tu salón. Empezá gratis.",
   openGraph: {
-    title: "Petra · Herramientas digitales para tu salón de eventos",
+    title: "Petra · Tu salón sobre la roca",
     description:
-      "Ofrecele a tus invitados toda la tecnología que quieren, con la marca de tu salón. Empezá gratis.",
+      "Que tus clientes no busquen nada afuera: invitación digital, lista de invitados, mesas, fotos y juegos con la marca de tu salón. Empezá gratis.",
     locale: "es_AR",
     type: "website",
   },

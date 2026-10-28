@@ -71,37 +71,33 @@ const ICONOS: Record<string, LucideIcon> = {
 };
 
 /**
- * Colores de cada categoría, como los íconos de una tienda de apps.
+ * Tono de cada categoría: apagados, para que convivan con la paleta noche y oro de la marca.
  * Son colores de producto (no tokens de Petra), igual que las paletas de los universos en el sistema.
  */
-const COLORES: Record<Categoria, { desde: string; hasta: string }> = {
-  Organización: { desde: "#2f80ed", hasta: "#22c3e6" },
-  "Fotos y video": { desde: "#ff5f6d", hasta: "#ffb35c" },
-  Juegos: { desde: "#8e2de2", hasta: "#ff4fd8" },
-  Pantalla: { desde: "#0f9b8e", hasta: "#3fdc7d" },
-  Música: { desde: "#fc466b", hasta: "#3f5efb" },
-  Recuerdos: { desde: "#f7971e", hasta: "#f5c518" },
+const TONOS: Record<Categoria, string> = {
+  Organización: "#8fb4cf",
+  "Fotos y video": "#d9a08c",
+  Juegos: "#b6a6d8",
+  Pantalla: "#b7c37c",
+  Música: "#d6a3b9",
+  Recuerdos: "#d4b06a",
 };
 
-const CATEGORIAS = Object.keys(COLORES) as Categoria[];
+const CATEGORIAS = Object.keys(TONOS) as Categoria[];
 
 /** Todas las apps para invitados en una cuadrícula, como la pantalla de inicio de un celular. */
 export function TiendaApps() {
   return (
     <div>
-      <ul aria-label="Categorías" className="flex flex-wrap gap-2">
+      <ul aria-label="Categorías" className="flex flex-wrap justify-center gap-2">
         {CATEGORIAS.map((c) => {
           const cantidad = APPS.filter((a) => a.categoria === c).length;
           return (
             <li
               key={c}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 py-1 pr-3 pl-1 text-[13px] text-ink"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-raised/60 py-1.5 pr-3 pl-2.5 text-[13px] text-ink"
             >
-              <span
-                aria-hidden="true"
-                className="size-5 rounded-full"
-                style={{ backgroundImage: `linear-gradient(135deg, ${COLORES[c].desde}, ${COLORES[c].hasta})` }}
-              />
+              <span aria-hidden="true" className="size-2 rounded-full" style={{ backgroundColor: TONOS[c] }} />
               {c}
               <span className="text-ink-muted">{cantidad}</span>
             </li>
@@ -112,18 +108,19 @@ export function TiendaApps() {
       <ul className="mt-8 grid grid-cols-4 gap-x-2 gap-y-6 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 lg:gap-x-4">
         {APPS.map((app) => {
           const Icono = ICONOS[app.id] ?? Sparkles;
-          const { desde, hasta } = COLORES[app.categoria];
+          const tono = TONOS[app.categoria];
           return (
             <li key={app.id} className="group flex flex-col items-center text-center" title={app.texto}>
               <span
-                className="relative flex size-15 items-center justify-center rounded-[22%] shadow-[0_8px_20px_-6px_rgba(0,0,0,0.6)] ring-1 ring-white/20 transition-transform group-hover:-translate-y-1 group-hover:scale-105 sm:size-[72px]"
-                style={{ backgroundImage: `linear-gradient(140deg, ${desde}, ${hasta})` }}
+                className="relative flex size-15 items-center justify-center rounded-[22%] border bg-surface-raised shadow-piedra transition duration-200 group-hover:-translate-y-0.5 sm:size-[68px]"
+                style={{
+                  borderColor: `${tono}40`,
+                  backgroundImage: `linear-gradient(160deg, ${tono}2e, transparent 70%)`,
+                }}
               >
-                {/* Brillo de arriba, como los íconos de las tiendas. */}
-                <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1/2 rounded-t-[22%] bg-white/15" />
-                <Icono size={30} strokeWidth={2} className="relative text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]" aria-hidden="true" />
+                <Icono size={28} strokeWidth={1.6} style={{ color: tono }} aria-hidden="true" />
                 {app.ya && (
-                  <span className="absolute -top-1.5 -right-1.5 rounded-full bg-[#22c55e] px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-[#052e14] uppercase shadow">
+                  <span className="absolute -top-1.5 -right-1.5 rounded-full bg-dorado px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-on-dorado uppercase">
                     Ya
                   </span>
                 )}
@@ -138,8 +135,8 @@ export function TiendaApps() {
         })}
       </ul>
 
-      <p className="mt-8 flex items-center gap-2 text-[13px] text-ink-muted">
-        <span className="rounded-full bg-[#22c55e] px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-[#052e14] uppercase">Ya</span>
+      <p className="mt-10 flex items-center justify-center gap-2 text-center text-[13px] text-ink-muted">
+        <span className="rounded-full bg-dorado px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-on-dorado uppercase">Ya</span>
         Disponibles hoy. El resto se suma a tu plan a medida que sale.
       </p>
     </div>
