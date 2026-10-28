@@ -1,166 +1,74 @@
 import {
   ArrowRight,
-  BadgeCheck,
+  BellRing,
   Brain,
   Camera,
   Check,
   CircleDot,
   Clock,
-  Crown,
+  Film,
   Frame,
-  Gauge,
+  Gift,
   Grid3x3,
-  Headset,
   Images,
-  LayoutGrid,
-  ListChecks,
-  Mail,
   MessageCircle,
-  MessageSquare,
   Monitor,
   Music,
   PenLine,
-  ShieldCheck,
+  Quote,
   Sparkles,
+  Star,
   Store,
-  Ticket,
-  TrendingUp,
   Video,
   Vote,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import Image from "next/image";
-import { Firma, Piedras } from "@/components/logo";
-import {
-  URL_ENTRAR,
-  URL_PRIVACIDAD,
-  URL_REGISTRARME,
-  URL_SOCIOS,
-  URL_TERMINOS,
-  URL_WHATSAPP,
-} from "@/lib/enlaces";
+import { Firma } from "@/components/logo";
+import { Simulador } from "@/components/simulador";
+import { OTROS, PLANES, type Plan } from "@/lib/catalogo";
+import { URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_SOCIOS, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
+import { RESENAS, SALONES } from "@/lib/resenas";
 
 const contenedor = "mx-auto w-full max-w-[1180px] px-4 md:px-8";
 const botonPrincipal =
   "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-azul px-6 py-3 text-[15px] text-on-azul shadow-piedra transition-colors hover:bg-azul-hover";
 const botonSecundario =
-  "type-boton inline-flex min-h-12 items-center justify-center rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
+  "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
 
-/** Etiqueta dorada en mayúsculas arriba de cada título de sección. */
-function Antetitulo({ children }: { children: React.ReactNode }) {
-  return <p className="type-etiqueta text-dorado">{children}</p>;
-}
+const ICONOS: Record<string, LucideIcon> = {
+  camara: Camera,
+  pedido_canciones: Music,
+  libro_firmas: PenLine,
+  ruleta: CircleDot,
+  cronograma: Clock,
+  trivia: Brain,
+  votaciones: Vote,
+  historia_fotos: Images,
+  regalos: Gift,
+  muro_fotos: Monitor,
+  bingo: Grid3x3,
+  videosaludos: Video,
+  bienvenida_pantalla: Sparkles,
+  marco_historias: Frame,
+  aviso_padres: BellRing,
+  video_resumen: Film,
+};
 
-const EVENTOS = ["Casamientos", "Bautismos", "Cumpleaños", "XV", "Egresados", "Empresariales"];
+const COLOR_PLAN: Record<Plan, string> = {
+  Básico: "text-azul-text",
+  Salón: "text-dorado",
+  Completo: "text-oliva-text",
+};
 
-// Lo que gana el salón (el negocio, no la herramienta).
-const PARA_EL_SALON: { icono: LucideIcon; titulo: string; texto: string }[] = [
-  {
-    icono: TrendingUp,
-    titulo: "Sumá ingresos en cada fiesta",
-    texto: "Vendé cada herramienta a tus clientes, con el precio que vos elijas. Petra se paga sola.",
-  },
-  {
-    icono: Store,
-    titulo: "Diferenciá tu salón",
-    texto: "Ofrecé lo que tus clientes ven en las mejores fiestas, con tu logo y tus colores.",
-  },
-  {
-    icono: ShieldCheck,
-    titulo: "Todo bajo control",
-    texto: "Invitados, mesas, cobros y cronograma en un solo lugar. Cada salón ve solo lo suyo.",
-  },
-];
-
-// Herramientas del catálogo del sistema. "lista" = ya disponible; el resto llega de a poco.
-const PARA_INVITADOS: { icono: LucideIcon; nombre: string; lista?: boolean }[] = [
-  { icono: ListChecks, nombre: "Lista de invitados", lista: true },
-  { icono: LayoutGrid, nombre: "Armado de mesas", lista: true },
-  { icono: Mail, nombre: "Invitación" },
-  { icono: Ticket, nombre: "Pase del invitado" },
-  { icono: Camera, nombre: "Cámara instantánea" },
-  { icono: Images, nombre: "Muro de fotos en vivo" },
-  { icono: CircleDot, nombre: "Ruleta" },
-  { icono: Grid3x3, nombre: "Bingo" },
-  { icono: Brain, nombre: "Trivia" },
-  { icono: Music, nombre: "Pedido de canciones" },
-  { icono: Video, nombre: "Videosaludos" },
-  { icono: PenLine, nombre: "Libro de firmas" },
-  { icono: MessageSquare, nombre: "Mensajes en pantalla" },
-  { icono: Vote, nombre: "Votaciones" },
-  { icono: Frame, nombre: "Marco para historias" },
-];
-
-const PARA_COORDINADORA: { icono: LucideIcon; nombre: string; texto: string; lista?: boolean }[] = [
-  { icono: ListChecks, nombre: "Invitados y mesas", texto: "Quién viene y dónde se sienta.", lista: true },
-  { icono: Gauge, nombre: "Panel del coordinador", texto: "El control remoto de la noche." },
-  { icono: Monitor, nombre: "Pantalla del salón", texto: "Lo que se ve en el proyector o la tele." },
-  { icono: Clock, nombre: "Cronograma de la noche", texto: "Cada momento, a horario." },
-];
-
-const PASOS = [
-  { titulo: "Creá tu cuenta", texto: "Con Google, en un minuto. Gratis y sin tarjeta." },
-  { titulo: "Cargá tus fiestas", texto: "Fecha, cliente y espacio. Tu calendario queda al día." },
-  { titulo: "Activá las herramientas", texto: "Elegí cuáles ofrece cada fiesta y compartí el link." },
-];
-
-const CONFIANZA: { icono: LucideIcon; texto: string }[] = [
-  { icono: BadgeCheck, texto: "Gratis para empezar" },
-  { icono: ShieldCheck, texto: "Datos protegidos" },
-  { icono: Headset, texto: "Soporte por WhatsApp" },
-];
-
-function Botones({ centrado = false }: { centrado?: boolean }) {
+/** Título de cada sección: antetítulo dorado, título y una línea. */
+function Encabezado({ id, ante, titulo, texto }: { id: string; ante: string; titulo: string; texto?: string }) {
   return (
-    <div className={`flex flex-col gap-3 sm:flex-row ${centrado ? "sm:justify-center" : ""}`}>
-      <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
-        Crear mi cuenta gratis
-        <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
-      </a>
-      <a href={URL_ENTRAR} className={`${botonSecundario} w-full sm:w-auto`}>
-        Entrar al sistema
-      </a>
-    </div>
-  );
-}
-
-/** Lo que se ve en la fiesta: la pantalla del salón y el celular del invitado. Dibujado, sin datos reales. */
-function Escena() {
-  return (
-    <div aria-hidden="true" className="relative mx-auto w-full max-w-[460px] pb-24 sm:pb-20 lg:pb-0">
-      {/* Pantalla del salón */}
-      <div className="rounded-xl border border-line-strong bg-noche p-2.5 shadow-piedra">
-        <div className="rounded-lg bg-surface-raised p-5">
-          <div className="flex items-center justify-between">
-            <p className="type-etiqueta text-dorado">Pantalla del salón</p>
-            <span className="inline-flex items-center gap-1.5 text-[12px] text-ink-muted">
-              <span className="size-2 rounded-full bg-dorado" /> En vivo
-            </span>
-          </div>
-          <p className="mt-3 font-display text-[22px] leading-7 text-ink">Bienvenidos a los XV de Sofía</p>
-          <div className="mt-4 grid grid-cols-4 gap-2">
-            {["from-azul/50 to-azul-soft", "from-dorado/40 to-dorado-soft", "from-azul-soft to-azul/30", "from-dorado-soft to-dorado/30", "from-azul/30 to-dorado-soft", "from-dorado/30 to-azul-soft", "from-azul-soft to-azul/50", "from-dorado/40 to-azul-soft"].map((g) => (
-              <span key={g} className={`aspect-square rounded-md bg-linear-to-br ${g}`} />
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* Celular del invitado */}
-      <div className="absolute -bottom-6 -left-2 w-[190px] rounded-[30px] border border-dorado/50 bg-noche p-2 shadow-piedra sm:-left-8 lg:-bottom-16">
-        <div className="rounded-[24px] bg-surface-raised px-4 pt-5 pb-5">
-          <p className="type-etiqueta text-center text-[10px] text-dorado">Tu salón</p>
-          <p className="mt-2 text-center font-display text-[18px] leading-6 text-ink">XV de Sofía</p>
-          <span className="mt-4 flex min-h-9 items-center justify-center rounded-md bg-azul text-[13px] font-semibold text-on-azul">
-            Confirmar asistencia
-          </span>
-          <span className="mt-2 flex min-h-9 items-center justify-between rounded-md border border-line px-3 text-[13px] text-ink">
-            Tu mesa <span className="font-display text-[16px] text-dorado">7</span>
-          </span>
-          <span className="mt-2 flex min-h-9 items-center gap-1.5 rounded-md border border-line px-3 text-[13px] text-ink">
-            <Camera size={14} strokeWidth={1.8} className="text-dorado" /> Subí tu foto
-          </span>
-        </div>
-      </div>
+    <div className="max-w-[680px]">
+      <p className="type-etiqueta text-dorado">{ante}</p>
+      <h2 id={id} className="type-titulo mt-3 text-ink">
+        {titulo}
+      </h2>
+      {texto && <p className="type-cuerpo mt-3 text-ink-muted">{texto}</p>}
     </div>
   );
 }
@@ -168,24 +76,21 @@ function Escena() {
 export default function Home() {
   return (
     <>
-      {/* Encabezado fijo */}
+      {/* Encabezado fijo: registrarse o entrar */}
       <header className="sticky top-0 z-20 border-b border-line bg-surface/85 backdrop-blur">
         <div className={`${contenedor} flex min-h-15 items-center justify-between gap-3`}>
           <a href="#" aria-label="Petra, inicio" className="rounded-md">
             <Firma variante="clara" />
           </a>
           <nav aria-label="Secciones" className="hidden items-center gap-7 text-[14px] text-ink-muted lg:flex">
-            <a href="#salon" className="hover:text-ink">
-              Para tu salón
+            <a href="#productos" className="hover:text-ink">
+              Productos
             </a>
-            <a href="#herramientas" className="hover:text-ink">
-              Herramientas
+            <a href="#planes" className="hover:text-ink">
+              Planes
             </a>
-            <a href="#como" className="hover:text-ink">
-              Cómo funciona
-            </a>
-            <a href="#socios" className="hover:text-ink">
-              Socios
+            <a href="#salones" className="hover:text-ink">
+              Salones
             </a>
           </nav>
           <div className="flex items-center gap-1 sm:gap-3">
@@ -193,313 +98,223 @@ export default function Home() {
               href={URL_ENTRAR}
               className="type-boton inline-flex min-h-10 items-center rounded-md px-3 text-[14px] text-ink underline-offset-4 hover:underline"
             >
-              Entrar
+              Iniciar sesión
             </a>
             <a
               href={URL_REGISTRARME}
               className="type-boton inline-flex min-h-10 items-center rounded-md bg-azul px-4 text-[14px] text-on-azul transition-colors hover:bg-azul-hover"
             >
-              Crear cuenta
+              Registrarse
             </a>
           </div>
         </div>
       </header>
 
       <main>
-        {/* Hero */}
-        <section
-          className={`${contenedor} grid items-center gap-10 pt-10 pb-16 md:pt-14 lg:grid-cols-[1.1fr_1fr] lg:pb-20`}
-          aria-labelledby="titular"
-        >
-          <div>
+        {/* 1. Productos destacados con simulador */}
+        <section id="productos" className={`${contenedor} scroll-mt-20 pt-10 pb-16 md:pt-14 lg:pb-20`} aria-labelledby="titular">
+          <div className="max-w-[760px]">
             <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm border border-dorado/40 px-3 py-1.5 text-dorado">
               <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
-              Plataforma para salones de eventos
+              Herramientas digitales para salones de eventos
             </p>
-            <h1 id="titular" className="type-display mt-6 text-ink">
+            <h1 id="titular" className="type-display mt-5 text-ink">
               Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
             </h1>
-            <p className="type-subtitulo mt-5 max-w-[520px] font-normal text-ink-muted">
-              Invitación, confirmaciones, mesas y fotos en pantalla, con la marca de tu salón. Tu salón, el
-              protagonista de cada fiesta.
+            <p className="type-cuerpo mt-4 text-ink-muted">
+              Probalo acá mismo: elegí un producto, poné el nombre y el logo de tu salón y mirá cómo lo ven tus
+              invitados.
             </p>
-            <div className="mt-8">
-              <Botones />
-            </div>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-ink-muted">
-              {CONFIANZA.map(({ icono: Icono, texto }) => (
-                <li key={texto} className="inline-flex items-center gap-2">
-                  <Icono size={16} strokeWidth={2} className="text-dorado" aria-hidden="true" />
-                  {texto}
-                </li>
-              ))}
+          </div>
+          <div className="mt-10">
+            <Simulador />
+          </div>
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
+              Crear mi cuenta gratis
+              <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
+            </a>
+            <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={`${botonSecundario} w-full sm:w-auto`}>
+              <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
+              Consultar por WhatsApp
+            </a>
+          </div>
+        </section>
+
+        {/* 2. Todos los productos */}
+        <section className="border-y border-line bg-noche/60 py-16 lg:py-20" aria-labelledby="titulo-todos">
+          <div className={contenedor}>
+            <Encabezado
+              id="titulo-todos"
+              ante="Y mucho más"
+              titulo="Todo lo que tu salón puede ofrecer"
+              texto="Herramientas para cada momento de la fiesta. Se suman a tu plan a medida que salen."
+            />
+            <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {OTROS.map((p) => {
+                const Icono = ICONOS[p.id] ?? Sparkles;
+                return (
+                  <li key={p.id} className="flex flex-col rounded-lg border border-line bg-surface-raised p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="flex size-10 items-center justify-center rounded-md bg-azul-soft text-azul-text">
+                        <Icono size={20} strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                      <span className={`type-etiqueta text-[10px] ${COLOR_PLAN[p.plan]}`}>Plan {p.plan}</span>
+                    </div>
+                    <h3 className="type-boton mt-4 text-ink">{p.nombre}</h3>
+                    <p className="mt-1 text-[14px] leading-5 text-ink-muted">{p.texto}</p>
+                    <p className="mt-auto pt-3 text-[12px] text-ink-muted">Próximamente</p>
+                  </li>
+                );
+              })}
             </ul>
           </div>
-          <Escena />
         </section>
 
-        {/* Tipos de fiesta: franja que se desplaza sola (quieta si la persona pidió menos movimiento) */}
-        <section className="border-y border-line bg-noche/60" aria-labelledby="eventos">
-          <div className={`${contenedor} flex flex-col items-center gap-3 py-6 lg:flex-row lg:gap-10`}>
-            <h2 id="eventos" className="type-etiqueta shrink-0 text-ink-muted">
-              Petra está presente en
-            </h2>
-            <div className="marquesina w-full min-w-0 overflow-hidden">
-              <ul className="marquesina-pista flex w-max items-center font-display text-[19px] leading-7 text-ink sm:text-[21px]">
-                {[0, 1].map((vuelta) =>
-                  EVENTOS.map((evento) => (
-                    <li
-                      key={`${vuelta}-${evento}`}
-                      aria-hidden={vuelta === 1 ? true : undefined}
-                      className="flex items-center gap-8 pr-8 whitespace-nowrap"
-                    >
-                      {evento}
-                      <span aria-hidden="true" className="size-1.5 rounded-full bg-dorado" />
-                    </li>
-                  )),
+        {/* 3. Planes */}
+        <section id="planes" className={`${contenedor} scroll-mt-20 py-16 lg:py-20`} aria-labelledby="titulo-planes">
+          <Encabezado
+            id="titulo-planes"
+            ante="Planes"
+            titulo="Elegí el plan para tu salón"
+            texto="Empezás gratis, sin tarjeta, y pasás de plan cuando quieras. No perdés nada de lo que cargaste."
+          />
+          <ul className="mt-10 grid gap-5 lg:grid-cols-3">
+            {PLANES.map((plan) => (
+              <li
+                key={plan.nombre}
+                className={`relative flex flex-col rounded-xl border bg-surface-raised p-6 shadow-piedra sm:p-7 ${
+                  plan.destacado ? "border-dorado" : "border-line"
+                }`}
+              >
+                {plan.destacado && (
+                  <span className="type-etiqueta absolute -top-3 left-6 rounded-sm bg-dorado px-2.5 py-1 text-on-dorado">
+                    Recomendado
+                  </span>
                 )}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Para el salón */}
-        <section id="salon" className={`${contenedor} scroll-mt-20 py-16 lg:py-20`} aria-labelledby="titulo-salon">
-          <div className="max-w-[680px]">
-            <Antetitulo>Para tu salón</Antetitulo>
-            <h2 id="titulo-salon" className="type-titulo mt-3 text-ink">
-              Una plataforma pensada para el negocio de las fiestas
-            </h2>
-          </div>
-          <ul className="mt-10 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
-            {PARA_EL_SALON.map(({ icono: Icono, titulo, texto }) => (
-              <li key={titulo} className="bg-surface-raised p-6 lg:p-7">
-                <Icono size={24} strokeWidth={1.6} className="text-dorado" aria-hidden="true" />
-                <h3 className="type-subtitulo mt-4 text-ink">{titulo}</h3>
-                <p className="type-cuerpo mt-2 text-ink-muted">{texto}</p>
+                <h3 className="font-display text-[26px] leading-8 text-ink">{plan.nombre}</h3>
+                <p className="type-cuerpo mt-1 text-ink-muted">{plan.lema}</p>
+                <ul className="mt-6 flex flex-1 flex-col gap-3">
+                  {plan.trae.map((t) => (
+                    <li key={t} className="type-cuerpo flex items-start gap-2.5 text-ink">
+                      <Check size={18} strokeWidth={2.4} className="mt-0.5 shrink-0 text-dorado" aria-hidden="true" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={URL_REGISTRARME}
+                  className={`${plan.destacado ? botonPrincipal : botonSecundario} mt-7 w-full`}
+                >
+                  Empezar gratis
+                </a>
+                <a
+                  href={URL_WHATSAPP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 text-center text-[14px] text-dorado underline-offset-4 hover:underline"
+                >
+                  Consultar precio
+                </a>
               </li>
             ))}
           </ul>
-        </section>
-
-        {/* Herramientas */}
-        <section
-          id="herramientas"
-          className="scroll-mt-20 border-y border-line bg-noche/60 py-16 lg:py-20"
-          aria-labelledby="titulo-herramientas"
-        >
-          <div className={contenedor}>
-            <div className="max-w-[680px]">
-              <Antetitulo>Herramientas</Antetitulo>
-              <h2 id="titulo-herramientas" className="type-titulo mt-3 text-ink">
-                Todo lo que la fiesta necesita, con tu marca
-              </h2>
-            </div>
-
-            <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-12">
-              <div>
-                <h3 className="type-subtitulo text-ink">Para tus invitados</h3>
-                <p className="type-cuerpo mt-1 text-ink-muted">Desde el celular, sin bajar ninguna app.</p>
-                <ul className="mt-6 flex flex-wrap gap-2.5">
-                  {PARA_INVITADOS.map(({ icono: Icono, nombre, lista }) => (
-                    <li
-                      key={nombre}
-                      className={`inline-flex min-h-10 items-center gap-2 rounded-sm border px-3.5 text-[14px] ${
-                        lista ? "border-dorado/60 bg-dorado-soft text-ink" : "border-line bg-surface-raised text-ink"
-                      }`}
-                    >
-                      <Icono
-                        size={16}
-                        strokeWidth={1.8}
-                        className={lista ? "text-dorado" : "text-azul-text"}
-                        aria-hidden="true"
-                      />
-                      {nombre}
-                      {lista && <span className="type-etiqueta text-dorado">Ya</span>}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 text-[13px] text-ink-muted">“Ya”: disponible hoy. Las demás se van sumando.</p>
-              </div>
-
-              <div>
-                <h3 className="type-subtitulo text-ink">Para tu coordinadora</h3>
-                <p className="type-cuerpo mt-1 text-ink-muted">Más herramientas para llevar la fiesta.</p>
-                <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {PARA_COORDINADORA.map(({ icono: Icono, nombre, texto, lista }) => (
-                    <li key={nombre} className="rounded-lg border border-line bg-surface-raised p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <Icono size={22} strokeWidth={1.6} className="text-azul-text" aria-hidden="true" />
-                        {lista && <span className="type-etiqueta text-dorado">Ya</span>}
-                      </div>
-                      <p className="type-boton mt-3 text-ink">{nombre}</p>
-                      <p className="mt-1 text-[14px] leading-5 text-ink-muted">{texto}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-10">
-              <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
-                Probalas gratis
-                <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Cómo funciona */}
-        <section id="como" className={`${contenedor} scroll-mt-20 py-16 lg:py-20`} aria-labelledby="titulo-como">
-          <div className="max-w-[680px]">
-            <Antetitulo>Cómo funciona</Antetitulo>
-            <h2 id="titulo-como" className="type-titulo mt-3 text-ink">
-              Tu salón, listo en tres pasos
-            </h2>
-          </div>
-          <ol className="mt-10 grid gap-8 md:grid-cols-3">
-            {PASOS.map((paso, i) => (
-              <li key={paso.titulo} className="border-t-2 border-dorado/60 pt-6">
-                <span className="font-display text-[34px] leading-none text-dorado">0{i + 1}</span>
-                <h3 className="type-subtitulo mt-4 text-ink">{paso.titulo}</h3>
-                <p className="type-cuerpo mt-1 text-ink-muted">{paso.texto}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* Socios */}
-        <section id="socios" className={`${contenedor} scroll-mt-20 pb-16 lg:pb-20`} aria-labelledby="titulo-socios">
-          <div className="grid items-center gap-8 rounded-xl border border-dorado/50 bg-linear-to-br from-dorado-soft to-surface-raised p-6 shadow-piedra sm:p-10 md:grid-cols-[1fr_auto]">
-            <div>
-              <p className="type-etiqueta inline-flex items-center gap-1.5 text-dorado">
-                <Crown size={14} strokeWidth={2} aria-hidden="true" />
-                Socios de Petra
-              </p>
-              <h2 id="titulo-socios" className="type-titulo mt-3 text-ink">
-                Sé parte de los socios de Petra
-              </h2>
-              <p className="type-subtitulo mt-4 max-w-[580px] font-normal text-ink-muted">
-                Gestionamos todo tu salón con vos: cuotas, caja, costos, proveedores y soporte personalizado.
-              </p>
-              <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[15px] text-ink">
-                {["Todas las herramientas", "Gestión completa", "Un contacto dedicado"].map((t) => (
-                  <li key={t} className="inline-flex items-center gap-2">
-                    <Check size={16} strokeWidth={2.4} className="text-dorado" aria-hidden="true" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <p className="mt-6 text-[14px] text-ink-muted">
+            ¿Querés que gestionemos todo tu salón?{" "}
             <a
               href={URL_SOCIOS}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-boton inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-dorado px-6 py-3 text-[15px] text-on-dorado transition-colors hover:bg-dorado-hover md:w-auto"
+              className="font-semibold text-dorado underline-offset-4 hover:underline"
             >
-              Quiero ser socio
-              <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
+              Sé parte de los socios de Petra
             </a>
-          </div>
+          </p>
         </section>
 
-        {/* Creador */}
-        <section className="border-t border-line" aria-label="Quién creó Petra">
-          <figure
-            className={`${contenedor} flex max-w-[820px] flex-col items-center gap-6 py-12 text-center sm:flex-row sm:gap-10 sm:text-left`}
-          >
-            <Image
-              src="/rodrigo-torres.jpg"
-              alt="Rodrigo Torres, creador de Petra"
-              width={403}
-              height={449}
-              sizes="112px"
-              className="size-24 shrink-0 rounded-full border-2 border-dorado object-cover object-top shadow-piedra sm:size-28"
-            />
-            <div>
-              <blockquote className="font-display text-[21px] leading-7 text-ink sm:text-[24px] sm:leading-8">
-                “Creé Petra para que cada salón pueda ofrecer una experiencia completa.”
-              </blockquote>
-              <figcaption className="mt-4">
-                <span className="type-subtitulo block text-dorado">Rodrigo Torres</span>
-                <span className="type-cuerpo block text-ink-muted">Creador de Petra</span>
-              </figcaption>
-            </div>
-          </figure>
-        </section>
+        {/* 4. Reseñas y salones */}
+        <section
+          id="salones"
+          className="scroll-mt-20 border-t border-line bg-noche/60 py-16 lg:py-20"
+          aria-labelledby="titulo-salones"
+        >
+          <div className={contenedor}>
+            <Encabezado id="titulo-salones" ante="Salones" titulo="Lo que dicen los salones" />
 
-        {/* Cierre */}
-        <section className="border-t border-line bg-noche/60" aria-labelledby="titulo-cierre">
-          <div className={`${contenedor} flex flex-col items-center py-16 text-center lg:py-20`}>
-            <Piedras variante="clara" className="mb-6 h-auto w-14" />
-            <h2 id="titulo-cierre" className="type-titulo max-w-[640px] text-ink">
-              Que tu salón sea el que todos recuerdan
-            </h2>
-            <p className="type-subtitulo mt-4 font-normal text-ink-muted">Gratis para empezar. Sin tarjeta.</p>
-            <div className="mt-8">
-              <Botones centrado />
-            </div>
-            <a
-              href={URL_WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="type-boton mt-6 inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-dorado underline-offset-4 hover:underline"
-            >
-              <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
-              ¿Preferís hablar con alguien? Escribinos por WhatsApp
-            </a>
+            {RESENAS.length > 0 ? (
+              <ul className="mt-10 grid gap-5 md:grid-cols-3">
+                {RESENAS.map((r) => (
+                  <li key={`${r.nombre}-${r.salon}`} className="flex flex-col rounded-xl border border-line bg-surface-raised p-6">
+                    <div className="flex gap-1 text-dorado" aria-hidden="true">
+                      {[0, 1, 2, 3, 4].map((i) => (
+                        <Star key={i} size={16} fill="currentColor" strokeWidth={0} />
+                      ))}
+                    </div>
+                    <blockquote className="type-cuerpo mt-4 flex-1 text-ink">“{r.texto}”</blockquote>
+                    <p className="mt-5 text-[14px] font-semibold text-ink">{r.nombre}</p>
+                    <p className="text-[13px] text-ink-muted">
+                      {r.salon}
+                      {r.ciudad ? ` · ${r.ciudad}` : ""}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="mt-10 grid items-center gap-6 rounded-xl border border-dashed border-dorado/50 p-6 sm:p-8 md:grid-cols-[auto_1fr_auto]">
+                <Quote size={40} strokeWidth={1.4} className="text-dorado" aria-hidden="true" />
+                <div>
+                  <p className="font-display text-[22px] leading-7 text-ink">Tu salón puede ser el primero en contarlo.</p>
+                  <p className="type-cuerpo mt-1 text-ink-muted">
+                    Estamos sumando a los primeros salones. Probá Petra en tus fiestas y contanos cómo te fue.
+                  </p>
+                </div>
+                <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full md:w-auto`}>
+                  Quiero probarlo
+                </a>
+              </div>
+            )}
+
+            {SALONES.length > 0 && (
+              <div className="mt-12">
+                <p className="type-etiqueta text-center text-ink-muted">Salones que ya trabajan con Petra</p>
+                <ul className="mt-5 flex flex-wrap justify-center gap-3">
+                  {SALONES.map((s) => (
+                    <li
+                      key={s}
+                      className="inline-flex min-h-11 items-center gap-2 rounded-md border border-line bg-surface-raised px-4 font-display text-[18px] text-ink"
+                    >
+                      <Store size={16} strokeWidth={1.8} className="text-dorado" aria-hidden="true" />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </section>
       </main>
 
       {/* Pie */}
       <footer className="border-t border-line bg-noche">
-        <div className={`${contenedor} grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]`}>
-          <div>
-            <Firma variante="clara" />
-            <p className="mt-4 max-w-[300px] text-[14px] leading-6 text-ink-muted">
-              Herramientas digitales para salones de eventos. Tu salón sobre la roca.
-            </p>
-          </div>
-          <nav aria-label="Producto" className="flex flex-col gap-2.5 text-[14px]">
-            <p className="type-etiqueta mb-1 text-ink-muted">Producto</p>
-            <a href="#herramientas" className="text-ink hover:text-dorado">
-              Herramientas
-            </a>
-            <a href="#como" className="text-ink hover:text-dorado">
-              Cómo funciona
-            </a>
-            <a href="#socios" className="text-ink hover:text-dorado">
-              Socios
-            </a>
-          </nav>
-          <nav aria-label="Cuenta" className="flex flex-col gap-2.5 text-[14px]">
-            <p className="type-etiqueta mb-1 text-ink-muted">Cuenta</p>
-            <a href={URL_REGISTRARME} className="text-ink hover:text-dorado">
-              Crear cuenta
-            </a>
-            <a href={URL_ENTRAR} className="text-ink hover:text-dorado">
-              Entrar al sistema
-            </a>
-          </nav>
-          <nav aria-label="Contacto y legales" className="flex flex-col gap-2.5 text-[14px]">
-            <p className="type-etiqueta mb-1 text-ink-muted">Contacto</p>
-            <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-dorado">
+        <div
+          className={`${contenedor} flex flex-col gap-4 py-8 text-[13px] text-ink-muted sm:flex-row sm:items-center sm:justify-between`}
+        >
+          <Firma variante="clara" />
+          <nav aria-label="Contacto y legales" className="flex flex-wrap gap-x-5 gap-y-2">
+            <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
               WhatsApp
             </a>
-            <a href="mailto:hola@petraeventos.com" className="text-ink hover:text-dorado">
+            <a href="mailto:hola@petraeventos.com" className="hover:text-ink">
               hola@petraeventos.com
             </a>
-            <a href={URL_TERMINOS} className="text-ink hover:text-dorado">
+            <a href={URL_TERMINOS} className="hover:text-ink">
               Términos
             </a>
-            <a href={URL_PRIVACIDAD} className="text-ink hover:text-dorado">
+            <a href={URL_PRIVACIDAD} className="hover:text-ink">
               Privacidad
             </a>
+            <span>© 2026 Petra</span>
           </nav>
-        </div>
-        <div className="border-t border-line">
-          <p className={`${contenedor} py-6 text-[13px] text-ink-muted`}>© 2026 Petra · petraeventos.com</p>
         </div>
       </footer>
     </>
