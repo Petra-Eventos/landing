@@ -73,29 +73,35 @@ export default function Home() {
       <main>
         {/* 1. Productos destacados con simulador */}
         <section id="productos" className={`${contenedor} scroll-mt-20 pt-10 pb-16 md:pt-14 lg:pb-20`} aria-labelledby="titular">
-          <div className="max-w-[760px]">
-            <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm border border-dorado/40 px-3 py-1.5 text-dorado">
-              <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
-              Herramientas digitales para salones de eventos
-            </p>
-            <h1 id="titular" className="type-display mt-5 text-ink">
-              Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
-            </h1>
-            <p className="type-cuerpo mt-4 text-ink-muted">
-              Probá acá mismo la invitación digital y mirala desde los tres lados.
-            </p>
-          </div>
-          <PerfilesEnVivo />
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
-              Crear mi cuenta gratis
-              <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
-            </a>
-            <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={`${botonSecundario} w-full sm:w-auto`}>
-              <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
-              Consultar por WhatsApp
-            </a>
-          </div>
+          {/* En la compu: texto, perfiles y botones a la izquierda; el celular a la derecha. */}
+          <PerfilesEnVivo
+            intro={
+              <div className="max-w-[760px]">
+                <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm border border-dorado/40 px-3 py-1.5 text-dorado">
+                  <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
+                  Herramientas digitales para salones de eventos
+                </p>
+                <h1 id="titular" className="type-display mt-5 text-ink">
+                  Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
+                </h1>
+                <p className="type-cuerpo mt-4 text-ink-muted">
+                  Probá acá mismo la invitación digital y mirala desde los tres lados.
+                </p>
+              </div>
+            }
+            acciones={
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
+                  Crear mi cuenta gratis
+                  <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
+                </a>
+                <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={`${botonSecundario} w-full sm:w-auto`}>
+                  <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
+                  Consultar por WhatsApp
+                </a>
+              </div>
+            }
+          />
         </section>
 
         {/* 2. Todas las apps, como una tienda: colorida a propósito */}

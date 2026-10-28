@@ -13,7 +13,8 @@ const PERFILES: { icono: LucideIcon; nombre: string; texto: string }[] = [
 
 /**
  * Carrusel de los tres perfiles. Marca el perfil que se ve en el simulador (`paso`).
- * En el celular, además, se desliza hasta esa tarjeta; en la compu entran las tres y no se mueve.
+ * En el celular, además, se desliza hasta esa tarjeta. En la tablet van en fila y en la compu,
+ * una debajo de la otra con flechas hacia abajo; en las dos entran las tres y no se mueve.
  */
 export function CarruselPerfiles({ paso, onTocar }: { paso: number; onTocar: () => void }) {
   const lista = useRef<HTMLUListElement>(null);
@@ -37,10 +38,13 @@ export function CarruselPerfiles({ paso, onTocar }: { paso: number; onTocar: () 
         onTouchStart={onTocar}
         onWheel={onTocar}
         onFocus={onTocar}
-        className="sin-barra relative mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 sm:overflow-visible"
+        className="sin-barra relative mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 sm:overflow-visible lg:mt-8 lg:max-w-[560px] lg:flex-col lg:gap-1.5"
       >
         {PERFILES.map(({ icono: Icono, nombre, texto }, i) => (
-          <li key={nombre} className="flex w-[86%] shrink-0 snap-start items-center gap-2 sm:w-auto sm:flex-1 sm:shrink">
+          <li
+            key={nombre}
+            className="flex w-[86%] shrink-0 snap-start items-center gap-2 sm:w-auto sm:flex-1 sm:shrink lg:flex-col lg:items-stretch lg:gap-1.5"
+          >
             <div
               className={`flex h-full flex-1 items-start gap-3 rounded-lg border p-4 transition-colors duration-300 ${
                 i === paso ? "border-dorado bg-dorado-soft" : "border-line bg-surface-raised/60"
@@ -54,7 +58,9 @@ export function CarruselPerfiles({ paso, onTocar }: { paso: number; onTocar: () 
                 <span className="block text-[13px] leading-5 text-ink-muted">{texto}</span>
               </span>
             </div>
-            {i < PERFILES.length - 1 && <ArrowRight size={20} strokeWidth={2} className="shrink-0 text-dorado" aria-hidden="true" />}
+            {i < PERFILES.length - 1 && (
+              <ArrowRight size={20} strokeWidth={2} className="shrink-0 text-dorado lg:ml-7 lg:rotate-90" aria-hidden="true" />
+            )}
           </li>
         ))}
       </ul>
