@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, PartyPopper, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { DESTACADOS } from "@/lib/catalogo";
+import { FondoFiesta, type IdFondo } from "@/components/fondos-fiesta";
 
 // Colores que puede elegir el salón para su marca. Son datos del salón, no tokens de Petra.
 const COLORES = [
@@ -35,6 +36,8 @@ type Plantilla = {
   borde: string;
   acento?: string;
   sobreAcento: string;
+  /** El dibujo de fiesta que va detrás de la invitación. */
+  fondoFiesta: IdFondo;
 };
 
 type Evento = {
@@ -57,7 +60,7 @@ type Evento = {
   plantillas: Plantilla[];
 };
 
-// El staff elige el tipo de evento; cada tipo trae sus propias plantillas para los anfitriones.
+// Tu staff elige el tipo de evento; cada tipo trae sus propias plantillas para tus clientes.
 const EVENTOS: Evento[] = [
   {
     id: "casamiento",
@@ -75,12 +78,12 @@ const EVENTOS: Evento[] = [
     mes: "Mar",
     hora: "20:00",
     plantillas: [
-      { id: "elegante-dorado", nombre: "Elegante dorado", estilo: "elegante", fondo: "#14110b", texto: "#f5ecd7", suave: "#cbbf9f", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
-      { id: "oliva-blanco", nombre: "Verde oliva y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#2f3a1a", suave: "#5f6b45", borde: "#c9cfb0", acento: "#5f6d2f", sobreAcento: "#ffffff" },
-      { id: "blanco-dorado", nombre: "Blanco y dorado", estilo: "elegante", fondo: "#fffdf7", texto: "#3a2f17", suave: "#6f6043", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
-      { id: "azul-negro", nombre: "Azul y negro", estilo: "moderna", fondo: "#0b0f1a", texto: "#eef2fb", suave: "#a3b0cc", borde: "#2a3a5c", acento: "#2f63c8", sobreAcento: "#ffffff" },
-      { id: "naranja-blanco", nombre: "Naranja y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#3a1f0b", suave: "#7a5a43", borde: "#f5cfae", acento: "#c2561a", sobreAcento: "#ffffff" },
-      { id: "animado", nombre: "Animado", estilo: "animada", fondo: "#fff6f3", texto: "#4a2230", suave: "#8a5a68", borde: "#f0c9d2", acento: "#c2456b", sobreAcento: "#ffffff" },
+      { id: "elegante-dorado", fondoFiesta: "luces", nombre: "Elegante dorado", estilo: "elegante", fondo: "#14110b", texto: "#f5ecd7", suave: "#cbbf9f", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "oliva-blanco", fondoFiesta: "hojas", nombre: "Verde oliva y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#2f3a1a", suave: "#5f6b45", borde: "#c9cfb0", acento: "#5f6d2f", sobreAcento: "#ffffff" },
+      { id: "blanco-dorado", fondoFiesta: "brillos", nombre: "Blanco y dorado", estilo: "elegante", fondo: "#fffdf7", texto: "#3a2f17", suave: "#6f6043", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "azul-negro", fondoFiesta: "guirnalda", nombre: "Azul y negro", estilo: "moderna", fondo: "#0b0f1a", texto: "#eef2fb", suave: "#a3b0cc", borde: "#2a3a5c", acento: "#2f63c8", sobreAcento: "#ffffff" },
+      { id: "naranja-blanco", fondoFiesta: "flores", nombre: "Naranja y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#3a1f0b", suave: "#7a5a43", borde: "#f5cfae", acento: "#c2561a", sobreAcento: "#ffffff" },
+      { id: "animado", fondoFiesta: "corazones", nombre: "Animado", estilo: "animada", fondo: "#fff6f3", texto: "#4a2230", suave: "#8a5a68", borde: "#f0c9d2", acento: "#c2456b", sobreAcento: "#ffffff" },
     ],
   },
   {
@@ -99,9 +102,9 @@ const EVENTOS: Evento[] = [
     mes: "Nov",
     hora: "21:00",
     plantillas: [
-      { id: "elegante", nombre: "Elegante", estilo: "elegante", fondo: "#15131d", texto: "#f3eee6", suave: "#bdb6c9", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
-      { id: "informal", nombre: "Informal", estilo: "animada", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8", acento: "#c7363f", sobreAcento: "#ffffff" },
-      { id: "casual", nombre: "Casual", estilo: "moderna", fondo: "#f3f7f4", texto: "#1f2d27", suave: "#4d5f57", borde: "#cfdcd4", sobreAcento: "#ffffff" },
+      { id: "elegante", fondoFiesta: "luces", nombre: "Elegante", estilo: "elegante", fondo: "#15131d", texto: "#f3eee6", suave: "#bdb6c9", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "informal", fondoFiesta: "globos", nombre: "Informal", estilo: "animada", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8", acento: "#c7363f", sobreAcento: "#ffffff" },
+      { id: "casual", fondoFiesta: "serpentinas", nombre: "Casual", estilo: "moderna", fondo: "#f3f7f4", texto: "#1f2d27", suave: "#4d5f57", borde: "#cfdcd4", sobreAcento: "#ffffff" },
     ],
   },
   {
@@ -120,11 +123,11 @@ const EVENTOS: Evento[] = [
     mes: "Dic",
     hora: "21:30",
     plantillas: [
-      { id: "elegante-rosa", nombre: "Elegante rosa", estilo: "elegante", fondo: "#2a0f1e", texto: "#fbe9f0", suave: "#e0b9c8", borde: "#e6a3bd", acento: "#e6a3bd", sobreAcento: "#2a0f1e" },
-      { id: "elegante-lila", nombre: "Elegante lila", estilo: "elegante", fondo: "#1d1530", texto: "#f1ebff", suave: "#c3b6e0", borde: "#c5b0f0", acento: "#c5b0f0", sobreAcento: "#1d1530" },
-      { id: "elegante-turquesa", nombre: "Elegante turquesa", estilo: "elegante", fondo: "#0d2226", texto: "#e8fbf8", suave: "#a9d6cf", borde: "#7fd1c7", acento: "#7fd1c7", sobreAcento: "#0d2226" },
-      { id: "moderno", nombre: "Moderno", estilo: "moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db", acento: "#c42a6f", sobreAcento: "#ffffff" },
-      { id: "tecnologico", nombre: "Tecnológico", estilo: "tecno", fondo: "#05070f", texto: "#e6f7ff", suave: "#8fb3c7", borde: "#22e3ff", acento: "#22e3ff", sobreAcento: "#05070f" },
+      { id: "elegante-rosa", fondoFiesta: "luces", nombre: "Elegante rosa", estilo: "elegante", fondo: "#2a0f1e", texto: "#fbe9f0", suave: "#e0b9c8", borde: "#e6a3bd", acento: "#e6a3bd", sobreAcento: "#2a0f1e" },
+      { id: "elegante-lila", fondoFiesta: "brillos", nombre: "Elegante lila", estilo: "elegante", fondo: "#1d1530", texto: "#f1ebff", suave: "#c3b6e0", borde: "#c5b0f0", acento: "#c5b0f0", sobreAcento: "#1d1530" },
+      { id: "elegante-turquesa", fondoFiesta: "luces", nombre: "Elegante turquesa", estilo: "elegante", fondo: "#0d2226", texto: "#e8fbf8", suave: "#a9d6cf", borde: "#7fd1c7", acento: "#7fd1c7", sobreAcento: "#0d2226" },
+      { id: "moderno", fondoFiesta: "geometrico", nombre: "Moderno", estilo: "moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db", acento: "#c42a6f", sobreAcento: "#ffffff" },
+      { id: "tecnologico", fondoFiesta: "neon", nombre: "Tecnológico", estilo: "tecno", fondo: "#05070f", texto: "#e6f7ff", suave: "#8fb3c7", borde: "#22e3ff", acento: "#22e3ff", sobreAcento: "#05070f" },
     ],
   },
 ];
@@ -134,9 +137,9 @@ const BASE = { fondo: "#fbf8f3", texto: "#1b2d52", suave: "#56627a" };
 
 // Las tres miradas de cada producto: el salón lo asigna, el cliente lo configura y el invitado lo usa.
 const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
-  { id: "salon", nombre: "Staff", texto: "Eligen el tipo de evento y siguen todo desde el panel." },
-  { id: "cliente", nombre: "Anfitriones", texto: "Lo configuran desde un link, sin crearse una cuenta." },
-  { id: "invitado", nombre: "Invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
+  { id: "salon", nombre: "Tu staff", texto: "Eligen el tipo de evento y siguen todo desde el panel." },
+  { id: "cliente", nombre: "Tus clientes", texto: "Lo configuran desde un link, sin crearse una cuenta." },
+  { id: "invitado", nombre: "Los invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
 ];
 
 const ICONOS: Record<string, LucideIcon> = {
@@ -151,7 +154,7 @@ const ICONOS: Record<string, LucideIcon> = {
  */
 export function Simulador() {
   const [producto, setProducto] = useState(DESTACADOS[0].id);
-  const [perfil, setPerfil] = useState<Perfil>("invitado");
+  const [perfil, setPerfil] = useState<Perfil>("salon");
   const [salon, setSalon] = useState("");
   const [color, setColor] = useState(COLORES[0].valor);
   const [logo, setLogo] = useState<string | null>(null);
@@ -159,6 +162,7 @@ export function Simulador() {
   const [nPlantilla, setNPlantilla] = useState(0);
   const idNombre = useId();
   const idLogo = useId();
+  const idVistas = useId();
 
   // Libera la imagen anterior cuando se cambia o se va de la página.
   useEffect(() => {
@@ -169,21 +173,22 @@ export function Simulador() {
 
   const nombreSalon = salon.trim() || "Tu salón";
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
-  const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
+  const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[0];
   const evento = EVENTOS.find((e) => e.id === idEvento) ?? EVENTOS[2];
   const plantillas = evento.plantillas;
   const plantilla = plantillas[nPlantilla % plantillas.length];
-  // La plantilla se ve en la invitación de los anfitriones (que la eligen) y de los invitados (que la reciben).
-  const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : BASE;
+  // La plantilla se ve en la invitación de tus clientes (que la eligen) y de los invitados (que la reciben).
+  const conPlantilla = producto === "invitacion" && perfil !== "salon";
+  const tema = conPlantilla ? plantilla : BASE;
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
   const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
-  // Cada tipo de evento trae sus plantillas: al cambiarlo, los anfitriones arrancan por la primera.
+  // Cada tipo de evento trae sus plantillas: al cambiarlo, tus clientes arrancan por la primera.
   const siguienteEvento = () => {
     const i = EVENTOS.findIndex((e) => e.id === idEvento);
     setIdEvento(EVENTOS[(i + 1) % EVENTOS.length].id);
     setNPlantilla(0);
   };
-  // El círculo al lado del celular: el staff cambia el tipo de evento y los anfitriones, la plantilla.
+  // El círculo al lado del celular: tu staff cambia el tipo de evento y tus clientes, la plantilla.
   const circulo = puedePersonalizar
     ? {
         accion: siguientePlantilla,
@@ -313,14 +318,17 @@ export function Simulador() {
 
       {/* Celular */}
       <div className="mx-auto w-[280px] sm:w-[300px]">
-        <div role="group" aria-label="Ver como" className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
+        <p id={idVistas} className="type-etiqueta mb-2 text-center text-dorado">
+          Seleccioná la vista
+        </p>
+        <div role="group" aria-labelledby={idVistas} className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
           {PERFILES.map((p) => (
             <button
               key={p.id}
               type="button"
               aria-pressed={perfil === p.id}
               onClick={() => setPerfil(p.id)}
-              className={`min-h-10 rounded-[8px] text-[14px] font-semibold transition-colors ${
+              className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
                 perfil === p.id ? "bg-dorado text-on-dorado" : "text-ink-muted hover:text-ink"
               }`}
             >
@@ -358,7 +366,10 @@ export function Simulador() {
             className="relative flex min-h-[520px] flex-col overflow-hidden rounded-[32px]"
             style={{ backgroundColor: tema.fondo, color: tema.texto }}
           >
-            <div className="flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
+            {conPlantilla && (
+              <FondoFiesta fondo={plantilla.fondoFiesta} acento={plantilla.acento ?? color} borde={plantilla.borde} />
+            )}
+            <div className="relative flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
               {logo ? (
                 // eslint-disable-next-line @next/next/no-img-element -- imagen local del visitante (blob:), no se optimiza
                 <img src={logo} alt="" className="h-12 max-w-[160px] object-contain" />
@@ -374,12 +385,12 @@ export function Simulador() {
                 {nombreSalon}
               </p>
             </div>
-            <div className="flex flex-1 flex-col px-5 pt-4 pb-5">
+            <div className="relative flex flex-1 flex-col px-5 pt-4 pb-5">
               <span
                 className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
                 style={{ backgroundColor: `${color}1a`, color }}
               >
-                Vista {perfil === "salon" ? "del staff" : perfil === "cliente" ? "de anfitriones" : "de invitados"}
+                Vista {perfil === "salon" ? "de tu staff" : perfil === "cliente" ? "de tus clientes" : "de los invitados"}
               </span>
               <Pantalla producto={producto} perfil={perfil} color={color} evento={evento} plantilla={plantilla} />
               <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
@@ -395,7 +406,7 @@ export function Simulador() {
   );
 }
 
-/** La invitación que recibe el invitado, con la plantilla que eligieron los anfitriones. */
+/** La invitación que recibe el invitado, con la plantilla que eligieron tus clientes. */
 function VistaInvitacion({
   color,
   evento,
@@ -702,15 +713,15 @@ function InvitacionSalon({ color, evento }: { color: string; evento: Evento }) {
       <div className="mt-4 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
         <Dato titulo="Tipo de evento" valor={evento.nombre} color={color} />
         <Dato titulo="Plantillas" valor={`${evento.plantillas.length} para elegir`} color={color} />
-        <Dato titulo="Link de anfitriones" valor="Enviado" color={color} />
+        <Dato titulo="Link de tus clientes" valor="Enviado" color={color} />
         <Dato titulo="Confirmaron" valor="86 de 120" color={color} />
       </div>
-      <BotonColor color={color}>Copiar link para anfitriones</BotonColor>
+      <BotonColor color={color}>Copiar link para tus clientes</BotonColor>
     </div>
   );
 }
 
-/** Los anfitriones ven su invitación tal como va a salir, con la plantilla elegida, y la manda. */
+/** Tus clientes ven su invitación tal como va a salir, con la plantilla elegida, y la mandan. */
 function InvitacionCliente({ color, evento, plantilla }: { color: string; evento: Evento; plantilla: Plantilla }) {
   return (
     <div>
