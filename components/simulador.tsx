@@ -12,7 +12,7 @@ export type Perfil = "salon" | "cliente" | "invitado";
 /** El orden de las vistas: el mismo que las tarjetas de arriba (Tu staff, Tus clientes, Los invitados). */
 export const VISTAS: Perfil[] = ["salon", "cliente", "invitado"];
 
-type IdEvento = "casamiento" | "cumple" | "xv";
+type IdEvento = "casamiento" | "cumple" | "xv" | "empresarial";
 
 // Cada estilo es una forma distinta de armar la invitación; los colores los pone la plantilla.
 type Estilo = "elegante" | "clasica" | "moderna" | "animada" | "tecno";
@@ -123,6 +123,27 @@ const EVENTOS: Evento[] = [
       { id: "elegante-turquesa", fondoFiesta: "luces", nombre: "Elegante turquesa", estilo: "elegante", fondo: "#0d2226", texto: "#e8fbf8", suave: "#a9d6cf", borde: "#7fd1c7", acento: "#7fd1c7", sobreAcento: "#0d2226" },
       { id: "moderno", fondoFiesta: "geometrico", nombre: "Moderno", estilo: "moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db", acento: "#c42a6f", sobreAcento: "#ffffff" },
       { id: "tecnologico", fondoFiesta: "neon", nombre: "Tecnológico", estilo: "tecno", fondo: "#05070f", texto: "#e6f7ff", suave: "#8fb3c7", borde: "#22e3ff", acento: "#22e3ff", sobreAcento: "#05070f" },
+    ],
+  },
+  {
+    id: "empresarial",
+    nombre: "Empresarial",
+    corto: "Fin de año de empresa",
+    aLa: "a la fiesta de fin de año",
+    etiqueta: "Fiesta de empresa",
+    protagonista: "Fin de año",
+    sigla: "2026",
+    invita: "Te invitamos a brindar por el año que pasó",
+    grito: "¡Brindemos juntos!",
+    fecha: "Viernes 11 de diciembre",
+    diaSemana: "Viernes",
+    dia: "11",
+    mes: "Dic",
+    hora: "20:30",
+    plantillas: [
+      { id: "gala", fondoFiesta: "luces", nombre: "Gala", estilo: "elegante", fondo: "#0c0c10", texto: "#f2efe8", suave: "#b9b4a8", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "corporativo", fondoFiesta: "geometrico", nombre: "Corporativo", estilo: "moderna", fondo: "#ffffff", texto: "#0f172a", suave: "#475569", borde: "#cbd5e1", sobreAcento: "#ffffff" },
+      { id: "noche-azul", fondoFiesta: "guirnalda", nombre: "Noche azul", estilo: "clasica", fondo: "#0b1426", texto: "#e8eefc", suave: "#a3b0cc", borde: "#2a3a5c", acento: "#2f63c8", sobreAcento: "#ffffff" },
     ],
   },
 ];
@@ -279,16 +300,22 @@ export function Simulador({
                 vivo={vista === "invitado"}
               />
             )}
-            <div className="relative flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
+            {/* La marca del salón, chica y discreta: el protagonista es la fiesta. */}
+            <div className="relative flex justify-center px-5 pt-4 pb-1">
               <span
-                className="flex size-12 items-center justify-center rounded-full font-display text-[20px] text-white"
-                style={{ backgroundColor: color }}
+                className="inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1"
+                style={{ backgroundColor: `${tema.fondo}d9` }}
               >
-                {nombreSalon.charAt(0).toUpperCase()}
+                <span
+                  className="flex size-5 items-center justify-center rounded-full font-display text-[10px] text-white"
+                  style={{ backgroundColor: color }}
+                >
+                  {nombreSalon.charAt(0).toUpperCase()}
+                </span>
+                <span className="text-[10px] font-semibold tracking-[0.12em] uppercase" style={{ color: tema.suave }}>
+                  {nombreSalon}
+                </span>
               </span>
-              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase" style={{ color }}>
-                {nombreSalon}
-              </p>
             </div>
             <div className="relative flex flex-1 flex-col px-5 pt-4 pb-5">
               <span
