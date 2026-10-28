@@ -5,10 +5,26 @@ import { ArrowRight, Smartphone, Store, UserRound } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 // Los tres perfiles de cada producto (se configuran desde el sistema). Mismo orden que las vistas del simulador.
-const PERFILES: { icono: LucideIcon; nombre: string; texto: string }[] = [
-  { icono: Store, nombre: "Tu staff", texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel." },
-  { icono: UserRound, nombre: "Tus clientes", texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas." },
-  { icono: Smartphone, nombre: "Los invitados", texto: "Lo usan desde el celular, sin bajar ninguna app." },
+// Cada perfil con un color de la marca en su ícono (azul, dorado y oliva), con su texto que contrasta.
+const PERFILES: { icono: LucideIcon; color: string; nombre: string; texto: string }[] = [
+  {
+    icono: Store,
+    color: "bg-azul text-on-azul",
+    nombre: "Tu staff",
+    texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel.",
+  },
+  {
+    icono: UserRound,
+    color: "bg-dorado text-on-dorado",
+    nombre: "Tus clientes",
+    texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas.",
+  },
+  {
+    icono: Smartphone,
+    color: "bg-oliva text-on-dorado",
+    nombre: "Los invitados",
+    texto: "Lo usan desde el celular, sin bajar ninguna app.",
+  },
 ];
 
 /**
@@ -40,7 +56,7 @@ export function CarruselPerfiles({ paso, onTocar }: { paso: number; onTocar: () 
         onFocus={onTocar}
         className="sin-barra relative mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 sm:overflow-visible lg:mt-8 lg:max-w-[560px] lg:flex-col lg:gap-1.5"
       >
-        {PERFILES.map(({ icono: Icono, nombre, texto }, i) => (
+        {PERFILES.map(({ icono: Icono, color, nombre, texto }, i) => (
           <li
             key={nombre}
             className="flex w-[86%] shrink-0 snap-start items-center gap-2 sm:w-auto sm:flex-1 sm:shrink lg:flex-col lg:items-stretch lg:gap-1.5"
@@ -50,7 +66,7 @@ export function CarruselPerfiles({ paso, onTocar }: { paso: number; onTocar: () 
                 i === paso ? "border-dorado bg-dorado-soft" : "border-line bg-surface-raised/60"
               }`}
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-dorado-soft text-dorado">
+              <span className={`flex size-9 shrink-0 items-center justify-center rounded-md ${color}`}>
                 <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
               </span>
               <span>
