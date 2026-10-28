@@ -104,27 +104,23 @@ export default function Home() {
           />
         </section>
 
-        {/* 2. Todas las apps, como una tienda: colorida a propósito */}
+        {/* 2. Todas las apps, como la pantalla de inicio de un celular */}
         <section
           id="apps"
           className="relative scroll-mt-20 overflow-hidden border-y border-line bg-noche/60 py-16 lg:py-20"
           aria-labelledby="titulo-todos"
         >
-          {/* Luces de colores de fondo (decorativas). */}
+          {/* Dos luces suaves de la marca de fondo (decorativas): dorado y azul. */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <span className="absolute -top-24 -left-24 size-80 rounded-full bg-[#ff4fd8]/20 blur-3xl" />
-            <span className="absolute top-1/3 -right-20 size-96 rounded-full bg-[#22c3e6]/20 blur-3xl" />
-            <span className="absolute -bottom-24 left-1/4 size-80 rounded-full bg-[#f5c518]/15 blur-3xl" />
-            <span className="absolute bottom-10 -left-10 size-64 rounded-full bg-[#8e2de2]/25 blur-3xl" />
+            <span className="absolute -top-32 -left-24 size-96 rounded-full bg-dorado/10 blur-3xl" />
+            <span className="absolute -right-24 -bottom-32 size-96 rounded-full bg-azul/15 blur-3xl" />
           </div>
           <div className={`${contenedor} relative`}>
             <div className="max-w-[720px]">
               <p className="type-etiqueta text-dorado">Webapps para invitados</p>
               <h2 id="titulo-todos" className="type-titulo mt-3 text-ink">
                 Conocé las{" "}
-                <span className="bg-linear-to-r from-[#ff7ac6] via-[#ffd36e] to-[#5ee7ff] bg-clip-text text-transparent">
-                  más de 30 webapps
-                </span>{" "}
+                <span className="text-dorado">más de 30 webapps</span>{" "}
                 que podés ofrecer
               </h2>
               <p className="type-cuerpo mt-3 text-ink-muted">
