@@ -34,9 +34,9 @@ type Plantilla = (typeof PLANTILLAS)[number];
 
 // Las tres miradas de cada producto: el salón lo asigna, el cliente lo configura y el invitado lo usa.
 const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
-  { id: "salon", nombre: "Salón", texto: "Lo asignás y seguís todo desde tu panel." },
-  { id: "cliente", nombre: "Cliente", texto: "Lo configura desde un link, sin crearse una cuenta." },
-  { id: "invitado", nombre: "Invitado", texto: "Lo usa desde su celular, sin bajar ninguna app." },
+  { id: "salon", nombre: "Staff", texto: "Lo asignan y siguen todo desde el panel del salón." },
+  { id: "cliente", nombre: "Anfitriones", texto: "Lo configuran desde un link, sin crearse una cuenta." },
+  { id: "invitado", nombre: "Invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
 ];
 
 const ICONOS: Record<string, LucideIcon> = {
@@ -70,8 +70,7 @@ export function Simulador() {
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
   const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
   const plantilla = PLANTILLAS.find((p) => p.id === idPlantilla) ?? PLANTILLAS[0];
-  // La plantilla cambia la pantalla del invitado; el resto de las pantallas usan la clásica.
-  // La plantilla se ve en la invitación del cliente (que la elige) y del invitado (que la recibe).
+  // La plantilla se ve en la invitación de los anfitriones (que la eligen) y de los invitados (que la reciben).
   const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : PLANTILLAS[0];
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
   const siguientePlantilla = () => {
@@ -207,7 +206,7 @@ export function Simulador() {
           {miradaActual.texto}
         </p>
         <p className="sr-only">
-          Vista previa de {actual.nombre} para {nombreSalon}, como la ve {miradaActual.nombre.toLowerCase()}
+          Vista previa de {actual.nombre} para {nombreSalon}, en la vista de {miradaActual.nombre.toLowerCase()}
           {producto === "invitacion" ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
         <div className="relative">
@@ -254,7 +253,7 @@ export function Simulador() {
                 className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
                 style={{ backgroundColor: `${color}1a`, color }}
               >
-                Vista {perfil === "salon" ? "del salón" : perfil === "cliente" ? "del cliente" : "del invitado"}
+                Vista {perfil === "salon" ? "del staff" : perfil === "cliente" ? "de anfitriones" : "de invitados"}
               </span>
               <Pantalla producto={producto} perfil={perfil} color={color} plantilla={plantilla} />
               <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
@@ -546,11 +545,11 @@ function InvitacionSalon({ color }: { color: string }) {
       <p className="text-[12px] text-[#56627a]">Sábado 14 de diciembre</p>
       <div className="mt-4 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
         <Dato titulo="Invitación" valor="Asignada" color={color} />
-        <Dato titulo="Link del cliente" valor="Enviado" color={color} />
+        <Dato titulo="Link de anfitriones" valor="Enviado" color={color} />
         <Dato titulo="Diseño" valor="Con tu marca" color={color} />
         <Dato titulo="Confirmaron" valor="86 de 120" color={color} />
       </div>
-      <BotonColor color={color}>Copiar link para el cliente</BotonColor>
+      <BotonColor color={color}>Copiar link para anfitriones</BotonColor>
     </div>
   );
 }
