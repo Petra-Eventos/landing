@@ -207,3 +207,35 @@
     padding-inline: 0.75rem;
   }
 }
+
+/* Adornos de las invitaciones del simulador: flotan y brillan, y se quedan quietos con movimiento reducido. */
+.flotar {
+  animation: flotar 3.2s ease-in-out infinite;
+}
+@keyframes flotar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.brillar {
+  animation: brillar 2.4s ease-in-out infinite;
+}
+@keyframes brillar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flotar,
+  .brillar {
+    animation: none;
+  }
+}
