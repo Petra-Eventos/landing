@@ -85,11 +85,14 @@ const TONOS: Record<Categoria, string> = {
 
 const CATEGORIAS = Object.keys(TONOS) as Categoria[];
 
+// Los de una misma fila entran apenas corridos (ver .aparecer en globals.css).
+const DEMORAS = ["", "[--demora:8%]", "[--demora:16%]", "[--demora:24%]"];
+
 /** Todas las apps para invitados en una cuadrícula, como la pantalla de inicio de un celular. */
 export function TiendaApps() {
   return (
     <div>
-      <ul aria-label="Categorías" className="flex flex-wrap justify-center gap-2">
+      <ul aria-label="Categorías" className="aparecer flex flex-wrap justify-center gap-2">
         {CATEGORIAS.map((c) => {
           const cantidad = APPS.filter((a) => a.categoria === c).length;
           return (
@@ -106,11 +109,15 @@ export function TiendaApps() {
       </ul>
 
       <ul className="mt-8 grid grid-cols-4 gap-x-2 gap-y-6 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 lg:gap-x-4">
-        {APPS.map((app) => {
+        {APPS.map((app, i) => {
           const Icono = ICONOS[app.id] ?? Sparkles;
           const tono = TONOS[app.categoria];
           return (
-            <li key={app.id} className="group flex flex-col items-center text-center" title={app.texto}>
+            <li
+              key={app.id}
+              className={`group aparecer flex flex-col items-center text-center ${DEMORAS[i % DEMORAS.length]}`}
+              title={app.texto}
+            >
               <span
                 className="relative flex size-15 items-center justify-center rounded-[22%] border bg-surface-raised shadow-piedra transition duration-200 group-hover:-translate-y-0.5 sm:size-[68px]"
                 style={{
@@ -135,7 +142,7 @@ export function TiendaApps() {
         })}
       </ul>
 
-      <p className="mt-10 flex items-center justify-center gap-2 text-center text-[13px] text-ink-muted">
+      <p className="aparecer mt-10 flex items-center justify-center gap-2 text-center text-[13px] text-ink-muted">
         <span className="rounded-full bg-dorado px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-on-dorado uppercase">Ya</span>
         Disponibles hoy. El resto se suma a tu plan a medida que sale.
       </p>

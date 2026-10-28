@@ -43,9 +43,9 @@ export function Encabezado({
   centrado?: boolean;
 }) {
   return (
-    <div className={`max-w-[720px] ${centrado ? "mx-auto text-center" : ""}`}>
+    <div className={`aparecer max-w-[720px] ${centrado ? "mx-auto text-center" : ""}`}>
       <Antetitulo centrado={centrado}>{ante}</Antetitulo>
-      <h2 id={id} className="type-titulo mt-4 text-ink">
+      <h2 id={id} className="type-titulo mt-4 text-balance text-ink">
         {titulo}
       </h2>
       {texto && <p className="type-cuerpo mt-3 text-ink-muted">{texto}</p>}
