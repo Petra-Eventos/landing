@@ -4,22 +4,37 @@ import {
   BellRing,
   CalendarDays,
   Check,
-  Gem,
+  ChevronDown,
+  Clock,
+  Ghost,
   HandCoins,
-  Megaphone,
   MessageCircle,
+  Moon,
+  QrCode,
+  Repeat,
+  SlidersHorizontal,
   Star,
   Store,
+  UserCheck,
   Users,
   Wallet,
-  X,
 } from "lucide-react";
 import { Antetitulo, Encabezado, Separador } from "@/components/adornos";
+import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
 import { PerfilesEnVivo } from "@/components/perfiles-en-vivo";
 import { TiendaApps } from "@/components/tienda-apps";
 import { PLANES } from "@/lib/catalogo";
-import { URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_SOCIOS, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
+import { SELECCION_INICIAL, fechaLarga, pesos, precioSugerido } from "@/lib/cotizador-demo";
+import {
+  URL_ENTRAR,
+  URL_PRIVACIDAD,
+  URL_REGISTRARME,
+  URL_SOCIOS,
+  URL_TERMINOS,
+  URL_WHATSAPP,
+  URL_WHATSAPP_COTIZADOR,
+} from "@/lib/enlaces";
 import { RESENAS, SALONES } from "@/lib/resenas";
 
 const contenedor = "mx-auto w-full max-w-[1180px] px-4 md:px-8";
@@ -28,18 +43,83 @@ const botonPrincipal =
 const botonSecundario =
   "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
 
-// Lo que hoy los clientes del salón contratan por separado, contra lo que el salón ofrece con Petra.
-const AFUERA = [
-  "La invitación, con la marca de otro",
-  "Las fotos, en el álbum de otro proveedor",
-  "Los juegos, con otro show",
-  "La lista y las mesas, en un Excel",
+// Las consultas de todos los días (de ejemplo): lo que el cotizador contesta solo.
+const CONSULTAS = [
+  { quien: "Caro", texto: "Hola! ¿Precio para un 15 de 120 personas?", hora: "23:47", nueva: true },
+  { quien: "Martín", texto: "¿Tienen libre el sábado 13 de marzo?", hora: "23:52", nueva: true },
+  { quien: "Vane", texto: "Info por privado porfa", hora: "00:15", nueva: true },
+  { quien: "Lucas", texto: "¿Qué incluye el menú? ¿La barra es aparte?", hora: "00:31", nueva: true },
+  { quien: "Sole", texto: "Ok, lo hablo y te aviso", hora: "Ayer", nueva: false },
 ];
-const CON_PETRA = [
-  "Todo en un solo link, con tu logo",
-  "La lista y las mesas, conectadas",
-  "Le ponés el precio y anotás los cobros",
-  "Seguís cada fiesta desde tu panel",
+
+// Lo que le pasa hoy al salón que cotiza a mano.
+const DOLORES = [
+  {
+    icono: Repeat,
+    titulo: "Contestás lo mismo una y otra vez",
+    texto: "Precio, fecha libre, qué incluye. Todos los días, a cada persona.",
+  },
+  {
+    icono: Moon,
+    titulo: "La consulta llega de noche",
+    texto: "Te escriben a las 23 y contestás a la mañana. Para entonces, ya preguntaron en otro salón.",
+  },
+  {
+    icono: Ghost,
+    titulo: "Mandás el PDF y no vuelven",
+    texto: "Sin saber qué querían ni cuánto pensaban gastar.",
+  },
+];
+
+const PASOS = [
+  {
+    icono: SlidersHorizontal,
+    titulo: "Cargás lo que ofrecés",
+    texto: "Tus espacios, menús, barra y extras, con tu precio. Lo cambiás cuando quieras.",
+  },
+  {
+    icono: QrCode,
+    titulo: "Compartís tu link",
+    texto: "En la bio de Instagram, en WhatsApp o con un QR en el salón.",
+  },
+  {
+    icono: MessageCircle,
+    titulo: "Te llega el pedido armado",
+    texto: "Fecha, invitados, lo que eligió y el precio sugerido. Si cierra, pasa a tu calendario.",
+  },
+];
+
+// Las dos vistas del cotizador.
+const VE_TU_CLIENTE = [
+  "Arma su fiesta paso a paso, desde el celular",
+  "Ve qué fechas tenés libres",
+  "Ve el precio sugerido al instante",
+  "Todo con tu marca, no la de Petra",
+];
+const MANEJAS_VOS = [
+  "Qué ofrecés y a cuánto",
+  "Recargos de sábado y fechas especiales",
+  "Las cotizaciones ordenadas: nuevas, contactadas y ganadas",
+  "De cotización a evento, con un toque",
+];
+
+// Lo que gana el salón.
+const RAZONES = [
+  {
+    icono: Clock,
+    titulo: "Respondés al instante",
+    texto: "Tu cotizador contesta a cualquier hora, también de noche y los fines de semana.",
+  },
+  {
+    icono: UserCheck,
+    titulo: "Consultas que ya saben el precio",
+    texto: "Te escriben con la fecha, los invitados y el presupuesto armado.",
+  },
+  {
+    icono: HandCoins,
+    titulo: "Más venta en cada fiesta",
+    texto: "Los extras aparecen en el presupuesto y suman a cada evento.",
+  },
 ];
 
 // Datos del nicho, siempre con su fuente (solo estudios reales: nunca inventar cifras).
@@ -70,25 +150,6 @@ const DATOS = [
   },
 ];
 
-// Lo que gana el salón.
-const RAZONES = [
-  {
-    icono: Gem,
-    titulo: "Diferenciate",
-    texto: "Cuando comparan salones, sos el que trae todo: invitación, fotos y juegos.",
-  },
-  {
-    icono: HandCoins,
-    titulo: "La plata queda en tu salón",
-    texto: "Lo que hoy pagan afuera lo sumás a tu paquete o lo cobrás como extra.",
-  },
-  {
-    icono: Megaphone,
-    titulo: "Tu marca en cada celular",
-    texto: "Cada invitado ve tu salón en su celular. Publicidad que viaja sola.",
-  },
-];
-
 // Lo que ya hace el sistema para organizar el salón.
 const GESTION = [
   { icono: CalendarDays, texto: "Calendario con todas tus fiestas" },
@@ -96,6 +157,106 @@ const GESTION = [
   { icono: Users, texto: "Tu equipo, con su perfil y su PIN" },
   { icono: BellRing, texto: "Aviso cuando dos eventos se pisan" },
 ];
+
+// Preguntas frecuentes. Si cambia algo del cotizador, revisar estas respuestas.
+const PREGUNTAS = [
+  {
+    p: "¿Mis clientes ven la marca Petra?",
+    r: "No. Ven el nombre, el logo y los colores de tu salón. Petra aparece solo como una firma chiquita al pie.",
+  },
+  {
+    p: "¿El cliente puede reservar la fecha desde el cotizador?",
+    r: "No. Ve qué fechas tenés libres y te manda el pedido. La fecha la confirmás vos, cuando cierran.",
+  },
+  {
+    p: "¿Tengo que mostrar el precio de cada cosa?",
+    r: "No. Tu cliente ve un precio sugerido total, no el detalle. Vos decidís qué entra y a cuánto.",
+  },
+  {
+    p: "¿Ya puedo usar el cotizador?",
+    r: "Lo estamos lanzando con los primeros salones. Creá tu cuenta gratis y escribinos por WhatsApp: te avisamos apenas esté listo para tu salón. Mientras tanto, ya podés ordenar tus eventos en el calendario.",
+  },
+  {
+    p: "¿Cuánto cuesta?",
+    r: "Empezás gratis y sin tarjeta. Cuando quieras sumar más, pasás de plan. Escribinos y te pasamos los precios.",
+  },
+  {
+    p: "¿Necesito saber de tecnología?",
+    r: "No. Cargás tus precios una vez, como en una planilla, y te ayudamos por WhatsApp en todo.",
+  },
+];
+
+/** La bandeja de mensajes de un salón cualquiera un martes a la noche (decorativa). */
+function Bandeja() {
+  return (
+    <div aria-hidden="true" className="relative mx-auto w-full max-w-[420px]">
+      <span className="absolute -inset-x-4 -top-6 bottom-10 rounded-t-full border border-dorado/20 bg-linear-to-b from-dorado/10 to-transparent" />
+      <div className="relative rounded-xl border border-line bg-surface-raised p-4 shadow-piedra sm:p-5">
+        <div className="flex items-center justify-between px-1">
+          <p className="font-display text-[20px] text-ink">Mensajes</p>
+          <span className="rounded-full bg-dorado px-2 py-0.5 text-[11px] font-bold text-on-dorado">9 sin leer</span>
+        </div>
+        <ul className="mt-3 flex flex-col gap-1">
+          {CONSULTAS.map((c) => (
+            <li key={c.quien} className="flex items-center gap-3 rounded-md px-2 py-2.5">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-azul-soft font-display text-[16px] text-azul-text">
+                {c.quien.charAt(0)}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="flex items-baseline justify-between gap-2">
+                  <span className={`text-[14px] ${c.nueva ? "font-semibold text-ink" : "text-ink-muted"}`}>{c.quien}</span>
+                  <span className={`text-[11px] ${c.nueva ? "text-dorado" : "text-ink-muted"}`}>{c.hora}</span>
+                </span>
+                <span className="mt-0.5 flex items-center gap-2">
+                  <span className={`truncate text-[13px] ${c.nueva ? "text-ink" : "text-ink-muted"}`}>{c.texto}</span>
+                  {c.nueva && <span className="ml-auto size-2 shrink-0 rounded-full bg-dorado" />}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/** Así le llega al salón el pedido que armó el cliente en el cotizador (el mismo ejemplo de la demo). */
+function PedidoQueLlega() {
+  const s = SELECCION_INICIAL;
+  return (
+    <figure className="relative mx-auto w-full max-w-[400px]">
+      <figcaption className="sr-only">Ejemplo del mensaje de WhatsApp que le llega al salón</figcaption>
+      <div className="rounded-xl border border-line bg-surface p-4 shadow-piedra sm:p-5">
+        <div className="flex items-center gap-3 border-b border-line pb-3">
+          <span
+            aria-hidden="true"
+            className="flex size-9 items-center justify-center rounded-full bg-dorado-soft font-display text-[15px] text-dorado"
+          >
+            L
+          </span>
+          <span>
+            <span className="block text-[14px] font-semibold text-ink">Laura</span>
+            <span className="block text-[11px] text-ink-muted">Desde tu cotizador</span>
+          </span>
+        </div>
+        <div className="mt-4 max-w-[92%] rounded-[16px] rounded-tl-[4px] border border-line bg-surface-raised p-3.5 text-[14px] leading-6 text-ink">
+          <p>Hola, soy Laura. Quiero presupuesto para un XV:</p>
+          <ul className="mt-1.5 text-ink-muted">
+            <li>· {fechaLarga(s.dia)}</li>
+            <li>· {s.invitados} invitados</li>
+            <li>· Menú Premium y barra clásica</li>
+            <li>· Invitación digital y cámara instantánea</li>
+          </ul>
+          <p className="mt-1.5">
+            Precio sugerido: <span className="font-semibold text-dorado">{pesos(precioSugerido(s))}</span>
+          </p>
+          <p className="mt-1.5">¿Qué formas de pago tienen?</p>
+          <p className="mt-1 text-right text-[11px] text-ink-muted">23:48</p>
+        </div>
+      </div>
+    </figure>
+  );
+}
 
 /** Calendario de ejemplo para la sección de gestión (decorativo: diciembre de 2026 arranca un martes). */
 function CalendarioEjemplo() {
@@ -141,6 +302,27 @@ function CalendarioEjemplo() {
   );
 }
 
+/** Los dos botones de siempre: crear la cuenta y pedir el cotizador por WhatsApp. */
+function Acciones({ centrado = false }: { centrado?: boolean }) {
+  return (
+    <div className={`flex flex-col gap-3 sm:flex-row ${centrado ? "justify-center" : ""}`}>
+      <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
+        Crear mi cuenta gratis
+        <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
+      </a>
+      <a
+        href={URL_WHATSAPP_COTIZADOR}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${botonSecundario} w-full sm:w-auto`}
+      >
+        <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
+        Quiero el cotizador
+      </a>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -151,17 +333,17 @@ export default function Home() {
             <Firma variante="clara" />
           </a>
           <nav aria-label="Secciones" className="hidden items-center gap-7 text-[14px] text-ink-muted lg:flex">
-            <a href="#productos" className="hover:text-ink">
+            <a href="#como-funciona" className="hover:text-ink">
               Cómo funciona
             </a>
-            <a href="#apps" className="hover:text-ink">
-              Herramientas
+            <a href="#extras" className="hover:text-ink">
+              Extras
             </a>
             <a href="#planes" className="hover:text-ink">
               Planes
             </a>
-            <a href="#salones" className="hover:text-ink">
-              Salones
+            <a href="#preguntas" className="hover:text-ink">
+              Preguntas
             </a>
           </nav>
           <div className="flex items-center gap-1 sm:gap-3">
@@ -182,59 +364,212 @@ export default function Home() {
       </header>
 
       <main>
-        {/* 1. El mensaje, los tres pasos y el simulador */}
+        {/* 1. La promesa y la demo del cotizador */}
         <section
-          id="productos"
+          id="cotizador"
           className={`${contenedor} scroll-mt-20 pt-12 pb-20 md:pt-16 lg:pt-20 lg:pb-28`}
           aria-labelledby="titular"
         >
-          {/* En la compu: texto, botones y pasos a la izquierda; el celular a la derecha. */}
-          <PerfilesEnVivo
-            intro={
-              <div className="max-w-[680px]">
-                <Antetitulo>Tu salón sobre la roca</Antetitulo>
-                <h1 id="titular" className="type-display mt-5 text-ink">
-                  Que tus clientes no busquen <span className="text-dorado">nada afuera.</span>
-                </h1>
-                <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
-                  Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Y si querés,
-                  gestioná tu salón con Petra.
-                </p>
+          {/* En la compu: texto y botones a la izquierda; el celular a la derecha. */}
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-16 xl:gap-x-24">
+            <div className="max-w-[640px]">
+              <Antetitulo>Cotizador para salones de eventos</Antetitulo>
+              <h1 id="titular" className="type-display mt-5 text-ink">
+                Tu salón cotiza solo, <span className="text-dorado">las 24 horas.</span>
+              </h1>
+              <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
+                Tus clientes arman su fiesta, eligen los extras y ven el precio al instante, con la marca de tu salón. A
+                vos te llega el pedido por WhatsApp, listo para cerrar.
+              </p>
+              <div className="mt-8">
+                <Acciones />
               </div>
-            }
-            acciones={
-              <div>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
-                    Crear mi cuenta gratis
-                    <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
-                  </a>
-                  <a
-                    href={URL_WHATSAPP}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${botonSecundario} w-full sm:w-auto`}
-                  >
-                    <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
-                    Consultar por WhatsApp
-                  </a>
-                </div>
-                <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-ink-muted">
-                  {["Gratis para empezar", "Sin tarjeta", "Ayuda por WhatsApp"].map((t) => (
-                    <li key={t} className="flex items-center gap-1.5">
-                      <Check size={14} strokeWidth={2.4} className="text-dorado" aria-hidden="true" />
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            }
-          />
+              <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-ink-muted">
+                {["Gratis para empezar", "Sin tarjeta", "Con tu marca"].map((t) => (
+                  <li key={t} className="flex items-center gap-1.5">
+                    <Check size={14} strokeWidth={2.4} className="text-dorado" aria-hidden="true" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-8 inline-flex items-center gap-2 rounded-full border border-dorado/40 bg-dorado-soft px-3 py-1.5 text-[13px] text-ink">
+                <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-dorado" />
+                Lanzamiento: sumate a los primeros salones.
+              </p>
+            </div>
+            <div className="mt-16 lg:mt-0 lg:pr-10">
+              <CotizadorDemo />
+            </div>
+          </div>
         </section>
 
         <Separador />
 
-        {/* Por qué ahora: datos reales del nicho, con su fuente */}
+        {/* 2. El problema: cotizar a mano, por mensaje */}
+        <section id="problema" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-problema">
+          {/* grid-cols-1: así los mensajes largos de la bandeja se cortan en vez de ensanchar la página. */}
+          <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <Encabezado
+                id="titulo-problema"
+                ante="¿Te suena?"
+                titulo={
+                  <>
+                    Contestar «¿precio?» todo el día <span className="text-dorado">no es vender.</span>
+                  </>
+                }
+              />
+              <ul className="mt-8 flex flex-col gap-5">
+                {DOLORES.map(({ icono: Icono, titulo, texto }) => (
+                  <li key={titulo} className="flex items-start gap-4">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-md border border-line bg-surface-raised text-dorado">
+                      <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
+                    </span>
+                    <span>
+                      <span className="type-subtitulo block text-ink">{titulo}</span>
+                      <span className="type-cuerpo block text-ink-muted">{texto}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Bandeja />
+          </div>
+
+          {/* El dato que lo explica, con su fuente */}
+          <figure className="mt-16 flex flex-col gap-5 rounded-xl border border-dorado/40 bg-linear-to-br from-dorado-soft to-surface-raised p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8 lg:mx-auto lg:max-w-[960px]">
+            <p className="shrink-0 font-display text-[64px] leading-none text-dorado sm:text-[80px]">7×</p>
+            <div>
+              <blockquote className="text-[17px] leading-7 text-ink">
+                Las empresas que responden una consulta dentro de la primera hora tienen casi 7 veces más chances de
+                concretar una charla con el cliente que las que tardan una hora más.
+              </blockquote>
+              <p className="type-cuerpo mt-2 text-ink-muted">Con el cotizador, tu cliente tiene su respuesta en el momento.</p>
+              <figcaption className="mt-4">
+                <a
+                  href="https://hbr.org/2011/03/the-short-life-of-online-sales-leads"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[12px] text-ink-muted underline-offset-4 hover:text-ink hover:underline"
+                >
+                  Fuente: Harvard Business Review, «The Short Life of Online Sales Leads», 2011 · EE. UU.
+                </a>
+              </figcaption>
+            </div>
+          </figure>
+        </section>
+
+        {/* 3. Cómo funciona: tres pasos y el pedido que llega */}
+        <section
+          id="como-funciona"
+          className="relative scroll-mt-20 overflow-hidden border-y border-line bg-noche/60 py-20 lg:py-28"
+          aria-labelledby="titulo-como"
+        >
+          {/* Dos luces suaves de la marca de fondo (decorativas): dorado y azul. */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <span className="absolute -top-32 -left-24 size-96 rounded-full bg-dorado/10 blur-3xl" />
+            <span className="absolute -right-24 -bottom-32 size-96 rounded-full bg-azul/15 blur-3xl" />
+          </div>
+          <div className={`${contenedor} relative`}>
+            <Encabezado
+              id="titulo-como"
+              ante="Cómo funciona"
+              centrado
+              titulo={
+                <>
+                  Tres pasos y <span className="text-dorado">tu salón cotiza solo.</span>
+                </>
+              }
+            />
+            <ol className="mt-14 grid gap-10 text-center md:grid-cols-3 md:gap-8 lg:mx-auto lg:max-w-[1000px]">
+              {PASOS.map(({ icono: Icono, titulo, texto }, i) => (
+                <li key={titulo} className="flex flex-col items-center">
+                  {/* Ícono dentro de un arco, como la columna del logo */}
+                  <span className="relative flex h-16 w-13 items-end justify-center rounded-t-full border border-dorado/40 bg-dorado-soft pb-3 text-dorado">
+                    <Icono size={22} strokeWidth={1.7} aria-hidden="true" />
+                    <span className="absolute -top-2 -right-3 flex size-6 items-center justify-center rounded-full bg-dorado text-[12px] font-bold text-on-dorado">
+                      {i + 1}
+                    </span>
+                  </span>
+                  <h3 className="mt-5 font-display text-[22px] leading-7 text-ink">{titulo}</h3>
+                  <p className="type-cuerpo mt-2 max-w-[300px] text-ink-muted">{texto}</p>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-20 grid items-center gap-10 rounded-xl border border-line bg-surface-raised/60 p-6 sm:p-10 lg:mx-auto lg:max-w-[1000px] lg:grid-cols-2 lg:gap-16">
+              <div>
+                <Antetitulo>Te llega así</Antetitulo>
+                <h3 className="mt-4 font-display text-[26px] leading-8 text-ink lg:text-[30px] lg:leading-9">
+                  Un pedido con todo, <span className="text-dorado">listo para cerrar.</span>
+                </h3>
+                <p className="type-cuerpo mt-3 text-ink-muted">
+                  Sabés qué festejan, para cuándo, cuántos son y cuánto piensan gastar. Contestás una vez y vas directo a
+                  la seña.
+                </p>
+              </div>
+              <PedidoQueLlega />
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Las dos vistas: lo que ve el cliente y lo que maneja el salón */}
+        <section id="vistas" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-vistas">
+          <Encabezado
+            id="titulo-vistas"
+            ante="Dos vistas"
+            centrado
+            titulo={
+              <>
+                Tu cliente arma su fiesta. <span className="text-dorado">Vos manejás todo.</span>
+              </>
+            }
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-2 md:gap-5 lg:mx-auto lg:max-w-[960px]">
+            <div className="rounded-xl border border-line bg-surface-raised p-6 sm:p-8">
+              <p className="type-etiqueta text-azul-text">Lo que ve tu cliente</p>
+              <ul className="mt-5 flex flex-col gap-3.5">
+                {VE_TU_CLIENTE.map((t) => (
+                  <li key={t} className="flex items-start gap-3 text-[15px] leading-6 text-ink">
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-azul text-on-azul">
+                      <Check size={12} strokeWidth={3} aria-hidden="true" />
+                    </span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-xl border border-dorado/60 bg-linear-to-br from-dorado-soft to-surface-raised p-6 shadow-[0_24px_60px_-28px_#d4b06a66] sm:p-8">
+              <p className="type-etiqueta text-dorado">Lo que manejás vos</p>
+              <ul className="mt-5 flex flex-col gap-3.5">
+                {MANEJAS_VOS.map((t) => (
+                  <li key={t} className="flex items-start gap-3 text-[15px] leading-6 text-ink">
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-dorado text-on-dorado">
+                      <Check size={12} strokeWidth={3} aria-hidden="true" />
+                    </span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <ul className="mt-16 grid gap-10 text-center md:grid-cols-3 md:gap-8 lg:mx-auto lg:max-w-[960px]">
+            {RAZONES.map(({ icono: Icono, titulo, texto }) => (
+              <li key={titulo} className="flex flex-col items-center">
+                <span className="flex h-16 w-13 items-end justify-center rounded-t-full border border-dorado/40 bg-dorado-soft pb-3 text-dorado">
+                  <Icono size={22} strokeWidth={1.7} aria-hidden="true" />
+                </span>
+                <h3 className="mt-5 font-display text-[22px] leading-7 text-ink">{titulo}</h3>
+                <p className="type-cuerpo mt-2 max-w-[300px] text-ink-muted">{texto}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <Separador />
+
+        {/* 5. Por qué ahora: datos reales del nicho, con su fuente */}
         <section id="datos" className={`${contenedor} scroll-mt-20 py-20 lg:py-24`} aria-labelledby="titulo-datos">
           <Encabezado
             id="titulo-datos"
@@ -267,72 +602,39 @@ export default function Home() {
 
         <Separador />
 
-        {/* 2. La diferencia: lo que hoy contratan afuera, ahora en el salón */}
-        <section
-          id="diferencia"
-          className={`${contenedor} scroll-mt-20 py-20 lg:py-28`}
-          aria-labelledby="titulo-diferencia"
-        >
-          <Encabezado
-            id="titulo-diferencia"
-            ante="La diferencia"
-            centrado
-            titulo={
-              <>
-                Lo que hoy contratan afuera, <span className="text-dorado">ahora lo ofrece tu salón.</span>
-              </>
+        {/* 6. Los extras para invitados: se suman al presupuesto (con el simulador de la invitación) */}
+        <section id="extras" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-extras">
+          <PerfilesEnVivo
+            intro={
+              <div className="max-w-[640px]">
+                <Antetitulo>Vendé más en cada fiesta</Antetitulo>
+                <h2 id="titulo-extras" className="type-titulo mt-4 text-ink">
+                  Lo que tus clientes buscan afuera, <span className="text-dorado">sumado a tu presupuesto.</span>
+                </h2>
+                <p className="type-cuerpo mt-3 max-w-[560px] text-ink-muted">
+                  Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Aparecen como
+                  extras en tu cotizador y los cobrás vos.
+                </p>
+              </div>
+            }
+            acciones={
+              <a
+                href="#apps"
+                className="inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-dorado underline-offset-4 hover:underline"
+              >
+                Ver las más de 30 webapps
+                <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
+              </a>
             }
           />
-          <div className="mt-12 grid gap-4 md:grid-cols-2 md:gap-5 lg:mx-auto lg:max-w-[960px]">
-            <div className="rounded-xl border border-line bg-surface-raised/50 p-6 sm:p-8">
-              <p className="type-etiqueta text-ink-muted">Hoy, afuera</p>
-              <ul className="mt-5 flex flex-col gap-3.5">
-                {AFUERA.map((t) => (
-                  <li key={t} className="flex items-start gap-3 text-[15px] leading-6 text-ink-muted">
-                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-line text-ink-muted">
-                      <X size={12} strokeWidth={2.6} aria-hidden="true" />
-                    </span>
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-xl border border-dorado/60 bg-linear-to-br from-dorado-soft to-surface-raised p-6 shadow-[0_24px_60px_-28px_#d4b06a66] sm:p-8">
-              <p className="type-etiqueta text-dorado">Con Petra, en tu salón</p>
-              <ul className="mt-5 flex flex-col gap-3.5">
-                {CON_PETRA.map((t) => (
-                  <li key={t} className="flex items-start gap-3 text-[15px] leading-6 text-ink">
-                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-dorado text-on-dorado">
-                      <Check size={12} strokeWidth={3} aria-hidden="true" />
-                    </span>
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <ul className="mt-16 grid gap-10 text-center md:grid-cols-3 md:gap-8 lg:mx-auto lg:max-w-[960px]">
-            {RAZONES.map(({ icono: Icono, titulo, texto }) => (
-              <li key={titulo} className="flex flex-col items-center">
-                {/* Ícono dentro de un arco, como la columna del logo */}
-                <span className="flex h-16 w-13 items-end justify-center rounded-t-full border border-dorado/40 bg-dorado-soft pb-3 text-dorado">
-                  <Icono size={22} strokeWidth={1.7} aria-hidden="true" />
-                </span>
-                <h3 className="mt-5 font-display text-[22px] leading-7 text-ink">{titulo}</h3>
-                <p className="type-cuerpo mt-2 max-w-[300px] text-ink-muted">{texto}</p>
-              </li>
-            ))}
-          </ul>
         </section>
 
-        {/* 3. Todas las herramientas, como la pantalla de inicio de un celular */}
+        {/* 7. Todas las webapps, como la pantalla de inicio de un celular */}
         <section
           id="apps"
           className="relative scroll-mt-20 overflow-hidden border-y border-line bg-noche/60 py-20 lg:py-28"
           aria-labelledby="titulo-todos"
         >
-          {/* Dos luces suaves de la marca de fondo (decorativas): dorado y azul. */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <span className="absolute -top-32 -left-24 size-96 rounded-full bg-dorado/10 blur-3xl" />
             <span className="absolute -right-24 -bottom-32 size-96 rounded-full bg-azul/15 blur-3xl" />
@@ -355,19 +657,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 4. Y si quiere, el salón se organiza con Petra */}
+        {/* 8. Cuando cierra: la fiesta sigue en el panel */}
         <section id="gestion" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-gestion">
           <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
               <Encabezado
                 id="titulo-gestion"
-                ante="Y si querés"
+                ante="Y cuando cierra"
                 titulo={
                   <>
-                    Gestioná tu salón <span className="text-dorado">con Petra.</span>
+                    Del presupuesto a la fiesta, <span className="text-dorado">en tu panel.</span>
                   </>
                 }
-                texto="Las fiestas, los cobros y tu equipo, ordenados en un solo lugar."
+                texto="La cotización ganada pasa a tu calendario. Después, los cobros, tu equipo y cada detalle, ordenados en un solo lugar."
               />
               <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                 {GESTION.map(({ icono: Icono, texto }) => (
@@ -389,7 +691,7 @@ export default function Home() {
 
         <Separador />
 
-        {/* 5. Planes */}
+        {/* 9. Planes */}
         <section id="planes" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-planes">
           <Encabezado
             id="titulo-planes"
@@ -451,7 +753,33 @@ export default function Home() {
           </p>
         </section>
 
-        {/* 6. Cierre: reseñas (cuando haya), la invitación a sumarse y quién está detrás */}
+        <Separador />
+
+        {/* 10. Preguntas frecuentes (se abren sin JavaScript) */}
+        <section id="preguntas" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-preguntas">
+          <Encabezado id="titulo-preguntas" ante="Preguntas" centrado titulo="Preguntas frecuentes" />
+          <div className="mt-12 flex flex-col gap-3 lg:mx-auto lg:max-w-[760px]">
+            {PREGUNTAS.map(({ p, r }) => (
+              <details
+                key={p}
+                className="group rounded-lg border border-line bg-surface-raised px-5 transition-colors open:border-dorado/50"
+              >
+                <summary className="flex min-h-14 items-center justify-between gap-4 py-4 text-[16px] leading-6 font-semibold text-ink">
+                  {p}
+                  <ChevronDown
+                    size={18}
+                    strokeWidth={2}
+                    className="shrink-0 text-dorado transition-transform group-open:rotate-180 motion-reduce:transition-none"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <p className="type-cuerpo pb-5 text-ink-muted">{r}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* 11. Cierre: reseñas (cuando haya), la invitación a sumarse y quién está detrás */}
         <section
           id="salones"
           className="relative scroll-mt-20 overflow-hidden border-t border-line bg-noche/60 py-20 lg:py-28"
@@ -488,20 +816,13 @@ export default function Home() {
             <div className="relative mx-auto max-w-[760px] rounded-t-full border border-dorado/30 bg-linear-to-b from-dorado/10 via-surface-raised/40 to-surface-raised/70 px-6 pt-24 pb-10 text-center sm:px-12 sm:pt-32 sm:pb-12">
               <Antetitulo centrado>Tu salón sobre la roca</Antetitulo>
               <h2 id="titulo-cierre" className="type-titulo mt-5 text-ink">
-                Que tus clientes no busquen <span className="text-dorado">nada afuera.</span>
+                Mientras vos hacés la fiesta, <span className="text-dorado">tu salón cotiza.</span>
               </h2>
               <p className="type-cuerpo mx-auto mt-3 max-w-[460px] text-ink-muted">
-                Estamos sumando a los primeros salones. Empezá gratis y probalo en tu próxima fiesta.
+                Estamos sumando a los primeros salones. Creá tu cuenta gratis y sé de los primeros en usar el cotizador.
               </p>
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <a href={URL_REGISTRARME} className={botonPrincipal}>
-                  Crear mi cuenta gratis
-                  <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
-                </a>
-                <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={botonSecundario}>
-                  <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
-                  Escribinos por WhatsApp
-                </a>
+              <div className="mt-8">
+                <Acciones centrado />
               </div>
               <figure className="mx-auto mt-10 flex max-w-[480px] items-center gap-4 border-t border-line pt-8 text-left">
                 <Image
