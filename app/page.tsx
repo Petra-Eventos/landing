@@ -42,6 +42,34 @@ const CON_PETRA = [
   "Seguís cada fiesta desde tu panel",
 ];
 
+// Datos del nicho, siempre con su fuente (solo estudios reales: nunca inventar cifras).
+const DATOS = [
+  {
+    cifra: "72%",
+    texto: "de las parejas dice que su prioridad número uno es que sus invitados se sientan atendidos.",
+    fuente: "The Knot, Real Weddings Study 2025 · EE. UU.",
+    url: "https://www.businesswire.com/news/home/20250227544757/en",
+  },
+  {
+    cifra: "64%",
+    texto: "de los asistentes pone las experiencias inmersivas entre lo que más mejora un evento.",
+    fuente: "Freeman, Attendee Intent and Behavior 2024",
+    url: "https://www.pcma.org/freeman-trends-report-2024-what-event-attendees-want/",
+  },
+  {
+    cifra: "57%",
+    texto: "de los organizadores de eventos empresariales vio crecer sus eventos presenciales en el último año.",
+    fuente: "Bizzabo, State of Events 2025",
+    url: "https://www.bizzabo.com/blog/power-of-in-person-events-2025",
+  },
+  {
+    cifra: "36%",
+    texto: "de las parejas ya usa inteligencia artificial para planear su casamiento: casi el doble que a comienzos de 2025.",
+    fuente: "The Knot, Real Weddings Study 2026 · EE. UU.",
+    url: "https://www.theknotww.com/press-releases/the-knot-worldwide-unveils-2026-real-weddings-study",
+  },
+];
+
 // Lo que gana el salón.
 const RAZONES = [
   {
@@ -202,6 +230,39 @@ export default function Home() {
               </div>
             }
           />
+        </section>
+
+        <Separador />
+
+        {/* Por qué ahora: datos reales del nicho, con su fuente */}
+        <section id="datos" className={`${contenedor} scroll-mt-20 py-20 lg:py-24`} aria-labelledby="titulo-datos">
+          <Encabezado
+            id="titulo-datos"
+            ante="Por qué ahora"
+            centrado
+            titulo={
+              <>
+                Las fiestas cambiaron. <span className="text-dorado">Tus clientes también.</span>
+              </>
+            }
+            texto="Lo que muestran los estudios más grandes de la industria de eventos."
+          />
+          <ul className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {DATOS.map((d) => (
+              <li key={d.cifra} className="flex flex-col rounded-xl border border-line bg-surface-raised p-4 sm:p-6">
+                <p className="font-display text-[40px] leading-none text-dorado sm:text-[52px]">{d.cifra}</p>
+                <p className="mt-3 flex-1 text-[14px] leading-5 text-ink sm:mt-4 sm:text-[16px] sm:leading-6">{d.texto}</p>
+                <a
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 border-t border-line pt-3 text-[11px] leading-4 text-ink-muted underline-offset-4 hover:text-ink hover:underline sm:mt-5 sm:text-[12px]"
+                >
+                  Fuente: {d.fuente}
+                </a>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <Separador />
