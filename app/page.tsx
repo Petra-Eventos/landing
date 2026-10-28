@@ -92,7 +92,7 @@ export default function Home() {
               Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
             </h1>
             <p className="type-cuerpo mt-4 text-ink-muted">
-              Probalo acá mismo: elegí un producto, poné el nombre y el logo de tu salón y miralo desde los tres lados.
+              Probalo acá mismo: elegí un producto y miralo desde los tres lados.
             </p>
           </div>
           {/* Carrusel: en el celular se desliza de tu staff a los invitados; en la compu entra entero. */}
