@@ -22,7 +22,6 @@ import {
 import { Antetitulo, Encabezado, Separador } from "@/components/adornos";
 import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
-import { PerfilesEnVivo } from "@/components/perfiles-en-vivo";
 import { TiendaApps } from "@/components/tienda-apps";
 import { PLANES } from "@/lib/catalogo";
 import { SELECCION_INICIAL, fechaLarga, pesos, precioSugerido } from "@/lib/cotizador-demo";
@@ -600,64 +599,45 @@ export default function Home() {
           </ul>
         </section>
 
-        <Separador />
-
-        {/* 6. Los extras para invitados: se suman al presupuesto (con el simulador de la invitación) */}
-        <section id="extras" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-extras">
-          <PerfilesEnVivo
-            intro={
-              <div className="max-w-[640px]">
-                <Antetitulo>Vendé más en cada fiesta</Antetitulo>
-                <h2 id="titulo-extras" className="type-titulo mt-4 text-ink">
-                  Lo que tus clientes buscan afuera, <span className="text-dorado">sumado a tu presupuesto.</span>
-                </h2>
-                <p className="type-cuerpo mt-3 max-w-[560px] text-ink-muted">
-                  Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Aparecen como
-                  extras en tu cotizador y los cobrás vos.
-                </p>
-              </div>
-            }
-            acciones={
-              <a
-                href="#apps"
-                className="inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-dorado underline-offset-4 hover:underline"
-              >
-                Ver las más de 30 webapps
-                <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
-              </a>
-            }
-          />
-        </section>
-
-        {/* 7. Todas las webapps, como la pantalla de inicio de un celular */}
+        {/* 6. Los extras para invitados: se suman al presupuesto. Todas las webapps, como la pantalla de inicio de un celular */}
         <section
-          id="apps"
+          id="extras"
           className="relative scroll-mt-20 overflow-hidden border-y border-line bg-noche/60 py-20 lg:py-28"
-          aria-labelledby="titulo-todos"
+          aria-labelledby="titulo-extras"
         >
+          {/* Dos luces suaves de la marca de fondo (decorativas): dorado y azul. */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <span className="absolute -top-32 -left-24 size-96 rounded-full bg-dorado/10 blur-3xl" />
             <span className="absolute -right-24 -bottom-32 size-96 rounded-full bg-azul/15 blur-3xl" />
           </div>
           <div className={`${contenedor} relative`}>
             <Encabezado
-              id="titulo-todos"
-              ante="Webapps para invitados"
+              id="titulo-extras"
+              ante="Vendé más en cada fiesta"
               centrado
               titulo={
                 <>
-                  Conocé las <span className="text-dorado">más de 30 webapps</span> que podés ofrecer
+                  Lo que tus clientes buscan afuera, <span className="text-dorado">sumado a tu presupuesto.</span>
                 </>
               }
-              texto="Se abren desde el celular, sin bajar nada, con la marca de tu salón. Vos elegís cuáles sumar a cada fiesta."
+              texto="Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Aparecen como extras en tu cotizador y los cobrás vos."
             />
-            <div className="mt-12">
+            <h3
+              id="apps"
+              className="mt-14 scroll-mt-24 text-center font-display text-[22px] leading-7 text-ink lg:text-[26px] lg:leading-8"
+            >
+              Conocé las <span className="text-dorado">más de 30 webapps</span> que podés ofrecer
+            </h3>
+            <p className="type-cuerpo mx-auto mt-2 max-w-[560px] text-center text-ink-muted">
+              Se abren desde el celular, sin bajar nada. Vos elegís cuáles sumar a cada fiesta.
+            </p>
+            <div className="mt-10">
               <TiendaApps />
             </div>
           </div>
         </section>
 
-        {/* 8. Cuando cierra: la fiesta sigue en el panel */}
+        {/* 7. Cuando cierra: la fiesta sigue en el panel */}
         <section id="gestion" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-gestion">
           <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -691,7 +671,7 @@ export default function Home() {
 
         <Separador />
 
-        {/* 9. Planes */}
+        {/* 8. Planes */}
         <section id="planes" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-planes">
           <Encabezado
             id="titulo-planes"
@@ -755,7 +735,7 @@ export default function Home() {
 
         <Separador />
 
-        {/* 10. Preguntas frecuentes (se abren sin JavaScript) */}
+        {/* 9. Preguntas frecuentes (se abren sin JavaScript) */}
         <section id="preguntas" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-preguntas">
           <Encabezado id="titulo-preguntas" ante="Preguntas" centrado titulo="Preguntas frecuentes" />
           <div className="mt-12 flex flex-col gap-3 lg:mx-auto lg:max-w-[760px]">
@@ -779,7 +759,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 11. Cierre: reseñas (cuando haya), la invitación a sumarse y quién está detrás */}
+        {/* 10. Cierre: reseñas (cuando haya), la invitación a sumarse y quién está detrás */}
         <section
           id="salones"
           className="relative scroll-mt-20 overflow-hidden border-t border-line bg-noche/60 py-20 lg:py-28"

@@ -49,7 +49,7 @@ const MS_PRECIO = 3400;
 const MS_PANEL = 5200;
 
 // El link del cotizador lo ve el cliente con la marca del salón: claro y con el color del salón.
-// Son colores de producto (no tokens de Petra), igual que las plantillas del simulador.
+// Son colores de producto (no tokens de Petra), igual que los tonos de las webapps.
 const C = {
   fondo: "#faf7f2",
   tarjeta: "#ffffff",
@@ -223,7 +223,7 @@ function PantallaCliente({
       </p>
 
       {/* El paso: cada vez que cambia, sus partes entran de a una. */}
-      <div key={paso} className="invitacion-entra flex min-h-0 flex-1 flex-col px-4 pt-5">
+      <div key={paso} className="entrar-de-a-una flex min-h-0 flex-1 flex-col px-4 pt-5">
         {paso === 0 && <PasoFestejo sel={sel} onCambiar={onCambiar} />}
         {paso === 1 && <PasoFecha sel={sel} onCambiar={onCambiar} />}
         {paso === 2 && <PasoInvitados sel={sel} onCambiar={onCambiar} />}
@@ -552,7 +552,7 @@ function PantallaPanel({ sel, total }: { sel: Seleccion; total: number }) {
     { nombre: "Invitación digital", detalle: "extra para invitados", precio: EXTRAS[0].precio },
   ];
   return (
-    <div className="invitacion-entra flex h-full flex-col bg-surface px-4 pt-4 pb-4 text-ink">
+    <div className="entrar-de-a-una flex h-full flex-col bg-surface px-4 pt-4 pb-4 text-ink">
       <div className="flex items-center justify-between">
         <p className="font-display text-[20px] leading-6">Cotizaciones</p>
         <span className="rounded-full bg-dorado-soft px-2 py-0.5 text-[10px] font-semibold text-dorado">3 nuevas</span>
