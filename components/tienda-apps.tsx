@@ -89,7 +89,7 @@ const CATEGORIAS = Object.keys(TONOS) as Categoria[];
 export function TiendaApps() {
   return (
     <div>
-      <ul aria-label="Categorías" className="flex flex-wrap gap-2">
+      <ul aria-label="Categorías" className="flex flex-wrap justify-center gap-2">
         {CATEGORIAS.map((c) => {
           const cantidad = APPS.filter((a) => a.categoria === c).length;
           return (
@@ -135,7 +135,7 @@ export function TiendaApps() {
         })}
       </ul>
 
-      <p className="mt-8 flex items-center gap-2 text-[13px] text-ink-muted">
+      <p className="mt-10 flex items-center justify-center gap-2 text-center text-[13px] text-ink-muted">
         <span className="rounded-full bg-dorado px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-on-dorado uppercase">Ya</span>
         Disponibles hoy. El resto se suma a tu plan a medida que sale.
       </p>

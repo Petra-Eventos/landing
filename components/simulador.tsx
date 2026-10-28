@@ -229,7 +229,7 @@ export function Simulador({
             </button>
           ))}
         </div>
-        <p className="mt-2 mb-4 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
+        <p className="mt-2 mb-10 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
           {miradaActual.texto}
         </p>
         <p className="sr-only">
@@ -238,6 +238,15 @@ export function Simulador({
           {conPlantilla ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
         <div className="relative">
+          {/* Escenario: un arco dorado detrás del celular, como la columna del logo de Petra. */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-7 -top-6 -bottom-4 rounded-t-full border border-dorado/25 bg-linear-to-b from-dorado/12 via-azul/6 to-transparent sm:-inset-x-12"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-3 -top-2 -bottom-2 rounded-t-full border border-dorado/10 sm:-inset-x-6"
+          />
           {circulo && (
             <div className="absolute top-40 -right-7 z-10 flex flex-col items-center gap-1.5 sm:-right-9">
               <button
@@ -254,7 +263,7 @@ export function Simulador({
               </span>
             </div>
           )}
-        <div aria-hidden="true" className="rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
+        <div aria-hidden="true" className="relative rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
           {/* La pantalla del invitado va en claro: así la ven los invitados del salón (colores fijos a propósito). */}
           <div
             className={`relative flex min-h-[520px] flex-col overflow-hidden rounded-[32px] transition-opacity duration-300 motion-reduce:transition-none ${
@@ -291,7 +300,7 @@ export function Simulador({
           </div>
         </div>
         </div>
-        {circulo && <p className="mt-3 text-center text-[12px] text-ink-muted">{circulo.ayuda}</p>}
+        {circulo && <p className="mt-8 text-center text-[12px] text-ink-muted">{circulo.ayuda}</p>}
       </div>
     </div>
   );
