@@ -238,17 +238,28 @@ export default function Home() {
           <Escena />
         </section>
 
-        {/* Tipos de fiesta */}
+        {/* Tipos de fiesta: franja que se desplaza sola (quieta si la persona pidió menos movimiento) */}
         <section className="border-y border-line bg-noche/60" aria-labelledby="eventos">
-          <div className={`${contenedor} flex flex-col items-center gap-4 py-6 lg:flex-row lg:justify-between`}>
+          <div className={`${contenedor} flex flex-col items-center gap-3 py-6 lg:flex-row lg:gap-10`}>
             <h2 id="eventos" className="type-etiqueta shrink-0 text-ink-muted">
               Petra está presente en
             </h2>
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-center font-display text-[18px] leading-7 text-ink sm:flex sm:flex-wrap sm:justify-center sm:gap-x-8 sm:text-[19px]">
-              {EVENTOS.map((evento) => (
-                <li key={evento}>{evento}</li>
-              ))}
-            </ul>
+            <div className="marquesina w-full min-w-0 overflow-hidden">
+              <ul className="marquesina-pista flex w-max items-center font-display text-[19px] leading-7 text-ink sm:text-[21px]">
+                {[0, 1].map((vuelta) =>
+                  EVENTOS.map((evento) => (
+                    <li
+                      key={`${vuelta}-${evento}`}
+                      aria-hidden={vuelta === 1 ? true : undefined}
+                      className="flex items-center gap-8 pr-8 whitespace-nowrap"
+                    >
+                      {evento}
+                      <span aria-hidden="true" className="size-1.5 rounded-full bg-dorado" />
+                    </li>
+                  )),
+                )}
+              </ul>
+            </div>
           </div>
         </section>
 

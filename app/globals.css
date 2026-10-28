@@ -168,3 +168,42 @@
     display: none;
   }
 }
+
+/* Franja de tipos de fiesta: se desplaza sola y los bordes se desvanecen.
+   La lista va dos veces seguidas para que la vuelta no se note. */
+.marquesina {
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+.marquesina-pista {
+  animation: marquesina 28s linear infinite;
+}
+.marquesina:hover .marquesina-pista {
+  animation-play-state: paused;
+}
+@keyframes marquesina {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquesina {
+    mask-image: none;
+  }
+  .marquesina-pista {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    row-gap: 0.5rem;
+  }
+  .marquesina-pista > li[aria-hidden="true"],
+  .marquesina-pista > li > span {
+    display: none;
+  }
+  .marquesina-pista > li {
+    padding-inline: 0.75rem;
+  }
+}
