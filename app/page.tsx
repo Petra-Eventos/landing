@@ -42,6 +42,9 @@ const botonPrincipal =
 const botonSecundario =
   "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
 
+// Aparecer al bajar: los que van uno al lado del otro entran apenas corridos (ver .aparecer en globals.css).
+const DEMORAS = ["", "[--demora:12%]", "[--demora:24%]", "[--demora:36%]"];
+
 // Las consultas de todos los días (de ejemplo): lo que el cotizador contesta solo.
 const CONSULTAS = [
   { quien: "Caro", texto: "Hola! ¿Precio para un 15 de 120 personas?", hora: "23:47", nueva: true },
@@ -188,7 +191,7 @@ const PREGUNTAS = [
 /** La bandeja de mensajes de un salón cualquiera un martes a la noche (decorativa). */
 function Bandeja() {
   return (
-    <div aria-hidden="true" className="relative mx-auto w-full max-w-[420px]">
+    <div aria-hidden="true" className="aparecer relative mx-auto w-full max-w-[420px]">
       <span className="absolute -inset-x-4 -top-6 bottom-10 rounded-t-full border border-dorado/20 bg-linear-to-b from-dorado/10 to-transparent" />
       <div className="relative rounded-xl border border-line bg-surface-raised p-4 shadow-piedra sm:p-5">
         <div className="flex items-center justify-between px-1">
@@ -223,7 +226,7 @@ function Bandeja() {
 function PedidoQueLlega() {
   const s = SELECCION_INICIAL;
   return (
-    <figure className="relative mx-auto w-full max-w-[400px]">
+    <figure className="aparecer relative mx-auto w-full max-w-[400px]">
       <figcaption className="sr-only">Ejemplo del mensaje de WhatsApp que le llega al salón</figcaption>
       <div className="rounded-xl border border-line bg-surface p-4 shadow-piedra sm:p-5">
         <div className="flex items-center gap-3 border-b border-line pb-3">
@@ -262,7 +265,7 @@ function CalendarioEjemplo() {
   const fiestas = new Set([5, 11, 12, 19, 26]);
   const dias = [null, ...Array.from({ length: 31 }, (_, i) => i + 1)];
   return (
-    <div aria-hidden="true" className="relative mx-auto w-full max-w-[400px]">
+    <div aria-hidden="true" className="aparecer relative mx-auto w-full max-w-[400px]">
       <span className="absolute -inset-x-4 -top-6 bottom-10 rounded-t-full border border-dorado/20 bg-linear-to-b from-dorado/10 to-transparent" />
       <div className="relative rounded-xl border border-line bg-surface-raised p-5 shadow-piedra sm:p-6">
         <div className="flex items-baseline justify-between">
@@ -366,14 +369,14 @@ export default function Home() {
         {/* 1. La promesa y la demo del cotizador */}
         <section
           id="cotizador"
-          className={`${contenedor} scroll-mt-20 pt-12 pb-20 md:pt-16 lg:pt-20 lg:pb-28`}
+          className={`${contenedor} scroll-mt-20 pt-12 pb-20 md:pt-16 lg:pt-8 lg:pb-28`}
           aria-labelledby="titular"
         >
           {/* En la compu: texto y botones a la izquierda; el celular a la derecha. */}
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-16 xl:gap-x-24">
             <div className="max-w-[640px]">
               <Antetitulo>Cotizador para salones de eventos</Antetitulo>
-              <h1 id="titular" className="type-display mt-5 text-ink">
+              <h1 id="titular" className="type-display mt-5 text-balance text-ink">
                 Tu salón cotiza solo, <span className="text-dorado">las 24 horas.</span>
               </h1>
               <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
@@ -420,7 +423,7 @@ export default function Home() {
               />
               <ul className="mt-8 flex flex-col gap-5">
                 {DOLORES.map(({ icono: Icono, titulo, texto }) => (
-                  <li key={titulo} className="flex items-start gap-4">
+                  <li key={titulo} className="aparecer flex items-start gap-4">
                     <span className="flex size-10 shrink-0 items-center justify-center rounded-md border border-line bg-surface-raised text-dorado">
                       <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
                     </span>
@@ -436,7 +439,7 @@ export default function Home() {
           </div>
 
           {/* El dato que lo explica, con su fuente */}
-          <figure className="mt-16 flex flex-col gap-5 rounded-xl border border-dorado/40 bg-linear-to-br from-dorado-soft to-surface-raised p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8 lg:mx-auto lg:max-w-[960px]">
+          <figure className="aparecer mt-16 flex flex-col gap-5 rounded-xl border border-dorado/40 bg-linear-to-br from-dorado-soft to-surface-raised p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8 lg:mx-auto lg:max-w-[960px]">
             <p className="shrink-0 font-display text-[64px] leading-none text-dorado sm:text-[80px]">7×</p>
             <div>
               <blockquote className="text-[17px] leading-7 text-ink">
@@ -482,7 +485,7 @@ export default function Home() {
             />
             <ol className="mt-14 grid gap-10 text-center md:grid-cols-3 md:gap-8 lg:mx-auto lg:max-w-[1000px]">
               {PASOS.map(({ icono: Icono, titulo, texto }, i) => (
-                <li key={titulo} className="flex flex-col items-center">
+                <li key={titulo} className={`aparecer flex flex-col items-center ${DEMORAS[i]}`}>
                   {/* Ícono dentro de un arco, como la columna del logo */}
                   <span className="relative flex h-16 w-13 items-end justify-center rounded-t-full border border-dorado/40 bg-dorado-soft pb-3 text-dorado">
                     <Icono size={22} strokeWidth={1.7} aria-hidden="true" />
@@ -496,7 +499,7 @@ export default function Home() {
               ))}
             </ol>
 
-            <div className="mt-20 grid items-center gap-10 rounded-xl border border-line bg-surface-raised/60 p-6 sm:p-10 lg:mx-auto lg:max-w-[1000px] lg:grid-cols-2 lg:gap-16">
+            <div className="aparecer mt-20 grid items-center gap-10 rounded-xl border border-line bg-surface-raised/60 p-6 sm:p-10 lg:mx-auto lg:max-w-[1000px] lg:grid-cols-2 lg:gap-16">
               <div>
                 <Antetitulo>Te llega así</Antetitulo>
                 <h3 className="mt-4 font-display text-[26px] leading-8 text-ink lg:text-[30px] lg:leading-9">
@@ -525,7 +528,7 @@ export default function Home() {
             }
           />
           <div className="mt-12 grid gap-4 md:grid-cols-2 md:gap-5 lg:mx-auto lg:max-w-[960px]">
-            <div className="rounded-xl border border-line bg-surface-raised p-6 sm:p-8">
+            <div className="aparecer rounded-xl border border-line bg-surface-raised p-6 sm:p-8">
               <p className="type-etiqueta text-azul-text">Lo que ve tu cliente</p>
               <ul className="mt-5 flex flex-col gap-3.5">
                 {VE_TU_CLIENTE.map((t) => (
@@ -538,7 +541,7 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <div className="rounded-xl border border-dorado/60 bg-linear-to-br from-dorado-soft to-surface-raised p-6 shadow-[0_24px_60px_-28px_#d4b06a66] sm:p-8">
+            <div className="aparecer rounded-xl border border-dorado/60 bg-linear-to-br from-dorado-soft to-surface-raised p-6 shadow-[0_24px_60px_-28px_#d4b06a66] [--demora:12%] sm:p-8">
               <p className="type-etiqueta text-dorado">Lo que manejás vos</p>
               <ul className="mt-5 flex flex-col gap-3.5">
                 {MANEJAS_VOS.map((t) => (
@@ -554,8 +557,8 @@ export default function Home() {
           </div>
 
           <ul className="mt-16 grid gap-10 text-center md:grid-cols-3 md:gap-8 lg:mx-auto lg:max-w-[960px]">
-            {RAZONES.map(({ icono: Icono, titulo, texto }) => (
-              <li key={titulo} className="flex flex-col items-center">
+            {RAZONES.map(({ icono: Icono, titulo, texto }, i) => (
+              <li key={titulo} className={`aparecer flex flex-col items-center ${DEMORAS[i]}`}>
                 <span className="flex h-16 w-13 items-end justify-center rounded-t-full border border-dorado/40 bg-dorado-soft pb-3 text-dorado">
                   <Icono size={22} strokeWidth={1.7} aria-hidden="true" />
                 </span>
@@ -582,8 +585,11 @@ export default function Home() {
             texto="Lo que muestran los estudios más grandes de la industria de eventos."
           />
           <ul className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {DATOS.map((d) => (
-              <li key={d.cifra} className="flex flex-col rounded-xl border border-line bg-surface-raised p-4 sm:p-6">
+            {DATOS.map((d, i) => (
+              <li
+                key={d.cifra}
+                className={`aparecer flex flex-col rounded-xl border border-line bg-surface-raised p-4 sm:p-6 ${DEMORAS[i]}`}
+              >
                 <p className="font-display text-[40px] leading-none text-dorado sm:text-[52px]">{d.cifra}</p>
                 <p className="mt-3 flex-1 text-[14px] leading-5 text-ink sm:mt-4 sm:text-[16px] sm:leading-6">{d.texto}</p>
                 <a
@@ -624,11 +630,11 @@ export default function Home() {
             />
             <h3
               id="apps"
-              className="mt-14 scroll-mt-24 text-center font-display text-[22px] leading-7 text-ink lg:text-[26px] lg:leading-8"
+              className="aparecer mt-14 scroll-mt-24 text-center font-display text-[22px] leading-7 text-ink lg:text-[26px] lg:leading-8"
             >
               Conocé las <span className="text-dorado">más de 30 webapps</span> que podés ofrecer
             </h3>
-            <p className="type-cuerpo mx-auto mt-2 max-w-[560px] text-center text-ink-muted">
+            <p className="aparecer type-cuerpo mx-auto mt-2 max-w-[560px] text-center text-ink-muted">
               Se abren desde el celular, sin bajar nada. Vos elegís cuáles sumar a cada fiesta.
             </p>
             <div className="mt-10">
@@ -652,10 +658,10 @@ export default function Home() {
                 texto="La cotización ganada pasa a tu calendario. Después, los cobros, tu equipo y cada detalle, ordenados en un solo lugar."
               />
               <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-                {GESTION.map(({ icono: Icono, texto }) => (
+                {GESTION.map(({ icono: Icono, texto }, i) => (
                   <li
                     key={texto}
-                    className="flex items-center gap-3 rounded-lg border border-line bg-surface-raised p-4 text-[15px] leading-5 text-ink"
+                    className={`aparecer flex items-center gap-3 rounded-lg border border-line bg-surface-raised p-4 text-[15px] leading-5 text-ink ${DEMORAS[i % 2]}`}
                   >
                     <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-azul-soft text-azul-text">
                       <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
@@ -681,10 +687,10 @@ export default function Home() {
             texto="Empezás gratis, sin tarjeta, y pasás de plan cuando quieras. No perdés nada de lo que cargaste."
           />
           <ul className="mt-14 grid gap-5 lg:grid-cols-3 lg:items-stretch">
-            {PLANES.map((plan) => (
+            {PLANES.map((plan, i) => (
               <li
                 key={plan.nombre}
-                className={`relative flex flex-col rounded-xl border p-6 sm:p-7 ${
+                className={`aparecer relative flex flex-col rounded-xl border p-6 sm:p-7 ${DEMORAS[i]} ${
                   plan.destacado
                     ? "border-dorado/70 bg-linear-to-b from-dorado-soft to-surface-raised shadow-[0_30px_70px_-30px_#d4b06a59]"
                     : "border-line bg-surface-raised shadow-piedra"
@@ -742,7 +748,7 @@ export default function Home() {
             {PREGUNTAS.map(({ p, r }) => (
               <details
                 key={p}
-                className="group rounded-lg border border-line bg-surface-raised px-5 transition-colors open:border-dorado/50"
+                className="group aparecer rounded-lg border border-line bg-surface-raised px-5 transition-colors open:border-dorado/50"
               >
                 <summary className="flex min-h-14 items-center justify-between gap-4 py-4 text-[16px] leading-6 font-semibold text-ink">
                   {p}
@@ -793,9 +799,9 @@ export default function Home() {
             )}
 
             {/* Un arco, como la entrada de un salón */}
-            <div className="relative mx-auto max-w-[760px] rounded-t-full border border-dorado/30 bg-linear-to-b from-dorado/10 via-surface-raised/40 to-surface-raised/70 px-6 pt-24 pb-10 text-center sm:px-12 sm:pt-32 sm:pb-12">
+            <div className="aparecer relative mx-auto max-w-[760px] rounded-t-full border border-dorado/30 bg-linear-to-b from-dorado/10 via-surface-raised/40 to-surface-raised/70 px-6 pt-24 pb-10 text-center sm:px-12 sm:pt-32 sm:pb-12">
               <Antetitulo centrado>Tu salón sobre la roca</Antetitulo>
-              <h2 id="titulo-cierre" className="type-titulo mt-5 text-ink">
+              <h2 id="titulo-cierre" className="type-titulo mt-5 text-balance text-ink">
                 Mientras vos hacés la fiesta, <span className="text-dorado">tu salón cotiza.</span>
               </h2>
               <p className="type-cuerpo mx-auto mt-3 max-w-[460px] text-ink-muted">

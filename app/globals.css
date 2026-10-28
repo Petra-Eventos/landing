@@ -242,3 +242,27 @@
     animation: none;
   }
 }
+
+/* Aparecer al bajar: cada bloque entra suave a medida que llega a la pantalla.
+   Va atado al scroll, sin JavaScript. Si el navegador no lo soporta o la persona pidió
+   menos movimiento, todo se ve quieto, como siempre. --demora atrasa un poco la entrada
+   de los que van uno al lado del otro (ver DEMORAS en la página). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aparecer {
+      animation: aparecer ease-out both;
+      animation-timeline: view();
+      animation-range: entry var(--demora, 0%) entry calc(var(--demora, 0%) + 70%);
+    }
+  }
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}

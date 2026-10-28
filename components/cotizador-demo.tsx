@@ -69,8 +69,8 @@ const ICONO_FESTEJO: Record<IdFestejo, LucideIcon> = {
 };
 
 const MIRADAS: Record<Vista, { nombre: string; texto: string }> = {
-  cliente: { nombre: "Tu cliente", texto: "Así arma su fiesta tu cliente, desde el link de tu salón." },
-  panel: { nombre: "Tu panel", texto: "Así te llega el pedido. Y desde acá decidís qué ofrecés y a cuánto." },
+  cliente: { nombre: "Tu cliente", texto: "Así arma su fiesta tu cliente." },
+  panel: { nombre: "Tu panel", texto: "Así te llega el pedido a tu panel." },
 };
 
 /**
@@ -122,7 +122,7 @@ export function CotizadorDemo() {
           </button>
         ))}
       </div>
-      <p className="mt-2 mb-10 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
+      <p className="mt-2 mb-8 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
         {MIRADAS[vista].texto}
       </p>
 
