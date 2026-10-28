@@ -134,19 +134,31 @@ export default function Home() {
               Probalo acá mismo: elegí un producto, poné el nombre y el logo de tu salón y miralo desde los tres lados.
             </p>
           </div>
-          <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-            {PERFILES_LANDING.map(({ icono: Icono, nombre, texto }) => (
-              <li key={nombre} className="flex items-start gap-3 rounded-lg border border-line bg-surface-raised/60 p-4">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-dorado-soft text-dorado">
-                  <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
-                </span>
-                <span>
-                  <span className="type-boton block text-ink">{nombre}</span>
-                  <span className="block text-[13px] leading-5 text-ink-muted">{texto}</span>
-                </span>
+          {/* Carrusel: en el celular se desliza de tu staff a los invitados; en la compu entra entero. */}
+          <ul
+            aria-label="Quién usa cada producto"
+            className="sin-barra mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 sm:overflow-visible"
+          >
+            {PERFILES_LANDING.map(({ icono: Icono, nombre, texto }, i) => (
+              <li key={nombre} className="flex w-[86%] shrink-0 snap-start items-center gap-2 sm:w-auto sm:flex-1 sm:shrink">
+                <div className="flex h-full flex-1 items-start gap-3 rounded-lg border border-line bg-surface-raised/60 p-4">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-dorado-soft text-dorado">
+                    <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
+                  </span>
+                  <span>
+                    <span className="type-boton block text-ink">{nombre}</span>
+                    <span className="block text-[13px] leading-5 text-ink-muted">{texto}</span>
+                  </span>
+                </div>
+                {i < PERFILES_LANDING.length - 1 && (
+                  <ArrowRight size={20} strokeWidth={2} className="shrink-0 text-dorado" aria-hidden="true" />
+                )}
               </li>
             ))}
           </ul>
+          <p className="mt-2 flex items-center gap-1 text-[12px] text-ink-muted sm:hidden" aria-hidden="true">
+            Deslizá para ver los tres <ArrowRight size={14} strokeWidth={2} />
+          </p>
           <div className="mt-10">
             <Simulador />
           </div>
