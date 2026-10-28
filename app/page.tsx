@@ -5,12 +5,10 @@ import {
   Quote,
   Sparkles,
   Star,
-  Smartphone,
   Store,
-  UserRound,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { Firma } from "@/components/logo";
+import { CarruselPerfiles } from "@/components/carrusel-perfiles";
 import { Simulador } from "@/components/simulador";
 import { TiendaApps } from "@/components/tienda-apps";
 import { PLANES } from "@/lib/catalogo";
@@ -22,13 +20,6 @@ const botonPrincipal =
   "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-azul px-6 py-3 text-[15px] text-on-azul shadow-piedra transition-colors hover:bg-azul-hover";
 const botonSecundario =
   "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
-
-// Los tres perfiles de cada producto (se configuran desde el sistema).
-const PERFILES_LANDING: { icono: LucideIcon; nombre: string; texto: string }[] = [
-  { icono: Store, nombre: "Tu staff", texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel." },
-  { icono: UserRound, nombre: "Tus clientes", texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas." },
-  { icono: Smartphone, nombre: "Los invitados", texto: "Lo usan desde el celular, sin bajar ninguna app." },
-];
 
 /** Título de cada sección: antetítulo dorado, título y una línea. */
 function Encabezado({ id, ante, titulo, texto }: { id: string; ante: string; titulo: string; texto?: string }) {
@@ -95,31 +86,7 @@ export default function Home() {
               Probá acá mismo la invitación digital y mirala desde los tres lados.
             </p>
           </div>
-          {/* Carrusel: en el celular se desliza de tu staff a los invitados; en la compu entra entero. */}
-          <ul
-            aria-label="Quién usa cada producto"
-            className="sin-barra mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 sm:overflow-visible"
-          >
-            {PERFILES_LANDING.map(({ icono: Icono, nombre, texto }, i) => (
-              <li key={nombre} className="flex w-[86%] shrink-0 snap-start items-center gap-2 sm:w-auto sm:flex-1 sm:shrink">
-                <div className="flex h-full flex-1 items-start gap-3 rounded-lg border border-line bg-surface-raised/60 p-4">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-dorado-soft text-dorado">
-                    <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
-                  </span>
-                  <span>
-                    <span className="type-boton block text-ink">{nombre}</span>
-                    <span className="block text-[13px] leading-5 text-ink-muted">{texto}</span>
-                  </span>
-                </div>
-                {i < PERFILES_LANDING.length - 1 && (
-                  <ArrowRight size={20} strokeWidth={2} className="shrink-0 text-dorado" aria-hidden="true" />
-                )}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-2 flex items-center gap-1 text-[12px] text-ink-muted sm:hidden" aria-hidden="true">
-            Deslizá para ver los tres <ArrowRight size={14} strokeWidth={2} />
-          </p>
+          <CarruselPerfiles />
           <div className="mt-10">
             <Simulador />
           </div>
