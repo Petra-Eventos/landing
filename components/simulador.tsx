@@ -1,19 +1,13 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
-import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, PartyPopper, X } from "lucide-react";
+import { useId, useState } from "react";
+import { Mail, LayoutGrid, ListChecks, Palette, PartyPopper } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { DESTACADOS } from "@/lib/catalogo";
 import { FondoFiesta, type IdFondo } from "@/components/fondos-fiesta";
 
-// Colores que puede elegir el salón para su marca. Son datos del salón, no tokens de Petra.
-const COLORES = [
-  { nombre: "Azul", valor: "#1c79a4" },
-  { nombre: "Dorado", valor: "#b8913f" },
-  { nombre: "Rosa", valor: "#c2577a" },
-  { nombre: "Verde", valor: "#4f7a3a" },
-  { nombre: "Violeta", valor: "#6a4fb0" },
-];
+// Color del salón de ejemplo en el celular (dato del salón, no token de Petra).
+const COLOR_SALON = "#1c79a4";
 
 type Perfil = "salon" | "cliente" | "invitado";
 
@@ -148,30 +142,16 @@ const ICONOS: Record<string, LucideIcon> = {
   armado_mesas: LayoutGrid,
 };
 
-/**
- * Simulador: el salón ve cómo queda cada producto en el celular de sus invitados,
- * con su nombre, su logo y su color. El logo se muestra solo en este navegador: no se sube a ningún lado.
- */
+/** Simulador: el salón ve cómo queda cada producto en el celular, desde los tres lados. */
 export function Simulador() {
   const [producto, setProducto] = useState(DESTACADOS[0].id);
   const [perfil, setPerfil] = useState<Perfil>("salon");
-  const [salon, setSalon] = useState("");
-  const [color, setColor] = useState(COLORES[0].valor);
-  const [logo, setLogo] = useState<string | null>(null);
   const [idEvento, setIdEvento] = useState<IdEvento>("xv");
   const [nPlantilla, setNPlantilla] = useState(0);
-  const idNombre = useId();
-  const idLogo = useId();
   const idVistas = useId();
 
-  // Libera la imagen anterior cuando se cambia o se va de la página.
-  useEffect(() => {
-    return () => {
-      if (logo) URL.revokeObjectURL(logo);
-    };
-  }, [logo]);
-
-  const nombreSalon = salon.trim() || "Tu salón";
+  const color = COLOR_SALON;
+  const nombreSalon = "Tu salón";
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
   const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[0];
   const evento = EVENTOS.find((e) => e.id === idEvento) ?? EVENTOS[2];
@@ -213,7 +193,7 @@ export function Simulador() {
     <div className="grid items-start gap-10 lg:grid-cols-[1fr_auto] lg:gap-14">
       {/* Controles */}
       <div>
-        <div role="group" aria-label="Elegí un producto" className="grid gap-3 sm:grid-cols-3">
+        <div role="group" aria-label="Elegí un producto" className="grid grid-cols-3 gap-2 sm:gap-3">
           {DESTACADOS.map((p) => {
             const Icono = ICONOS[p.id] ?? Mail;
             const activo = p.id === producto;
@@ -223,96 +203,22 @@ export function Simulador() {
                 type="button"
                 aria-pressed={activo}
                 onClick={() => setProducto(p.id)}
-                className={`flex flex-col items-start gap-2 rounded-lg border p-4 text-left transition-colors ${
+                className={`flex flex-col items-start gap-1.5 rounded-lg border p-3 text-left transition-colors sm:gap-2 sm:p-4 ${
                   activo ? "border-dorado bg-dorado-soft" : "border-line bg-surface-raised hover:border-line-strong"
                 }`}
               >
                 <span className="flex w-full items-center justify-between">
                   <Icono size={22} strokeWidth={1.7} className={activo ? "text-dorado" : "text-azul-text"} aria-hidden="true" />
-                  <span className="type-etiqueta text-[10px] text-ink-muted">{p.ya ? "Ya disponible" : "Próximamente"}</span>
+                  <span className="type-etiqueta hidden text-[10px] text-ink-muted sm:inline">
+                    {p.ya ? "Ya disponible" : "Próximamente"}
+                  </span>
                 </span>
-                <span className="type-boton text-ink">{p.nombre}</span>
-                <span className="text-[13px] leading-5 text-ink-muted">{p.texto}</span>
+                <span className="text-[13px] leading-4 font-semibold text-ink sm:type-boton">{p.nombre}</span>
+                <span className="type-etiqueta text-[9px] text-ink-muted sm:hidden">{p.ya ? "Ya disponible" : "Próximamente"}</span>
+                <span className="hidden text-[13px] leading-5 text-ink-muted sm:block">{p.texto}</span>
               </button>
             );
           })}
-        </div>
-
-        <div className="mt-8 rounded-lg border border-line bg-surface-raised p-5">
-          <p className="type-etiqueta text-dorado">Probalo con tu marca</p>
-          <div className="mt-4 grid gap-5 sm:grid-cols-2">
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor={idNombre} className="text-[14px] font-semibold text-ink">
-                Nombre de tu salón
-              </label>
-              <input
-                id={idNombre}
-                value={salon}
-                onChange={(e) => setSalon(e.target.value)}
-                maxLength={40}
-                placeholder="Por ejemplo, Salón Los Álamos"
-                className="min-h-11 rounded-md border border-line-strong bg-surface px-3 text-[15px] text-ink placeholder:text-ink-muted/60"
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor={idLogo} className="text-[14px] font-semibold text-ink">
-                Tu logo
-              </label>
-              <div className="flex items-center gap-2">
-                <label
-                  htmlFor={idLogo}
-                  className="type-boton inline-flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-line-strong px-3 text-[14px] text-ink hover:border-dorado"
-                >
-                  <ImagePlus size={18} strokeWidth={1.8} aria-hidden="true" />
-                  {logo ? "Cambiar logo" : "Subir una imagen"}
-                </label>
-                {logo && (
-                  <button
-                    type="button"
-                    onClick={() => setLogo(null)}
-                    aria-label="Quitar el logo"
-                    className="inline-flex size-11 items-center justify-center rounded-md border border-line-strong text-ink-muted hover:text-ink"
-                  >
-                    <X size={18} aria-hidden="true" />
-                  </button>
-                )}
-                <input
-                  id={idLogo}
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={(e) => {
-                    const archivo = e.target.files?.[0];
-                    if (archivo) setLogo(URL.createObjectURL(archivo));
-                    e.target.value = "";
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          <fieldset className="mt-5">
-            <legend className="text-[14px] font-semibold text-ink">Color de tu marca</legend>
-            <div className="mt-2 flex flex-wrap gap-2.5">
-              {COLORES.map((c) => (
-                <button
-                  key={c.valor}
-                  type="button"
-                  onClick={() => setColor(c.valor)}
-                  aria-label={c.nombre}
-                  aria-pressed={color === c.valor}
-                  className={`flex size-10 items-center justify-center rounded-full border-2 ${
-                    color === c.valor ? "border-ink" : "border-transparent"
-                  }`}
-                  style={{ backgroundColor: c.valor }}
-                >
-                  {color === c.valor && <Check size={18} strokeWidth={2.6} className="text-white" aria-hidden="true" />}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-          <p className="mt-4 text-[12px] leading-5 text-ink-muted">
-            Tu logo se ve solo en tu pantalla: no lo guardamos ni lo subimos a ningún lado.
-          </p>
         </div>
       </div>
 
@@ -370,17 +276,12 @@ export function Simulador() {
               <FondoFiesta fondo={plantilla.fondoFiesta} acento={plantilla.acento ?? color} borde={plantilla.borde} />
             )}
             <div className="relative flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
-              {logo ? (
-                // eslint-disable-next-line @next/next/no-img-element -- imagen local del visitante (blob:), no se optimiza
-                <img src={logo} alt="" className="h-12 max-w-[160px] object-contain" />
-              ) : (
-                <span
-                  className="flex size-12 items-center justify-center rounded-full font-display text-[20px] text-white"
-                  style={{ backgroundColor: color }}
-                >
-                  {nombreSalon.charAt(0).toUpperCase()}
-                </span>
-              )}
+              <span
+                className="flex size-12 items-center justify-center rounded-full font-display text-[20px] text-white"
+                style={{ backgroundColor: color }}
+              >
+                {nombreSalon.charAt(0).toUpperCase()}
+              </span>
               <p className="text-[12px] font-semibold tracking-[0.08em] uppercase" style={{ color }}>
                 {nombreSalon}
               </p>
