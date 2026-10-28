@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, PartyPopper, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { DESTACADOS } from "@/lib/catalogo";
+import { FondoFiesta, type IdFondo } from "@/components/fondos-fiesta";
 
 // Colores que puede elegir el salón para su marca. Son datos del salón, no tokens de Petra.
 const COLORES = [
@@ -35,6 +36,8 @@ type Plantilla = {
   borde: string;
   acento?: string;
   sobreAcento: string;
+  /** El dibujo de fiesta que va detrás de la invitación. */
+  fondoFiesta: IdFondo;
 };
 
 type Evento = {
@@ -75,12 +78,12 @@ const EVENTOS: Evento[] = [
     mes: "Mar",
     hora: "20:00",
     plantillas: [
-      { id: "elegante-dorado", nombre: "Elegante dorado", estilo: "elegante", fondo: "#14110b", texto: "#f5ecd7", suave: "#cbbf9f", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
-      { id: "oliva-blanco", nombre: "Verde oliva y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#2f3a1a", suave: "#5f6b45", borde: "#c9cfb0", acento: "#5f6d2f", sobreAcento: "#ffffff" },
-      { id: "blanco-dorado", nombre: "Blanco y dorado", estilo: "elegante", fondo: "#fffdf7", texto: "#3a2f17", suave: "#6f6043", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
-      { id: "azul-negro", nombre: "Azul y negro", estilo: "moderna", fondo: "#0b0f1a", texto: "#eef2fb", suave: "#a3b0cc", borde: "#2a3a5c", acento: "#2f63c8", sobreAcento: "#ffffff" },
-      { id: "naranja-blanco", nombre: "Naranja y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#3a1f0b", suave: "#7a5a43", borde: "#f5cfae", acento: "#c2561a", sobreAcento: "#ffffff" },
-      { id: "animado", nombre: "Animado", estilo: "animada", fondo: "#fff6f3", texto: "#4a2230", suave: "#8a5a68", borde: "#f0c9d2", acento: "#c2456b", sobreAcento: "#ffffff" },
+      { id: "elegante-dorado", fondoFiesta: "luces", nombre: "Elegante dorado", estilo: "elegante", fondo: "#14110b", texto: "#f5ecd7", suave: "#cbbf9f", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "oliva-blanco", fondoFiesta: "hojas", nombre: "Verde oliva y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#2f3a1a", suave: "#5f6b45", borde: "#c9cfb0", acento: "#5f6d2f", sobreAcento: "#ffffff" },
+      { id: "blanco-dorado", fondoFiesta: "brillos", nombre: "Blanco y dorado", estilo: "elegante", fondo: "#fffdf7", texto: "#3a2f17", suave: "#6f6043", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "azul-negro", fondoFiesta: "guirnalda", nombre: "Azul y negro", estilo: "moderna", fondo: "#0b0f1a", texto: "#eef2fb", suave: "#a3b0cc", borde: "#2a3a5c", acento: "#2f63c8", sobreAcento: "#ffffff" },
+      { id: "naranja-blanco", fondoFiesta: "flores", nombre: "Naranja y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#3a1f0b", suave: "#7a5a43", borde: "#f5cfae", acento: "#c2561a", sobreAcento: "#ffffff" },
+      { id: "animado", fondoFiesta: "corazones", nombre: "Animado", estilo: "animada", fondo: "#fff6f3", texto: "#4a2230", suave: "#8a5a68", borde: "#f0c9d2", acento: "#c2456b", sobreAcento: "#ffffff" },
     ],
   },
   {
@@ -99,9 +102,9 @@ const EVENTOS: Evento[] = [
     mes: "Nov",
     hora: "21:00",
     plantillas: [
-      { id: "elegante", nombre: "Elegante", estilo: "elegante", fondo: "#15131d", texto: "#f3eee6", suave: "#bdb6c9", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
-      { id: "informal", nombre: "Informal", estilo: "animada", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8", acento: "#c7363f", sobreAcento: "#ffffff" },
-      { id: "casual", nombre: "Casual", estilo: "moderna", fondo: "#f3f7f4", texto: "#1f2d27", suave: "#4d5f57", borde: "#cfdcd4", sobreAcento: "#ffffff" },
+      { id: "elegante", fondoFiesta: "luces", nombre: "Elegante", estilo: "elegante", fondo: "#15131d", texto: "#f3eee6", suave: "#bdb6c9", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "informal", fondoFiesta: "globos", nombre: "Informal", estilo: "animada", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8", acento: "#c7363f", sobreAcento: "#ffffff" },
+      { id: "casual", fondoFiesta: "serpentinas", nombre: "Casual", estilo: "moderna", fondo: "#f3f7f4", texto: "#1f2d27", suave: "#4d5f57", borde: "#cfdcd4", sobreAcento: "#ffffff" },
     ],
   },
   {
@@ -120,11 +123,11 @@ const EVENTOS: Evento[] = [
     mes: "Dic",
     hora: "21:30",
     plantillas: [
-      { id: "elegante-rosa", nombre: "Elegante rosa", estilo: "elegante", fondo: "#2a0f1e", texto: "#fbe9f0", suave: "#e0b9c8", borde: "#e6a3bd", acento: "#e6a3bd", sobreAcento: "#2a0f1e" },
-      { id: "elegante-lila", nombre: "Elegante lila", estilo: "elegante", fondo: "#1d1530", texto: "#f1ebff", suave: "#c3b6e0", borde: "#c5b0f0", acento: "#c5b0f0", sobreAcento: "#1d1530" },
-      { id: "elegante-turquesa", nombre: "Elegante turquesa", estilo: "elegante", fondo: "#0d2226", texto: "#e8fbf8", suave: "#a9d6cf", borde: "#7fd1c7", acento: "#7fd1c7", sobreAcento: "#0d2226" },
-      { id: "moderno", nombre: "Moderno", estilo: "moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db", acento: "#c42a6f", sobreAcento: "#ffffff" },
-      { id: "tecnologico", nombre: "Tecnológico", estilo: "tecno", fondo: "#05070f", texto: "#e6f7ff", suave: "#8fb3c7", borde: "#22e3ff", acento: "#22e3ff", sobreAcento: "#05070f" },
+      { id: "elegante-rosa", fondoFiesta: "luces", nombre: "Elegante rosa", estilo: "elegante", fondo: "#2a0f1e", texto: "#fbe9f0", suave: "#e0b9c8", borde: "#e6a3bd", acento: "#e6a3bd", sobreAcento: "#2a0f1e" },
+      { id: "elegante-lila", fondoFiesta: "brillos", nombre: "Elegante lila", estilo: "elegante", fondo: "#1d1530", texto: "#f1ebff", suave: "#c3b6e0", borde: "#c5b0f0", acento: "#c5b0f0", sobreAcento: "#1d1530" },
+      { id: "elegante-turquesa", fondoFiesta: "luces", nombre: "Elegante turquesa", estilo: "elegante", fondo: "#0d2226", texto: "#e8fbf8", suave: "#a9d6cf", borde: "#7fd1c7", acento: "#7fd1c7", sobreAcento: "#0d2226" },
+      { id: "moderno", fondoFiesta: "geometrico", nombre: "Moderno", estilo: "moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db", acento: "#c42a6f", sobreAcento: "#ffffff" },
+      { id: "tecnologico", fondoFiesta: "neon", nombre: "Tecnológico", estilo: "tecno", fondo: "#05070f", texto: "#e6f7ff", suave: "#8fb3c7", borde: "#22e3ff", acento: "#22e3ff", sobreAcento: "#05070f" },
     ],
   },
 ];
@@ -175,7 +178,8 @@ export function Simulador() {
   const plantillas = evento.plantillas;
   const plantilla = plantillas[nPlantilla % plantillas.length];
   // La plantilla se ve en la invitación de tus clientes (que la eligen) y de los invitados (que la reciben).
-  const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : BASE;
+  const conPlantilla = producto === "invitacion" && perfil !== "salon";
+  const tema = conPlantilla ? plantilla : BASE;
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
   const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
   // Cada tipo de evento trae sus plantillas: al cambiarlo, tus clientes arrancan por la primera.
@@ -362,7 +366,10 @@ export function Simulador() {
             className="relative flex min-h-[520px] flex-col overflow-hidden rounded-[32px]"
             style={{ backgroundColor: tema.fondo, color: tema.texto }}
           >
-            <div className="flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
+            {conPlantilla && (
+              <FondoFiesta fondo={plantilla.fondoFiesta} acento={plantilla.acento ?? color} borde={plantilla.borde} />
+            )}
+            <div className="relative flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
               {logo ? (
                 // eslint-disable-next-line @next/next/no-img-element -- imagen local del visitante (blob:), no se optimiza
                 <img src={logo} alt="" className="h-12 max-w-[160px] object-contain" />
@@ -378,7 +385,7 @@ export function Simulador() {
                 {nombreSalon}
               </p>
             </div>
-            <div className="flex flex-1 flex-col px-5 pt-4 pb-5">
+            <div className="relative flex flex-1 flex-col px-5 pt-4 pb-5">
               <span
                 className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
                 style={{ backgroundColor: `${color}1a`, color }}
