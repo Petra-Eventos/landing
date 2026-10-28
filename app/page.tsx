@@ -79,13 +79,14 @@ export default function Home() {
               <div className="max-w-[760px]">
                 <p className="type-etiqueta inline-flex items-center gap-1.5 rounded-sm border border-dorado/40 px-3 py-1.5 text-dorado">
                   <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
-                  Software para eventos
+                  Tu salón sobre la roca
                 </p>
                 <h1 id="titular" className="type-display mt-5 text-ink">
-                  Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que necesitan.</span>
+                  Que tus clientes no busquen <span className="text-dorado">nada afuera.</span>
                 </h1>
                 <p className="type-cuerpo mt-4 text-ink-muted">
-                  Invitaciones digitales, juegos para su fiesta, herramientas de gestión.
+                  Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Y si querés,
+                  organizá tu salón con Petra.
                 </p>
               </div>
             }
