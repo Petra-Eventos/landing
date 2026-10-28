@@ -85,7 +85,7 @@ export default function Home() {
                   Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que necesitan.</span>
                 </h1>
                 <p className="type-cuerpo mt-4 text-ink-muted">
-                  Probá acá mismo la invitación digital y mirala desde los tres lados.
+                  Invitaciones digitales, juegos para su fiesta, herramientas de gestión.
                 </p>
               </div>
             }
