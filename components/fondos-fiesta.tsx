@@ -138,7 +138,18 @@ function Globo({ x, y, color }: { x: number; y: number; color: string }) {
 const PAPEL_PICADO = ["#e8505b", "#f9a826", "#14b1ab", "#7c5cbf"];
 
 /** El dibujo de fondo de una plantilla. `acento` y `borde` son los colores de la plantilla. */
-export function FondoFiesta({ fondo, acento, borde }: { fondo: IdFondo; acento: string; borde: string }) {
+export function FondoFiesta({
+  fondo,
+  acento,
+  borde,
+  vivo = false,
+}: {
+  fondo: IdFondo;
+  acento: string;
+  borde: string;
+  /** Con movimiento suave (en la vista de los invitados). */
+  vivo?: boolean;
+}) {
   let dibujo: ReactNode = null;
 
   if (fondo === "luces") dibujo = <Luces colores={[acento, borde]} semilla={7} />;
@@ -292,7 +303,7 @@ export function FondoFiesta({ fondo, acento, borde }: { fondo: IdFondo; acento: 
   return (
     <svg
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 size-full"
+      className={`pointer-events-none absolute inset-0 size-full ${vivo ? "fondo-vivo" : ""}`}
       viewBox={`0 0 ${ANCHO} ${ALTO}`}
       preserveAspectRatio="xMidYMid slice"
     >

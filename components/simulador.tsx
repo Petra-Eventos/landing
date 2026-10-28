@@ -272,7 +272,12 @@ export function Simulador({
             style={{ backgroundColor: tema.fondo, color: tema.texto }}
           >
             {conPlantilla && (
-              <FondoFiesta fondo={plantilla.fondoFiesta} acento={plantilla.acento ?? color} borde={plantilla.borde} />
+              <FondoFiesta
+                fondo={plantilla.fondoFiesta}
+                acento={plantilla.acento ?? color}
+                borde={plantilla.borde}
+                vivo={vista === "invitado"}
+              />
             )}
             <div className="relative flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
               <span
@@ -312,19 +317,25 @@ function VistaInvitacion({
   evento,
   plantilla,
   sinBotones = false,
+  animada = false,
 }: {
   color: string;
   evento: Evento;
   plantilla: Plantilla;
   sinBotones?: boolean;
+  /** En la vista de los invitados: las partes entran de a una y el botón de confirmar late. */
+  animada?: boolean;
 }) {
   const acento = plantilla.acento ?? color;
   const tecno = plantilla.estilo === "tecno";
+  const entra = animada ? "invitacion-entra" : "";
   const botones = sinBotones ? null : (
     <div className="relative mt-6 flex flex-col gap-2">
       <span
-        className={`flex min-h-11 items-center justify-center text-[15px] font-semibold ${tecno ? "rounded-md font-mono" : "rounded-xl"}`}
-        style={{ backgroundColor: acento, color: plantilla.sobreAcento }}
+        className={`flex min-h-11 items-center justify-center text-[15px] font-semibold ${tecno ? "rounded-md font-mono" : "rounded-xl"} ${
+          animada ? "latido" : ""
+        }`}
+        style={{ backgroundColor: acento, color: plantilla.sobreAcento, ["--latido" as string]: acento }}
       >
         Confirmo asistencia
       </span>
@@ -340,7 +351,7 @@ function VistaInvitacion({
 
   if (plantilla.estilo === "elegante") {
     return (
-      <div className="text-center">
+      <div className={`text-center ${entra}`}>
         <p className="text-[11px] tracking-[0.2em] uppercase" style={{ color: plantilla.borde }}>
           ✦ {evento.etiqueta} ✦
         </p>
@@ -363,7 +374,7 @@ function VistaInvitacion({
 
   if (plantilla.estilo === "moderna") {
     return (
-      <div>
+      <div className={entra}>
         <p className="font-sans text-[52px] leading-none font-extrabold tracking-[-0.04em]" style={{ color: acento }}>
           {evento.sigla}
         </p>
@@ -388,7 +399,7 @@ function VistaInvitacion({
     const casamiento = evento.id === "casamiento";
     const colores = casamiento ? [acento, plantilla.borde, acento, plantilla.borde, acento] : ["#e8505b", "#f9a826", "#14b1ab", "#7c5cbf", acento];
     return (
-      <div className="relative text-center">
+      <div className={`relative text-center ${entra}`}>
         {colores.map((c, i) => (
           <span
             key={i}
@@ -419,7 +430,7 @@ function VistaInvitacion({
   if (tecno) {
     return (
       <div
-        className="-mx-2 rounded-lg px-2 py-3 font-mono"
+        className={`-mx-2 rounded-lg px-2 py-3 font-mono ${entra}`}
         style={{
           backgroundImage: `linear-gradient(${plantilla.borde}1f 1px, transparent 1px), linear-gradient(90deg, ${plantilla.borde}1f 1px, transparent 1px)`,
           backgroundSize: "18px 18px",
@@ -446,7 +457,7 @@ function VistaInvitacion({
   }
 
   return (
-    <div className="text-center">
+    <div className={`text-center ${entra}`}>
       <p className="text-[13px]" style={suave}>
         {evento.invita}
       </p>
@@ -475,7 +486,7 @@ function Pantalla({
 }) {
   if (perfil === "salon") return <InvitacionSalon color={color} evento={evento} />;
   if (perfil === "cliente") return <InvitacionCliente color={color} evento={evento} plantilla={plantilla} />;
-  return <VistaInvitacion color={color} evento={evento} plantilla={plantilla} />;
+  return <VistaInvitacion color={color} evento={evento} plantilla={plantilla} animada />;
 }
 
 /** Fila de dato para las vistas del salón. */
