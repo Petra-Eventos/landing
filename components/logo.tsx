@@ -32,9 +32,9 @@ export function Isotipo({ className, variante = "principal" }: IsotipoProps) {
 export function Firma({ variante = "principal" }: { variante?: "principal" | "clara" }) {
   return (
     <span className="inline-flex items-center gap-2">
-      <Isotipo variante={variante} className="h-9 w-auto" />
+      <Isotipo variante={variante} className="h-8 w-auto" />
       <span
-        className={`font-display text-[26px] font-semibold leading-none tracking-[-0.01em] ${
+        className={`font-display text-[23px] font-semibold leading-none tracking-[-0.01em] ${
           variante === "principal" ? "text-ink" : "text-crema-claro"
         }`}
       >

@@ -72,29 +72,38 @@
 }
 
 /* Escala tipográfica */
+/* Escala proporcional: un poco más chica en el celular y crece en pantallas grandes. */
 @utility type-display {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 40px;
-  line-height: 46px;
+  font-size: 32px;
+  line-height: 38px;
   letter-spacing: -0.02em;
   @media (width >= 48rem) {
-    font-size: 48px;
+    font-size: 40px;
+    line-height: 46px;
+  }
+  @media (width >= 80rem) {
+    font-size: 46px;
     line-height: 52px;
   }
 }
 @utility type-titulo {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 32px;
-  line-height: 38px;
+  font-size: 26px;
+  line-height: 32px;
   letter-spacing: -0.015em;
+  @media (width >= 64rem) {
+    font-size: 32px;
+    line-height: 38px;
+  }
 }
 @utility type-subtitulo {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 19px;
-  line-height: 28px;
+  font-size: 17px;
+  line-height: 26px;
 }
 @utility type-cuerpo {
   font-family: var(--font-sans);

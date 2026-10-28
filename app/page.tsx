@@ -42,9 +42,9 @@ import {
 
 const contenedor = "mx-auto w-full max-w-[1180px] px-4 md:px-8";
 const botonPrincipal =
-  "type-boton inline-flex min-h-13 items-center justify-center gap-2 rounded-md bg-azul px-7 py-3 text-[16px] text-on-azul shadow-piedra transition-colors hover:bg-azul-hover";
+  "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-azul px-6 py-3 text-[15px] text-on-azul shadow-piedra transition-colors hover:bg-azul-hover";
 const botonSecundario =
-  "type-boton inline-flex min-h-13 items-center justify-center rounded-md border border-line-strong px-7 py-3 text-[16px] text-ink transition-colors hover:border-ink";
+  "type-boton inline-flex min-h-12 items-center justify-center rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
 
 /** Etiqueta dorada en mayúsculas arriba de cada título de sección. */
 function Antetitulo({ children }: { children: React.ReactNode }) {
@@ -127,7 +127,7 @@ function Botones({ centrado = false }: { centrado?: boolean }) {
 /** Lo que se ve en la fiesta: la pantalla del salón y el celular del invitado. Dibujado, sin datos reales. */
 function Escena() {
   return (
-    <div aria-hidden="true" className="relative mx-auto w-full max-w-[520px] pb-24 sm:pb-20 lg:pb-0">
+    <div aria-hidden="true" className="relative mx-auto w-full max-w-[460px] pb-24 sm:pb-20 lg:pb-0">
       {/* Pantalla del salón */}
       <div className="rounded-xl border border-line-strong bg-noche p-2.5 shadow-piedra">
         <div className="rounded-lg bg-surface-raised p-5">
@@ -137,7 +137,7 @@ function Escena() {
               <span className="size-2 rounded-full bg-dorado" /> En vivo
             </span>
           </div>
-          <p className="mt-4 font-display text-[26px] leading-8 text-ink">Bienvenidos a los XV de Sofía</p>
+          <p className="mt-3 font-display text-[22px] leading-7 text-ink">Bienvenidos a los XV de Sofía</p>
           <div className="mt-4 grid grid-cols-4 gap-2">
             {["from-azul/50 to-azul-soft", "from-dorado/40 to-dorado-soft", "from-azul-soft to-azul/30", "from-dorado-soft to-dorado/30", "from-azul/30 to-dorado-soft", "from-dorado/30 to-azul-soft", "from-azul-soft to-azul/50", "from-dorado/40 to-azul-soft"].map((g) => (
               <span key={g} className={`aspect-square rounded-md bg-linear-to-br ${g}`} />
@@ -170,11 +170,11 @@ export default function Home() {
     <>
       {/* Encabezado fijo */}
       <header className="sticky top-0 z-20 border-b border-line bg-surface/85 backdrop-blur">
-        <div className={`${contenedor} flex min-h-16 items-center justify-between gap-3`}>
+        <div className={`${contenedor} flex min-h-15 items-center justify-between gap-3`}>
           <a href="#" aria-label="Petra, inicio" className="rounded-md">
             <Firma variante="clara" />
           </a>
-          <nav aria-label="Secciones" className="hidden items-center gap-7 text-[15px] text-ink-muted lg:flex">
+          <nav aria-label="Secciones" className="hidden items-center gap-7 text-[14px] text-ink-muted lg:flex">
             <a href="#salon" className="hover:text-ink">
               Para tu salón
             </a>
@@ -191,13 +191,13 @@ export default function Home() {
           <div className="flex items-center gap-1 sm:gap-3">
             <a
               href={URL_ENTRAR}
-              className="type-boton inline-flex min-h-11 items-center rounded-md px-3 text-ink underline-offset-4 hover:underline"
+              className="type-boton inline-flex min-h-10 items-center rounded-md px-3 text-[14px] text-ink underline-offset-4 hover:underline"
             >
               Entrar
             </a>
             <a
               href={URL_REGISTRARME}
-              className="type-boton inline-flex min-h-11 items-center rounded-md bg-azul px-4 text-on-azul transition-colors hover:bg-azul-hover"
+              className="type-boton inline-flex min-h-10 items-center rounded-md bg-azul px-4 text-[14px] text-on-azul transition-colors hover:bg-azul-hover"
             >
               Crear cuenta
             </a>
@@ -208,7 +208,7 @@ export default function Home() {
       <main>
         {/* Hero */}
         <section
-          className={`${contenedor} grid items-center gap-14 pt-14 pb-20 md:pt-20 lg:grid-cols-[1.05fr_1fr] lg:pb-28`}
+          className={`${contenedor} grid items-center gap-10 pt-10 pb-16 md:pt-14 lg:grid-cols-[1.1fr_1fr] lg:pb-20`}
           aria-labelledby="titular"
         >
           <div>
@@ -216,17 +216,17 @@ export default function Home() {
               <Sparkles size={14} strokeWidth={2} aria-hidden="true" />
               Plataforma para salones de eventos
             </p>
-            <h1 id="titular" className="type-display mt-6 text-ink lg:text-[56px] lg:leading-[62px]">
+            <h1 id="titular" className="type-display mt-6 text-ink">
               Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
             </h1>
-            <p className="type-subtitulo mt-6 max-w-[540px] font-normal text-ink-muted">
+            <p className="type-subtitulo mt-5 max-w-[520px] font-normal text-ink-muted">
               Invitación, confirmaciones, mesas y fotos en pantalla, con la marca de tu salón. Tu salón, el
               protagonista de cada fiesta.
             </p>
-            <div className="mt-9">
+            <div className="mt-8">
               <Botones />
             </div>
-            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-ink-muted">
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-ink-muted">
               {CONFIANZA.map(({ icono: Icono, texto }) => (
                 <li key={texto} className="inline-flex items-center gap-2">
                   <Icono size={16} strokeWidth={2} className="text-dorado" aria-hidden="true" />
@@ -240,11 +240,11 @@ export default function Home() {
 
         {/* Tipos de fiesta */}
         <section className="border-y border-line bg-noche/60" aria-labelledby="eventos">
-          <div className={`${contenedor} flex flex-col items-center gap-4 py-8 lg:flex-row lg:justify-between`}>
+          <div className={`${contenedor} flex flex-col items-center gap-4 py-6 lg:flex-row lg:justify-between`}>
             <h2 id="eventos" className="type-etiqueta shrink-0 text-ink-muted">
               Petra está presente en
             </h2>
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-center font-display text-[20px] leading-7 text-ink sm:flex sm:flex-wrap sm:justify-center sm:gap-x-8 sm:text-[22px]">
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-center font-display text-[18px] leading-7 text-ink sm:flex sm:flex-wrap sm:justify-center sm:gap-x-8 sm:text-[19px]">
               {EVENTOS.map((evento) => (
                 <li key={evento}>{evento}</li>
               ))}
@@ -253,18 +253,18 @@ export default function Home() {
         </section>
 
         {/* Para el salón */}
-        <section id="salon" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-salon">
+        <section id="salon" className={`${contenedor} scroll-mt-20 py-16 lg:py-20`} aria-labelledby="titulo-salon">
           <div className="max-w-[680px]">
             <Antetitulo>Para tu salón</Antetitulo>
-            <h2 id="titulo-salon" className="type-titulo mt-3 text-ink lg:text-[40px] lg:leading-[48px]">
+            <h2 id="titulo-salon" className="type-titulo mt-3 text-ink">
               Una plataforma pensada para el negocio de las fiestas
             </h2>
           </div>
-          <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
+          <ul className="mt-10 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
             {PARA_EL_SALON.map(({ icono: Icono, titulo, texto }) => (
-              <li key={titulo} className="bg-surface-raised p-7 lg:p-9">
-                <Icono size={28} strokeWidth={1.6} className="text-dorado" aria-hidden="true" />
-                <h3 className="type-subtitulo mt-6 text-ink">{titulo}</h3>
+              <li key={titulo} className="bg-surface-raised p-6 lg:p-7">
+                <Icono size={24} strokeWidth={1.6} className="text-dorado" aria-hidden="true" />
+                <h3 className="type-subtitulo mt-4 text-ink">{titulo}</h3>
                 <p className="type-cuerpo mt-2 text-ink-muted">{texto}</p>
               </li>
             ))}
@@ -274,18 +274,18 @@ export default function Home() {
         {/* Herramientas */}
         <section
           id="herramientas"
-          className="scroll-mt-20 border-y border-line bg-noche/60 py-20 lg:py-28"
+          className="scroll-mt-20 border-y border-line bg-noche/60 py-16 lg:py-20"
           aria-labelledby="titulo-herramientas"
         >
           <div className={contenedor}>
             <div className="max-w-[680px]">
               <Antetitulo>Herramientas</Antetitulo>
-              <h2 id="titulo-herramientas" className="type-titulo mt-3 text-ink lg:text-[40px] lg:leading-[48px]">
+              <h2 id="titulo-herramientas" className="type-titulo mt-3 text-ink">
                 Todo lo que la fiesta necesita, con tu marca
               </h2>
             </div>
 
-            <div className="mt-12 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+            <div className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-12">
               <div>
                 <h3 className="type-subtitulo text-ink">Para tus invitados</h3>
                 <p className="type-cuerpo mt-1 text-ink-muted">Desde el celular, sin bajar ninguna app.</p>
@@ -329,7 +329,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-10">
               <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
                 Probalas gratis
                 <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
@@ -339,17 +339,17 @@ export default function Home() {
         </section>
 
         {/* Cómo funciona */}
-        <section id="como" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-como">
+        <section id="como" className={`${contenedor} scroll-mt-20 py-16 lg:py-20`} aria-labelledby="titulo-como">
           <div className="max-w-[680px]">
             <Antetitulo>Cómo funciona</Antetitulo>
-            <h2 id="titulo-como" className="type-titulo mt-3 text-ink lg:text-[40px] lg:leading-[48px]">
+            <h2 id="titulo-como" className="type-titulo mt-3 text-ink">
               Tu salón, listo en tres pasos
             </h2>
           </div>
-          <ol className="mt-12 grid gap-8 md:grid-cols-3">
+          <ol className="mt-10 grid gap-8 md:grid-cols-3">
             {PASOS.map((paso, i) => (
               <li key={paso.titulo} className="border-t-2 border-dorado/60 pt-6">
-                <span className="font-display text-[44px] leading-none text-dorado">0{i + 1}</span>
+                <span className="font-display text-[34px] leading-none text-dorado">0{i + 1}</span>
                 <h3 className="type-subtitulo mt-4 text-ink">{paso.titulo}</h3>
                 <p className="type-cuerpo mt-1 text-ink-muted">{paso.texto}</p>
               </li>
@@ -358,14 +358,14 @@ export default function Home() {
         </section>
 
         {/* Socios */}
-        <section id="socios" className={`${contenedor} scroll-mt-20 pb-20 lg:pb-28`} aria-labelledby="titulo-socios">
-          <div className="grid items-center gap-8 rounded-xl border border-dorado/50 bg-linear-to-br from-dorado-soft to-surface-raised p-7 shadow-piedra sm:p-12 md:grid-cols-[1fr_auto]">
+        <section id="socios" className={`${contenedor} scroll-mt-20 pb-16 lg:pb-20`} aria-labelledby="titulo-socios">
+          <div className="grid items-center gap-8 rounded-xl border border-dorado/50 bg-linear-to-br from-dorado-soft to-surface-raised p-6 shadow-piedra sm:p-10 md:grid-cols-[1fr_auto]">
             <div>
               <p className="type-etiqueta inline-flex items-center gap-1.5 text-dorado">
                 <Crown size={14} strokeWidth={2} aria-hidden="true" />
                 Socios de Petra
               </p>
-              <h2 id="titulo-socios" className="type-titulo mt-3 text-ink lg:text-[40px] lg:leading-[48px]">
+              <h2 id="titulo-socios" className="type-titulo mt-3 text-ink">
                 Sé parte de los socios de Petra
               </h2>
               <p className="type-subtitulo mt-4 max-w-[580px] font-normal text-ink-muted">
@@ -384,7 +384,7 @@ export default function Home() {
               href={URL_SOCIOS}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-boton inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-md bg-dorado px-7 py-3 text-[16px] text-on-dorado transition-colors hover:bg-dorado-hover md:w-auto"
+              className="type-boton inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-dorado px-6 py-3 text-[15px] text-on-dorado transition-colors hover:bg-dorado-hover md:w-auto"
             >
               Quiero ser socio
               <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
@@ -395,18 +395,18 @@ export default function Home() {
         {/* Creador */}
         <section className="border-t border-line" aria-label="Quién creó Petra">
           <figure
-            className={`${contenedor} flex max-w-[860px] flex-col items-center gap-6 py-16 text-center sm:flex-row sm:gap-10 sm:text-left`}
+            className={`${contenedor} flex max-w-[820px] flex-col items-center gap-6 py-12 text-center sm:flex-row sm:gap-10 sm:text-left`}
           >
             <Image
               src="/rodrigo-torres.jpg"
               alt="Rodrigo Torres, creador de Petra"
               width={403}
               height={449}
-              sizes="144px"
-              className="size-32 shrink-0 rounded-full border-2 border-dorado object-cover object-top shadow-piedra sm:size-36"
+              sizes="112px"
+              className="size-24 shrink-0 rounded-full border-2 border-dorado object-cover object-top shadow-piedra sm:size-28"
             />
             <div>
-              <blockquote className="font-display text-[24px] leading-8 text-ink sm:text-[28px] sm:leading-9">
+              <blockquote className="font-display text-[21px] leading-7 text-ink sm:text-[24px] sm:leading-8">
                 “Creé Petra para que cada salón pueda ofrecer una experiencia completa.”
               </blockquote>
               <figcaption className="mt-4">
@@ -419,13 +419,13 @@ export default function Home() {
 
         {/* Cierre */}
         <section className="border-t border-line bg-noche/60" aria-labelledby="titulo-cierre">
-          <div className={`${contenedor} flex flex-col items-center py-20 text-center lg:py-24`}>
+          <div className={`${contenedor} flex flex-col items-center py-16 text-center lg:py-20`}>
             <Piedras variante="clara" className="mb-6 h-auto w-14" />
-            <h2 id="titulo-cierre" className="type-titulo max-w-[640px] text-ink lg:text-[40px] lg:leading-[48px]">
+            <h2 id="titulo-cierre" className="type-titulo max-w-[640px] text-ink">
               Que tu salón sea el que todos recuerdan
             </h2>
             <p className="type-subtitulo mt-4 font-normal text-ink-muted">Gratis para empezar. Sin tarjeta.</p>
-            <div className="mt-9">
+            <div className="mt-8">
               <Botones centrado />
             </div>
             <a
