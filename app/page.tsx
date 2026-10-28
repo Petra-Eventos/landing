@@ -1,33 +1,19 @@
 import {
   ArrowRight,
-  BellRing,
-  Brain,
-  Camera,
   Check,
-  CircleDot,
-  Clock,
-  Film,
-  Frame,
-  Gift,
-  Grid3x3,
-  Images,
   MessageCircle,
-  Monitor,
-  Music,
-  PenLine,
   Quote,
   Sparkles,
   Star,
   Smartphone,
   Store,
   UserRound,
-  Video,
-  Vote,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Firma } from "@/components/logo";
 import { Simulador } from "@/components/simulador";
-import { OTROS, PLANES, type Plan } from "@/lib/catalogo";
+import { TiendaApps } from "@/components/tienda-apps";
+import { PLANES } from "@/lib/catalogo";
 import { URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_SOCIOS, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
 import { RESENAS, SALONES } from "@/lib/resenas";
 
@@ -37,37 +23,12 @@ const botonPrincipal =
 const botonSecundario =
   "type-boton inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-line-strong px-6 py-3 text-[15px] text-ink transition-colors hover:border-ink";
 
-const ICONOS: Record<string, LucideIcon> = {
-  camara: Camera,
-  pedido_canciones: Music,
-  libro_firmas: PenLine,
-  ruleta: CircleDot,
-  cronograma: Clock,
-  trivia: Brain,
-  votaciones: Vote,
-  historia_fotos: Images,
-  regalos: Gift,
-  muro_fotos: Monitor,
-  bingo: Grid3x3,
-  videosaludos: Video,
-  bienvenida_pantalla: Sparkles,
-  marco_historias: Frame,
-  aviso_padres: BellRing,
-  video_resumen: Film,
-};
-
 // Los tres perfiles de cada producto (se configuran desde el sistema).
 const PERFILES_LANDING: { icono: LucideIcon; nombre: string; texto: string }[] = [
   { icono: Store, nombre: "Tu staff", texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel." },
   { icono: UserRound, nombre: "Tus clientes", texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas." },
   { icono: Smartphone, nombre: "Los invitados", texto: "Lo usan desde el celular, sin bajar ninguna app." },
 ];
-
-const COLOR_PLAN: Record<Plan, string> = {
-  Básico: "text-azul-text",
-  Salón: "text-dorado",
-  Completo: "text-oliva-text",
-};
 
 /** Título de cada sección: antetítulo dorado, título y una línea. */
 function Encabezado({ id, ante, titulo, texto }: { id: string; ante: string; titulo: string; texto?: string }) {
@@ -174,33 +135,36 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 2. Todos los productos */}
-        <section className="border-y border-line bg-noche/60 py-16 lg:py-20" aria-labelledby="titulo-todos">
-          <div className={contenedor}>
-            <Encabezado
-              id="titulo-todos"
-              ante="Y mucho más"
-              titulo="Todo lo que tu salón puede ofrecer"
-              texto="Herramientas para cada momento de la fiesta. Se suman a tu plan a medida que salen."
-            />
-            <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {OTROS.map((p) => {
-                const Icono = ICONOS[p.id] ?? Sparkles;
-                return (
-                  <li key={p.id} className="flex flex-col rounded-lg border border-line bg-surface-raised p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="flex size-10 items-center justify-center rounded-md bg-azul-soft text-azul-text">
-                        <Icono size={20} strokeWidth={1.7} aria-hidden="true" />
-                      </span>
-                      <span className={`type-etiqueta text-[10px] ${COLOR_PLAN[p.plan]}`}>Plan {p.plan}</span>
-                    </div>
-                    <h3 className="type-boton mt-4 text-ink">{p.nombre}</h3>
-                    <p className="mt-1 text-[14px] leading-5 text-ink-muted">{p.texto}</p>
-                    <p className="mt-auto pt-3 text-[12px] text-ink-muted">Próximamente</p>
-                  </li>
-                );
-              })}
-            </ul>
+        {/* 2. Todas las apps, como una tienda: colorida a propósito */}
+        <section
+          id="apps"
+          className="relative scroll-mt-20 overflow-hidden border-y border-line bg-noche/60 py-16 lg:py-20"
+          aria-labelledby="titulo-todos"
+        >
+          {/* Luces de colores de fondo (decorativas). */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <span className="absolute -top-24 -left-24 size-80 rounded-full bg-[#ff4fd8]/20 blur-3xl" />
+            <span className="absolute top-1/3 -right-20 size-96 rounded-full bg-[#22c3e6]/20 blur-3xl" />
+            <span className="absolute -bottom-24 left-1/4 size-80 rounded-full bg-[#f5c518]/15 blur-3xl" />
+            <span className="absolute bottom-10 -left-10 size-64 rounded-full bg-[#8e2de2]/25 blur-3xl" />
+          </div>
+          <div className={`${contenedor} relative`}>
+            <div className="max-w-[720px]">
+              <p className="type-etiqueta text-dorado">Webapps para invitados</p>
+              <h2 id="titulo-todos" className="type-titulo mt-3 text-ink">
+                Conocé las{" "}
+                <span className="bg-linear-to-r from-[#ff7ac6] via-[#ffd36e] to-[#5ee7ff] bg-clip-text text-transparent">
+                  más de 30 webapps
+                </span>{" "}
+                que podés ofrecer
+              </h2>
+              <p className="type-cuerpo mt-3 text-ink-muted">
+                Se abren desde el celular, sin bajar nada, con la marca de tu salón. Vos elegís cuáles sumar a cada fiesta.
+              </p>
+            </div>
+            <div className="mt-8">
+              <TiendaApps />
+            </div>
           </div>
         </section>
 
