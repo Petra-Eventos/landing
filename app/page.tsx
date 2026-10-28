@@ -58,9 +58,9 @@ const ICONOS: Record<string, LucideIcon> = {
 
 // Los tres perfiles de cada producto (se configuran desde el sistema).
 const PERFILES_LANDING: { icono: LucideIcon; nombre: string; texto: string }[] = [
-  { icono: Store, nombre: "Staff", texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel." },
-  { icono: UserRound, nombre: "Anfitriones", texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas." },
-  { icono: Smartphone, nombre: "Invitados", texto: "Lo usan desde el celular, sin bajar ninguna app." },
+  { icono: Store, nombre: "Tu staff", texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel." },
+  { icono: UserRound, nombre: "Tus clientes", texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas." },
+  { icono: Smartphone, nombre: "Los invitados", texto: "Lo usan desde el celular, sin bajar ninguna app." },
 ];
 
 const COLOR_PLAN: Record<Plan, string> = {

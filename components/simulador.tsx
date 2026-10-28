@@ -57,7 +57,7 @@ type Evento = {
   plantillas: Plantilla[];
 };
 
-// El staff elige el tipo de evento; cada tipo trae sus propias plantillas para los anfitriones.
+// Tu staff elige el tipo de evento; cada tipo trae sus propias plantillas para tus clientes.
 const EVENTOS: Evento[] = [
   {
     id: "casamiento",
@@ -134,9 +134,9 @@ const BASE = { fondo: "#fbf8f3", texto: "#1b2d52", suave: "#56627a" };
 
 // Las tres miradas de cada producto: el salón lo asigna, el cliente lo configura y el invitado lo usa.
 const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
-  { id: "salon", nombre: "Staff", texto: "Eligen el tipo de evento y siguen todo desde el panel." },
-  { id: "cliente", nombre: "Anfitriones", texto: "Lo configuran desde un link, sin crearse una cuenta." },
-  { id: "invitado", nombre: "Invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
+  { id: "salon", nombre: "Tu staff", texto: "Eligen el tipo de evento y siguen todo desde el panel." },
+  { id: "cliente", nombre: "Tus clientes", texto: "Lo configuran desde un link, sin crearse una cuenta." },
+  { id: "invitado", nombre: "Los invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
 ];
 
 const ICONOS: Record<string, LucideIcon> = {
@@ -151,7 +151,7 @@ const ICONOS: Record<string, LucideIcon> = {
  */
 export function Simulador() {
   const [producto, setProducto] = useState(DESTACADOS[0].id);
-  const [perfil, setPerfil] = useState<Perfil>("invitado");
+  const [perfil, setPerfil] = useState<Perfil>("salon");
   const [salon, setSalon] = useState("");
   const [color, setColor] = useState(COLORES[0].valor);
   const [logo, setLogo] = useState<string | null>(null);
@@ -159,6 +159,7 @@ export function Simulador() {
   const [nPlantilla, setNPlantilla] = useState(0);
   const idNombre = useId();
   const idLogo = useId();
+  const idVistas = useId();
 
   // Libera la imagen anterior cuando se cambia o se va de la página.
   useEffect(() => {
@@ -169,21 +170,21 @@ export function Simulador() {
 
   const nombreSalon = salon.trim() || "Tu salón";
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
-  const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
+  const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[0];
   const evento = EVENTOS.find((e) => e.id === idEvento) ?? EVENTOS[2];
   const plantillas = evento.plantillas;
   const plantilla = plantillas[nPlantilla % plantillas.length];
-  // La plantilla se ve en la invitación de los anfitriones (que la eligen) y de los invitados (que la reciben).
+  // La plantilla se ve en la invitación de tus clientes (que la eligen) y de los invitados (que la reciben).
   const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : BASE;
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
   const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
-  // Cada tipo de evento trae sus plantillas: al cambiarlo, los anfitriones arrancan por la primera.
+  // Cada tipo de evento trae sus plantillas: al cambiarlo, tus clientes arrancan por la primera.
   const siguienteEvento = () => {
     const i = EVENTOS.findIndex((e) => e.id === idEvento);
     setIdEvento(EVENTOS[(i + 1) % EVENTOS.length].id);
     setNPlantilla(0);
   };
-  // El círculo al lado del celular: el staff cambia el tipo de evento y los anfitriones, la plantilla.
+  // El círculo al lado del celular: tu staff cambia el tipo de evento y tus clientes, la plantilla.
   const circulo = puedePersonalizar
     ? {
         accion: siguientePlantilla,
@@ -313,14 +314,17 @@ export function Simulador() {
 
       {/* Celular */}
       <div className="mx-auto w-[280px] sm:w-[300px]">
-        <div role="group" aria-label="Ver como" className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
+        <p id={idVistas} className="type-etiqueta mb-2 text-center text-dorado">
+          Seleccioná la vista
+        </p>
+        <div role="group" aria-labelledby={idVistas} className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
           {PERFILES.map((p) => (
             <button
               key={p.id}
               type="button"
               aria-pressed={perfil === p.id}
               onClick={() => setPerfil(p.id)}
-              className={`min-h-10 rounded-[8px] text-[14px] font-semibold transition-colors ${
+              className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
                 perfil === p.id ? "bg-dorado text-on-dorado" : "text-ink-muted hover:text-ink"
               }`}
             >
@@ -379,7 +383,7 @@ export function Simulador() {
                 className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
                 style={{ backgroundColor: `${color}1a`, color }}
               >
-                Vista {perfil === "salon" ? "del staff" : perfil === "cliente" ? "de anfitriones" : "de invitados"}
+                Vista {perfil === "salon" ? "de tu staff" : perfil === "cliente" ? "de tus clientes" : "de los invitados"}
               </span>
               <Pantalla producto={producto} perfil={perfil} color={color} evento={evento} plantilla={plantilla} />
               <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
@@ -395,7 +399,7 @@ export function Simulador() {
   );
 }
 
-/** La invitación que recibe el invitado, con la plantilla que eligieron los anfitriones. */
+/** La invitación que recibe el invitado, con la plantilla que eligieron tus clientes. */
 function VistaInvitacion({
   color,
   evento,
@@ -702,15 +706,15 @@ function InvitacionSalon({ color, evento }: { color: string; evento: Evento }) {
       <div className="mt-4 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
         <Dato titulo="Tipo de evento" valor={evento.nombre} color={color} />
         <Dato titulo="Plantillas" valor={`${evento.plantillas.length} para elegir`} color={color} />
-        <Dato titulo="Link de anfitriones" valor="Enviado" color={color} />
+        <Dato titulo="Link de tus clientes" valor="Enviado" color={color} />
         <Dato titulo="Confirmaron" valor="86 de 120" color={color} />
       </div>
-      <BotonColor color={color}>Copiar link para anfitriones</BotonColor>
+      <BotonColor color={color}>Copiar link para tus clientes</BotonColor>
     </div>
   );
 }
 
-/** Los anfitriones ven su invitación tal como va a salir, con la plantilla elegida, y la manda. */
+/** Tus clientes ven su invitación tal como va a salir, con la plantilla elegida, y la mandan. */
 function InvitacionCliente({ color, evento, plantilla }: { color: string; evento: Evento; plantilla: Plantilla }) {
   return (
     <div>

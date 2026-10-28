@@ -14,14 +14,14 @@ export const DESTACADOS: Producto[] = [
   {
     id: "lista_invitados",
     nombre: "Lista de invitados",
-    texto: "Los anfitriones cargan a sus invitados y ven quién confirma, desde un link.",
+    texto: "Tus clientes cargan a sus invitados y ven quién confirma, desde un link.",
     plan: "Básico",
     ya: true,
   },
   {
     id: "armado_mesas",
     nombre: "Armado de mesas",
-    texto: "Los anfitriones arman las mesas de su fiesta desde el celular.",
+    texto: "Tus clientes arman las mesas de su fiesta desde el celular.",
     plan: "Básico",
     ya: true,
   },
@@ -62,7 +62,7 @@ export const PLANES: PlanLanding[] = [
   {
     nombre: "Básico",
     lema: "Lo esencial para que cada fiesta salga redonda.",
-    trae: ["Invitación, lista de invitados y mesas", "Link para los anfitriones", "Cobros y balance de cada fiesta"],
+    trae: ["Invitación, lista de invitados y mesas", "Link para tus clientes", "Cobros y balance de cada fiesta"],
   },
   {
     nombre: "Salón",
