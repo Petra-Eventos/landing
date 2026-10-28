@@ -17,13 +17,13 @@ const PERFILES: { icono: LucideIcon; color: string; nombre: string; texto: strin
     icono: UserRound,
     color: "bg-dorado text-on-dorado",
     nombre: "Tus clientes",
-    texto: "Quienes festejan lo configuran desde un link: sin cuenta y sin contraseñas.",
+    texto: "Organizan su fiesta desde su celular.",
   },
   {
     icono: Smartphone,
     color: "bg-oliva text-on-dorado",
     nombre: "Los invitados",
-    texto: "Lo usan desde el celular, sin bajar ninguna app.",
+    texto: "Disfrutan de la fiesta y tu salón se luce genial.",
   },
 ];
 
