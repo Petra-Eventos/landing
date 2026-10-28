@@ -11,7 +11,7 @@ const PERFILES: { icono: LucideIcon; color: string; nombre: string; texto: strin
     icono: Store,
     color: "bg-azul text-on-azul",
     nombre: "Tu staff",
-    texto: "Tu equipo asigna el producto a la fiesta y sigue todo desde el panel.",
+    texto: "Coordinación asigna el producto a la fiesta y sigue todo desde el panel.",
   },
   {
     icono: UserRound,
