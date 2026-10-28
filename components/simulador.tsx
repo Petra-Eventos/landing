@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { ArrowRight, Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, X } from "lucide-react";
+import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { DESTACADOS } from "@/lib/catalogo";
 
@@ -56,7 +56,6 @@ export function Simulador() {
   const [color, setColor] = useState(COLORES[0].valor);
   const [logo, setLogo] = useState<string | null>(null);
   const [idPlantilla, setIdPlantilla] = useState<IdPlantilla>("clasica");
-  const [eligiendo, setEligiendo] = useState(false);
   const idNombre = useId();
   const idLogo = useId();
 
@@ -72,8 +71,13 @@ export function Simulador() {
   const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
   const plantilla = PLANTILLAS.find((p) => p.id === idPlantilla) ?? PLANTILLAS[0];
   // La plantilla cambia la pantalla del invitado; el resto de las pantallas usan la clásica.
-  const tema = producto === "invitacion" && perfil === "invitado" ? plantilla : PLANTILLAS[0];
+  // La plantilla se ve en la invitación del cliente (que la elige) y del invitado (que la recibe).
+  const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : PLANTILLAS[0];
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
+  const siguientePlantilla = () => {
+    const i = PLANTILLAS.findIndex((p) => p.id === idPlantilla);
+    setIdPlantilla(PLANTILLAS[(i + 1) % PLANTILLAS.length].id);
+  };
 
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[1fr_auto] lg:gap-14">
@@ -202,63 +206,27 @@ export function Simulador() {
         <p className="mt-2 mb-4 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
           {miradaActual.texto}
         </p>
-        {puedePersonalizar && (
-          <div className="mb-4">
-            <button
-              type="button"
-              aria-expanded={eligiendo}
-              onClick={() => setEligiendo((v) => !v)}
-              className="type-boton inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-dorado bg-dorado-soft px-4 text-[14px] text-dorado transition-colors hover:bg-dorado hover:text-on-dorado"
-            >
-              <Palette size={18} strokeWidth={1.8} aria-hidden="true" />
-              Personalizá tu invitación
-            </button>
-            {eligiendo && (
-              <div className="mt-3 rounded-lg border border-line bg-surface-raised p-3">
-                <p className="text-[13px] text-ink-muted">Elegí una plantilla:</p>
-                <div role="group" aria-label="Plantillas de invitación" className="mt-2 grid grid-cols-5 gap-2">
-                  {PLANTILLAS.map((p) => (
-                    <button
-                      key={p.id}
-                      type="button"
-                      aria-pressed={idPlantilla === p.id}
-                      onClick={() => setIdPlantilla(p.id)}
-                      className="flex flex-col items-center gap-1"
-                    >
-                      <span
-                        className={`flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-md border-2 ${
-                          idPlantilla === p.id ? "border-dorado" : "border-transparent"
-                        }`}
-                        style={{ backgroundColor: p.fondo }}
-                      >
-                        <span className="h-1 w-5 rounded-full" style={{ backgroundColor: p.texto }} />
-                        <span className="h-1 w-3 rounded-full" style={{ backgroundColor: color }} />
-                      </span>
-                      <span className={`text-[11px] ${idPlantilla === p.id ? "text-dorado" : "text-ink-muted"}`}>
-                        {p.nombre}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setPerfil("invitado");
-                    setEligiendo(false);
-                  }}
-                  className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-md text-[13px] font-semibold text-dorado underline-offset-4 hover:underline"
-                >
-                  Ver cómo la reciben tus invitados
-                  <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
         <p className="sr-only">
           Vista previa de {actual.nombre} para {nombreSalon}, como la ve {miradaActual.nombre.toLowerCase()}
           {producto === "invitacion" ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
+        <div className="relative">
+          {puedePersonalizar && (
+            <div className="absolute top-40 -right-7 z-10 flex flex-col items-center gap-1.5 sm:-right-9">
+              <button
+                type="button"
+                onClick={siguientePlantilla}
+                aria-label={`Cambiar plantilla. Ahora: ${plantilla.nombre}`}
+                title="Cambiar plantilla"
+                className="flex size-14 items-center justify-center rounded-full border-2 border-dorado bg-dorado text-on-dorado shadow-piedra transition-transform hover:scale-105 active:scale-95"
+              >
+                <Palette size={24} strokeWidth={1.8} aria-hidden="true" />
+              </button>
+              <span className="rounded-full bg-surface-raised px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-dorado shadow-piedra">
+                {plantilla.nombre}
+              </span>
+            </div>
+          )}
         <div aria-hidden="true" className="rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
           {/* La pantalla del invitado va en claro: así la ven los invitados del salón (colores fijos a propósito). */}
           <div
@@ -295,14 +263,26 @@ export function Simulador() {
             </div>
           </div>
         </div>
+        </div>
+        {puedePersonalizar && (
+          <p className="mt-3 text-center text-[12px] text-ink-muted">Tocá el círculo para cambiar la plantilla.</p>
+        )}
       </div>
     </div>
   );
 }
 
 /** La invitación que recibe el invitado, con la plantilla que eligió el cliente. */
-function VistaInvitacion({ color, plantilla }: { color: string; plantilla: Plantilla }) {
-  const botones = (
+function VistaInvitacion({
+  color,
+  plantilla,
+  sinBotones = false,
+}: {
+  color: string;
+  plantilla: Plantilla;
+  sinBotones?: boolean;
+}) {
+  const botones = sinBotones ? null : (
     <div className="relative mt-6 flex flex-col gap-2">
       <span
         className="flex min-h-11 items-center justify-center rounded-xl text-[15px] font-semibold text-white"
@@ -523,7 +503,7 @@ function Pantalla({
 }) {
   if (producto === "invitacion") {
     if (perfil === "salon") return <InvitacionSalon color={color} />;
-    if (perfil === "cliente") return <InvitacionCliente color={color} plantilla={plantilla.nombre} />;
+    if (perfil === "cliente") return <InvitacionCliente color={color} plantilla={plantilla} />;
     return <VistaInvitacion color={color} plantilla={plantilla} />;
   }
   if (producto === "lista_invitados") {
@@ -575,23 +555,14 @@ function InvitacionSalon({ color }: { color: string }) {
   );
 }
 
-function InvitacionCliente({ color, plantilla }: { color: string; plantilla: string }) {
-  const campos = [
-    ["Plantilla", plantilla],
-    ["Quién festeja", "Sofía"],
-    ["Fecha y hora", "Sábado 14 · 21:30"],
-    ["Mensaje", "¡Te espero para festejar!"],
-  ];
+/** El cliente ve su invitación tal como va a salir, con la plantilla elegida, y la manda. */
+function InvitacionCliente({ color, plantilla }: { color: string; plantilla: Plantilla }) {
   return (
     <div>
-      <p className="font-display text-[20px] leading-7">Armá tu invitación</p>
-      <div className="mt-3 flex flex-col gap-2">
-        {campos.map(([etiqueta, valor]) => (
-          <div key={etiqueta}>
-            <p className="text-[11px] font-semibold text-[#56627a]">{etiqueta}</p>
-            <p className="mt-0.5 rounded-lg border border-[#c9bfae] bg-white px-3 py-2 text-[13px]">{valor}</p>
-          </div>
-        ))}
+      <VistaInvitacion color={color} plantilla={plantilla} sinBotones />
+      <div className="mt-5 flex items-center justify-between rounded-lg border px-3 py-2 text-[12px]" style={{ borderColor: plantilla.borde }}>
+        <span style={{ color: plantilla.suave }}>Plantilla</span>
+        <span className="font-semibold">{plantilla.nombre}</span>
       </div>
       <BotonColor color={color}>Enviar por WhatsApp</BotonColor>
     </div>
