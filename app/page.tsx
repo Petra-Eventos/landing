@@ -170,7 +170,7 @@ export default function Home() {
                 </h1>
                 <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
                   Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Y si querés,
-                  organizá tu salón con Petra.
+                  gestioná tu salón con Petra.
                 </p>
               </div>
             }
@@ -303,7 +303,7 @@ export default function Home() {
                 ante="Y si querés"
                 titulo={
                   <>
-                    Organizá tu salón <span className="text-dorado">con Petra.</span>
+                    Gestioná tu salón <span className="text-dorado">con Petra.</span>
                   </>
                 }
                 texto="Las fiestas, los cobros y tu equipo, ordenados en un solo lugar."
