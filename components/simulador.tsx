@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { Check, ImagePlus, Mail, LayoutGrid, ListChecks, X } from "lucide-react";
+import { ArrowRight, Check, ImagePlus, Mail, LayoutGrid, ListChecks, Palette, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { DESTACADOS } from "@/lib/catalogo";
 
@@ -15,6 +15,22 @@ const COLORES = [
 ];
 
 type Perfil = "salon" | "cliente" | "invitado";
+
+type IdPlantilla = "clasica" | "elegante" | "floral" | "moderna" | "fiesta";
+
+/**
+ * Plantillas de la invitación. El cliente elige una y es la que ven sus invitados.
+ * Los colores de cada plantilla son datos del diseño (no tokens de Petra); el acento es el color del salón.
+ */
+const PLANTILLAS: { id: IdPlantilla; nombre: string; fondo: string; texto: string; suave: string; borde: string }[] = [
+  { id: "clasica", nombre: "Clásica", fondo: "#fbf8f3", texto: "#1b2d52", suave: "#56627a", borde: "#c9bfae" },
+  { id: "elegante", nombre: "Elegante", fondo: "#101a30", texto: "#f3eee6", suave: "#b9c1d4", borde: "#d4b06a" },
+  { id: "floral", nombre: "Floral", fondo: "#fcf0f2", texto: "#5a2a3a", suave: "#8a5a68", borde: "#e8c3cc" },
+  { id: "moderna", nombre: "Moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db" },
+  { id: "fiesta", nombre: "Fiesta", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8" },
+];
+
+type Plantilla = (typeof PLANTILLAS)[number];
 
 // Las tres miradas de cada producto: el salón lo asigna, el cliente lo configura y el invitado lo usa.
 const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
@@ -39,6 +55,8 @@ export function Simulador() {
   const [salon, setSalon] = useState("");
   const [color, setColor] = useState(COLORES[0].valor);
   const [logo, setLogo] = useState<string | null>(null);
+  const [idPlantilla, setIdPlantilla] = useState<IdPlantilla>("clasica");
+  const [eligiendo, setEligiendo] = useState(false);
   const idNombre = useId();
   const idLogo = useId();
 
@@ -52,6 +70,10 @@ export function Simulador() {
   const nombreSalon = salon.trim() || "Tu salón";
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
   const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
+  const plantilla = PLANTILLAS.find((p) => p.id === idPlantilla) ?? PLANTILLAS[0];
+  // La plantilla cambia la pantalla del invitado; el resto de las pantallas usan la clásica.
+  const tema = producto === "invitacion" && perfil === "invitado" ? plantilla : PLANTILLAS[0];
+  const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
 
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[1fr_auto] lg:gap-14">
@@ -180,12 +202,69 @@ export function Simulador() {
         <p className="mt-2 mb-4 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
           {miradaActual.texto}
         </p>
+        {puedePersonalizar && (
+          <div className="mb-4">
+            <button
+              type="button"
+              aria-expanded={eligiendo}
+              onClick={() => setEligiendo((v) => !v)}
+              className="type-boton inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-dorado bg-dorado-soft px-4 text-[14px] text-dorado transition-colors hover:bg-dorado hover:text-on-dorado"
+            >
+              <Palette size={18} strokeWidth={1.8} aria-hidden="true" />
+              Personalizá tu invitación
+            </button>
+            {eligiendo && (
+              <div className="mt-3 rounded-lg border border-line bg-surface-raised p-3">
+                <p className="text-[13px] text-ink-muted">Elegí una plantilla:</p>
+                <div role="group" aria-label="Plantillas de invitación" className="mt-2 grid grid-cols-5 gap-2">
+                  {PLANTILLAS.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      aria-pressed={idPlantilla === p.id}
+                      onClick={() => setIdPlantilla(p.id)}
+                      className="flex flex-col items-center gap-1"
+                    >
+                      <span
+                        className={`flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-md border-2 ${
+                          idPlantilla === p.id ? "border-dorado" : "border-transparent"
+                        }`}
+                        style={{ backgroundColor: p.fondo }}
+                      >
+                        <span className="h-1 w-5 rounded-full" style={{ backgroundColor: p.texto }} />
+                        <span className="h-1 w-3 rounded-full" style={{ backgroundColor: color }} />
+                      </span>
+                      <span className={`text-[11px] ${idPlantilla === p.id ? "text-dorado" : "text-ink-muted"}`}>
+                        {p.nombre}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPerfil("invitado");
+                    setEligiendo(false);
+                  }}
+                  className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-md text-[13px] font-semibold text-dorado underline-offset-4 hover:underline"
+                >
+                  Ver cómo la reciben tus invitados
+                  <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
         <p className="sr-only">
           Vista previa de {actual.nombre} para {nombreSalon}, como la ve {miradaActual.nombre.toLowerCase()}
+          {producto === "invitacion" ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
         <div aria-hidden="true" className="rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
           {/* La pantalla del invitado va en claro: así la ven los invitados del salón (colores fijos a propósito). */}
-          <div className="flex min-h-[520px] flex-col overflow-hidden rounded-[32px] bg-[#fbf8f3] text-[#1b2d52]">
+          <div
+            className="relative flex min-h-[520px] flex-col overflow-hidden rounded-[32px]"
+            style={{ backgroundColor: tema.fondo, color: tema.texto }}
+          >
             <div className="flex flex-col items-center gap-2 px-5 pt-6 pb-4" style={{ backgroundColor: `${color}14` }}>
               {logo ? (
                 // eslint-disable-next-line @next/next/no-img-element -- imagen local del visitante (blob:), no se optimiza
@@ -209,8 +288,10 @@ export function Simulador() {
               >
                 Vista {perfil === "salon" ? "del salón" : perfil === "cliente" ? "del cliente" : "del invitado"}
               </span>
-              <Pantalla producto={producto} perfil={perfil} color={color} />
-              <p className="mt-auto pt-4 text-center text-[10px] text-[#56627a]">Hecho con Petra</p>
+              <Pantalla producto={producto} perfil={perfil} color={color} plantilla={plantilla} />
+              <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
+                Hecho con Petra
+              </p>
             </div>
           </div>
         </div>
@@ -219,22 +300,119 @@ export function Simulador() {
   );
 }
 
-function VistaInvitacion({ color }: { color: string }) {
+/** La invitación que recibe el invitado, con la plantilla que eligió el cliente. */
+function VistaInvitacion({ color, plantilla }: { color: string; plantilla: Plantilla }) {
+  const botones = (
+    <div className="relative mt-6 flex flex-col gap-2">
+      <span
+        className="flex min-h-11 items-center justify-center rounded-xl text-[15px] font-semibold text-white"
+        style={{ backgroundColor: color }}
+      >
+        Confirmo asistencia
+      </span>
+      <span className="flex min-h-11 items-center justify-center rounded-xl border text-[15px]" style={{ borderColor: plantilla.borde }}>
+        No puedo ir
+      </span>
+    </div>
+  );
+  const suave = { color: plantilla.suave };
+
+  if (plantilla.id === "elegante") {
+    return (
+      <div className="text-center">
+        <p className="text-[11px] tracking-[0.2em] uppercase" style={{ color: plantilla.borde }}>
+          ✦ Mis XV ✦
+        </p>
+        <p className="mt-3 font-display text-[36px] leading-10 italic">Sofía</p>
+        <div className="mx-auto mt-3 flex items-center justify-center gap-2" aria-hidden="true">
+          <span className="h-px w-10" style={{ backgroundColor: plantilla.borde }} />
+          <span className="size-1.5 rotate-45" style={{ backgroundColor: plantilla.borde }} />
+          <span className="h-px w-10" style={{ backgroundColor: plantilla.borde }} />
+        </div>
+        <p className="mt-4 text-[13px]" style={suave}>
+          Tenemos el honor de invitarte
+        </p>
+        <p className="mt-2 text-[14px] font-semibold">Sábado 14 de diciembre · 21:30</p>
+        {botones}
+      </div>
+    );
+  }
+
+  if (plantilla.id === "floral") {
+    return (
+      <div className="relative text-center">
+        <span aria-hidden="true" className="absolute -top-16 -left-14 size-20 rounded-full opacity-15" style={{ backgroundColor: color }} />
+        <span aria-hidden="true" className="absolute -top-14 -right-12 size-14 rounded-full opacity-15" style={{ backgroundColor: color }} />
+        <span aria-hidden="true" className="absolute top-24 -left-12 size-10 rounded-full opacity-10" style={{ backgroundColor: color }} />
+        <p className="relative text-[13px] italic" style={suave}>
+          Con mucha alegría te invito a
+        </p>
+        <p className="relative mt-1 font-display text-[32px] leading-9 italic">mis XV, Sofía</p>
+        <p className="relative mt-4 text-[14px] font-semibold">Sábado 14 de diciembre</p>
+        <p className="relative text-[13px]" style={suave}>
+          21:30 hs
+        </p>
+        {botones}
+      </div>
+    );
+  }
+
+  if (plantilla.id === "moderna") {
+    return (
+      <div>
+        <p className="font-sans text-[56px] leading-none font-extrabold tracking-[-0.04em]" style={{ color }}>
+          XV
+        </p>
+        <p className="mt-1 font-sans text-[26px] leading-8 font-bold tracking-[-0.02em] uppercase">Sofía</p>
+        <div className="mt-4 flex items-stretch overflow-hidden rounded-xl text-white" style={{ backgroundColor: color }}>
+          <span className="flex flex-col items-center justify-center bg-black/15 px-4 py-2">
+            <span className="text-[11px] font-semibold uppercase">Dic</span>
+            <span className="text-[24px] leading-7 font-extrabold">14</span>
+          </span>
+          <span className="flex flex-col justify-center px-4 text-[13px]">
+            <span className="font-semibold">Sábado</span>
+            <span>21:30 hs</span>
+          </span>
+        </div>
+        {botones}
+      </div>
+    );
+  }
+
+  if (plantilla.id === "fiesta") {
+    const confeti = ["#e8505b", "#f9a826", "#14b1ab", "#7c5cbf", color];
+    return (
+      <div className="relative text-center">
+        {confeti.map((c, i) => (
+          <span
+            key={i}
+            aria-hidden="true"
+            className="absolute size-2.5 rounded-sm"
+            style={{ backgroundColor: c, top: `${[-14, -8, 96, 104, -18][i]}px`, left: `${[2, 94, -4, 98, 48][i]}%`, rotate: `${i * 35}deg` }}
+          />
+        ))}
+        <p className="relative font-sans text-[22px] leading-7 font-extrabold">¡Vení a festejar!</p>
+        <p className="relative mt-2 font-display text-[32px] leading-9" style={{ color }}>
+          los XV de Sofía
+        </p>
+        <p className="relative mt-4 text-[14px] font-semibold">Sábado 14 de diciembre · 21:30</p>
+        {botones}
+      </div>
+    );
+  }
+
   return (
     <div className="text-center">
-      <p className="text-[13px] text-[#56627a]">Te invitamos a celebrar</p>
+      <p className="text-[13px]" style={suave}>
+        Te invitamos a celebrar
+      </p>
       <p className="mt-1 font-display text-[30px] leading-9">los XV de Sofía</p>
       <div className="mx-auto mt-4 h-px w-16" style={{ backgroundColor: color }} />
       <p className="mt-4 text-[14px] font-semibold">Sábado 14 de diciembre</p>
-      <p className="text-[13px] text-[#56627a]">21:30 hs</p>
-      <div className="mt-6 flex flex-col gap-2">
-        <span className="flex min-h-11 items-center justify-center rounded-xl text-[15px] font-semibold text-white" style={{ backgroundColor: color }}>
-          Confirmo asistencia
-        </span>
-        <span className="flex min-h-11 items-center justify-center rounded-xl border border-[#c9bfae] text-[15px]">
-          No puedo ir
-        </span>
-      </div>
+      <p className="text-[13px]" style={suave}>
+        21:30 hs
+      </p>
+      {botones}
     </div>
   );
 }
@@ -332,11 +510,21 @@ function VistaMesas({ color }: { color: string }) {
 }
 
 /** Qué pantalla mostrar según el producto y quién lo mira. */
-function Pantalla({ producto, perfil, color }: { producto: string; perfil: Perfil; color: string }) {
+function Pantalla({
+  producto,
+  perfil,
+  color,
+  plantilla,
+}: {
+  producto: string;
+  perfil: Perfil;
+  color: string;
+  plantilla: Plantilla;
+}) {
   if (producto === "invitacion") {
     if (perfil === "salon") return <InvitacionSalon color={color} />;
-    if (perfil === "cliente") return <InvitacionCliente color={color} />;
-    return <VistaInvitacion color={color} />;
+    if (perfil === "cliente") return <InvitacionCliente color={color} plantilla={plantilla.nombre} />;
+    return <VistaInvitacion color={color} plantilla={plantilla} />;
   }
   if (producto === "lista_invitados") {
     if (perfil === "salon") return <ListaSalon color={color} />;
@@ -387,8 +575,9 @@ function InvitacionSalon({ color }: { color: string }) {
   );
 }
 
-function InvitacionCliente({ color }: { color: string }) {
+function InvitacionCliente({ color, plantilla }: { color: string; plantilla: string }) {
   const campos = [
+    ["Plantilla", plantilla],
     ["Quién festeja", "Sofía"],
     ["Fecha y hora", "Sábado 14 · 21:30"],
     ["Mensaje", "¡Te espero para festejar!"],
