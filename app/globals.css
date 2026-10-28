@@ -247,3 +247,74 @@
     display: none;
   }
 }
+
+/* Invitación del simulador, en la vista de los invitados:
+   las partes entran de a una, el fondo se mueve suave y el botón de confirmar late.
+   El fondo usa "translate" (y no "transform") para no pisar la posición de cada adorno. */
+.invitacion-entra > :not(.flotar) {
+  animation: entrar 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.invitacion-entra > :nth-child(2 of :not(.flotar)) {
+  animation-delay: 0.12s;
+}
+.invitacion-entra > :nth-child(3 of :not(.flotar)) {
+  animation-delay: 0.24s;
+}
+.invitacion-entra > :nth-child(4 of :not(.flotar)) {
+  animation-delay: 0.36s;
+}
+.invitacion-entra > :nth-child(5 of :not(.flotar)) {
+  animation-delay: 0.48s;
+}
+.invitacion-entra > :nth-child(n + 6 of :not(.flotar)) {
+  animation-delay: 0.6s;
+}
+@keyframes entrar {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+.fondo-vivo > * {
+  transform-box: fill-box;
+  animation: deriva 6s ease-in-out infinite alternate;
+}
+.fondo-vivo > :nth-child(3n) {
+  animation-duration: 8s;
+  animation-delay: -3s;
+}
+.fondo-vivo > :nth-child(3n + 1) {
+  animation-duration: 5s;
+  animation-delay: -1.5s;
+}
+@keyframes deriva {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -9px;
+  }
+}
+.latido {
+  animation: latido 2.2s ease-out 1s infinite;
+}
+@keyframes latido {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--latido) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--latido) 0%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .invitacion-entra > :not(.flotar),
+  .fondo-vivo > *,
+  .latido {
+    animation: none;
+  }
+}
