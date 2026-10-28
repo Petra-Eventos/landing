@@ -82,7 +82,7 @@ export default function Home() {
                   Herramientas digitales para salones de eventos
                 </p>
                 <h1 id="titular" className="type-display mt-5 text-ink">
-                  Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
+                  Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que necesitan.</span>
                 </h1>
                 <p className="type-cuerpo mt-4 text-ink-muted">
                   Probá acá mismo la invitación digital y mirala desde los tres lados.
