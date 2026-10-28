@@ -27,9 +27,6 @@
   --oliva-text: #b7c37c;
   --oliva-soft: #1d2414;
   --crema-claro: #f3eee6;
-  --estrella: #f3eee6;
-  --estrella-azul: #e8d3a6; /* algunas estrellas, doradas */
-  --vineta: #02050d; /* color de los bordes oscurecidos */
 
   --shadow-piedra: 0 1px 2px #00000080, 0 12px 32px #00000066;
   --focus-ring: 0 0 0 2px #070d1c, 0 0 0 4px #d4b06a;
@@ -131,8 +128,11 @@
     }
   }
   body {
-    /* Transparente para que se vea el cielo estrellado de atrás */
-    background: transparent;
+    /* Fondo sólido azul noche con dos luces suaves: azul arriba a la derecha y dorado a la izquierda. */
+    background:
+      radial-gradient(1100px 620px at 85% -8%, #1c79a426, transparent 70%),
+      radial-gradient(900px 560px at -10% 4%, #d4b06a12, transparent 70%),
+      var(--surface);
     min-height: 100vh;
     color: var(--ink);
     font-family: var(--font-sans);
@@ -151,46 +151,11 @@
     box-shadow: var(--focus-ring);
   }
 
-  /* Los radios y casillas reales quedan ocultos: el foco se muestra en el bloque */
-  .opcion:has(input:focus-visible) {
-    box-shadow: var(--focus-ring);
-  }
-
   summary {
     list-style: none;
   }
 
-  /* Viñeta: el fondo se oscurece del centro hacia los bordes.
-     Va detrás del contenido, así tarjetas y textos no cambian. */
-  .vineta {
-    background: radial-gradient(
-      ellipse 75% 70% at 50% 50%,
-      transparent 35%,
-      color-mix(in srgb, var(--vineta) 55%, transparent) 75%,
-      color-mix(in srgb, var(--vineta) 85%, transparent) 100%
-    );
-  }
-
-  /* Estrellas que titilan. Se apaga si la persona pidió menos movimiento. */
-  .titila {
-    animation: titilar 4s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .titila {
-      animation: none;
-    }
-  }
   summary::-webkit-details-marker {
     display: none;
-  }
-}
-
-@keyframes titilar {
-  0%,
-  100% {
-    opacity: var(--o, 0.8);
-  }
-  50% {
-    opacity: 0.15;
   }
 }
