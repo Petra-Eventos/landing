@@ -16,27 +16,127 @@ const COLORES = [
 
 type Perfil = "salon" | "cliente" | "invitado";
 
-type IdPlantilla = "clasica" | "elegante" | "floral" | "moderna" | "fiesta";
+type IdEvento = "casamiento" | "cumple" | "xv";
+
+// Cada estilo es una forma distinta de armar la invitación; los colores los pone la plantilla.
+type Estilo = "elegante" | "clasica" | "moderna" | "animada" | "tecno";
 
 /**
  * Plantillas de la invitación. El cliente elige una y es la que ven sus invitados.
- * Los colores de cada plantilla son datos del diseño (no tokens de Petra); el acento es el color del salón.
+ * Los colores son datos del diseño (no tokens de Petra). Sin acento, se usa el color del salón.
  */
-const PLANTILLAS: { id: IdPlantilla; nombre: string; fondo: string; texto: string; suave: string; borde: string }[] = [
-  { id: "clasica", nombre: "Clásica", fondo: "#fbf8f3", texto: "#1b2d52", suave: "#56627a", borde: "#c9bfae" },
-  { id: "elegante", nombre: "Elegante", fondo: "#101a30", texto: "#f3eee6", suave: "#b9c1d4", borde: "#d4b06a" },
-  { id: "floral", nombre: "Floral", fondo: "#fcf0f2", texto: "#5a2a3a", suave: "#8a5a68", borde: "#e8c3cc" },
-  { id: "moderna", nombre: "Moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db" },
-  { id: "fiesta", nombre: "Fiesta", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8" },
+type Plantilla = {
+  id: string;
+  nombre: string;
+  estilo: Estilo;
+  fondo: string;
+  texto: string;
+  suave: string;
+  borde: string;
+  acento?: string;
+  sobreAcento: string;
+};
+
+type Evento = {
+  id: IdEvento;
+  nombre: string;
+  /** Para los encabezados del panel: "XV de Sofía". */
+  corto: string;
+  /** Para la pregunta del invitado: "¿Vienen a los XV de Sofía?". */
+  aLa: string;
+  etiqueta: string;
+  protagonista: string;
+  sigla: string;
+  invita: string;
+  grito: string;
+  fecha: string;
+  diaSemana: string;
+  dia: string;
+  mes: string;
+  hora: string;
+  plantillas: Plantilla[];
+};
+
+// El staff elige el tipo de evento; cada tipo trae sus propias plantillas para los anfitriones.
+const EVENTOS: Evento[] = [
+  {
+    id: "casamiento",
+    nombre: "Casamiento",
+    corto: "Boda de Ana y Martín",
+    aLa: "a la boda de Ana y Martín",
+    etiqueta: "Nos casamos",
+    protagonista: "Ana & Martín",
+    sigla: "A&M",
+    invita: "Queremos compartir este día con vos",
+    grito: "¡Nos casamos!",
+    fecha: "Sábado 22 de marzo",
+    diaSemana: "Sábado",
+    dia: "22",
+    mes: "Mar",
+    hora: "20:00",
+    plantillas: [
+      { id: "elegante-dorado", nombre: "Elegante dorado", estilo: "elegante", fondo: "#14110b", texto: "#f5ecd7", suave: "#cbbf9f", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "oliva-blanco", nombre: "Verde oliva y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#2f3a1a", suave: "#5f6b45", borde: "#c9cfb0", acento: "#5f6d2f", sobreAcento: "#ffffff" },
+      { id: "blanco-dorado", nombre: "Blanco y dorado", estilo: "elegante", fondo: "#fffdf7", texto: "#3a2f17", suave: "#6f6043", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "azul-negro", nombre: "Azul y negro", estilo: "moderna", fondo: "#0b0f1a", texto: "#eef2fb", suave: "#a3b0cc", borde: "#2a3a5c", acento: "#2f63c8", sobreAcento: "#ffffff" },
+      { id: "naranja-blanco", nombre: "Naranja y blanco", estilo: "clasica", fondo: "#ffffff", texto: "#3a1f0b", suave: "#7a5a43", borde: "#f5cfae", acento: "#c2561a", sobreAcento: "#ffffff" },
+      { id: "animado", nombre: "Animado", estilo: "animada", fondo: "#fff6f3", texto: "#4a2230", suave: "#8a5a68", borde: "#f0c9d2", acento: "#c2456b", sobreAcento: "#ffffff" },
+    ],
+  },
+  {
+    id: "cumple",
+    nombre: "Cumpleaños",
+    corto: "Cumple de Lucas",
+    aLa: "al cumple de Lucas",
+    etiqueta: "Mis 40",
+    protagonista: "Lucas",
+    sigla: "40",
+    invita: "Te invito a festejar mis 40",
+    grito: "¡Vení a festejar!",
+    fecha: "Viernes 7 de noviembre",
+    diaSemana: "Viernes",
+    dia: "7",
+    mes: "Nov",
+    hora: "21:00",
+    plantillas: [
+      { id: "elegante", nombre: "Elegante", estilo: "elegante", fondo: "#15131d", texto: "#f3eee6", suave: "#bdb6c9", borde: "#c9a24b", acento: "#c9a24b", sobreAcento: "#1a1306" },
+      { id: "informal", nombre: "Informal", estilo: "animada", fondo: "#fff7e6", texto: "#3b2a12", suave: "#7a6243", borde: "#f0d9a8", acento: "#c7363f", sobreAcento: "#ffffff" },
+      { id: "casual", nombre: "Casual", estilo: "moderna", fondo: "#f3f7f4", texto: "#1f2d27", suave: "#4d5f57", borde: "#cfdcd4", sobreAcento: "#ffffff" },
+    ],
+  },
+  {
+    id: "xv",
+    nombre: "XV",
+    corto: "XV de Sofía",
+    aLa: "a los XV de Sofía",
+    etiqueta: "Mis XV",
+    protagonista: "Sofía",
+    sigla: "XV",
+    invita: "Te invito a celebrar mis XV",
+    grito: "¡Vení a festejar!",
+    fecha: "Sábado 14 de diciembre",
+    diaSemana: "Sábado",
+    dia: "14",
+    mes: "Dic",
+    hora: "21:30",
+    plantillas: [
+      { id: "elegante-rosa", nombre: "Elegante rosa", estilo: "elegante", fondo: "#2a0f1e", texto: "#fbe9f0", suave: "#e0b9c8", borde: "#e6a3bd", acento: "#e6a3bd", sobreAcento: "#2a0f1e" },
+      { id: "elegante-lila", nombre: "Elegante lila", estilo: "elegante", fondo: "#1d1530", texto: "#f1ebff", suave: "#c3b6e0", borde: "#c5b0f0", acento: "#c5b0f0", sobreAcento: "#1d1530" },
+      { id: "elegante-turquesa", nombre: "Elegante turquesa", estilo: "elegante", fondo: "#0d2226", texto: "#e8fbf8", suave: "#a9d6cf", borde: "#7fd1c7", acento: "#7fd1c7", sobreAcento: "#0d2226" },
+      { id: "moderno", nombre: "Moderno", estilo: "moderna", fondo: "#ffffff", texto: "#111827", suave: "#4b5563", borde: "#d1d5db", acento: "#c42a6f", sobreAcento: "#ffffff" },
+      { id: "tecnologico", nombre: "Tecnológico", estilo: "tecno", fondo: "#05070f", texto: "#e6f7ff", suave: "#8fb3c7", borde: "#22e3ff", acento: "#22e3ff", sobreAcento: "#05070f" },
+    ],
+  },
 ];
 
-type Plantilla = (typeof PLANTILLAS)[number];
+// Colores de las pantallas que no son la invitación (panel, lista y mesas).
+const BASE = { fondo: "#fbf8f3", texto: "#1b2d52", suave: "#56627a" };
 
 // Las tres miradas de cada producto: el salón lo asigna, el cliente lo configura y el invitado lo usa.
 const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
-  { id: "salon", nombre: "Salón", texto: "Lo asignás y seguís todo desde tu panel." },
-  { id: "cliente", nombre: "Cliente", texto: "Lo configura desde un link, sin crearse una cuenta." },
-  { id: "invitado", nombre: "Invitado", texto: "Lo usa desde su celular, sin bajar ninguna app." },
+  { id: "salon", nombre: "Staff", texto: "Eligen el tipo de evento y siguen todo desde el panel." },
+  { id: "cliente", nombre: "Anfitriones", texto: "Lo configuran desde un link, sin crearse una cuenta." },
+  { id: "invitado", nombre: "Invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
 ];
 
 const ICONOS: Record<string, LucideIcon> = {
@@ -55,7 +155,8 @@ export function Simulador() {
   const [salon, setSalon] = useState("");
   const [color, setColor] = useState(COLORES[0].valor);
   const [logo, setLogo] = useState<string | null>(null);
-  const [idPlantilla, setIdPlantilla] = useState<IdPlantilla>("clasica");
+  const [idEvento, setIdEvento] = useState<IdEvento>("xv");
+  const [nPlantilla, setNPlantilla] = useState(0);
   const idNombre = useId();
   const idLogo = useId();
 
@@ -69,14 +170,16 @@ export function Simulador() {
   const nombreSalon = salon.trim() || "Tu salón";
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
   const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
-  const plantilla = PLANTILLAS.find((p) => p.id === idPlantilla) ?? PLANTILLAS[0];
-  // La plantilla cambia la pantalla del invitado; el resto de las pantallas usan la clásica.
-  // La plantilla se ve en la invitación del cliente (que la elige) y del invitado (que la recibe).
-  const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : PLANTILLAS[0];
+  const evento = EVENTOS.find((e) => e.id === idEvento) ?? EVENTOS[2];
+  const plantillas = evento.plantillas;
+  const plantilla = plantillas[nPlantilla % plantillas.length];
+  // La plantilla se ve en la invitación de los anfitriones (que la eligen) y de los invitados (que la reciben).
+  const tema = producto === "invitacion" && perfil !== "salon" ? plantilla : BASE;
   const puedePersonalizar = producto === "invitacion" && perfil === "cliente";
-  const siguientePlantilla = () => {
-    const i = PLANTILLAS.findIndex((p) => p.id === idPlantilla);
-    setIdPlantilla(PLANTILLAS[(i + 1) % PLANTILLAS.length].id);
+  const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
+  const elegirEvento = (id: IdEvento) => {
+    setIdEvento(id);
+    setNPlantilla(0);
   };
 
   return (
@@ -206,8 +309,30 @@ export function Simulador() {
         <p className="mt-2 mb-4 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
           {miradaActual.texto}
         </p>
+        {perfil === "salon" && (
+          <div className="mb-4">
+            <div role="group" aria-label="Tipo de evento" className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
+              {EVENTOS.map((e) => (
+                <button
+                  key={e.id}
+                  type="button"
+                  aria-pressed={idEvento === e.id}
+                  onClick={() => elegirEvento(e.id)}
+                  className={`min-h-9 rounded-[8px] border text-[13px] font-semibold transition-colors ${
+                    idEvento === e.id ? "border-dorado bg-dorado-soft text-dorado" : "border-transparent text-ink-muted hover:text-ink"
+                  }`}
+                >
+                  {e.nombre}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-center text-[12px] leading-5 text-ink-muted">
+              Cada tipo trae sus plantillas para los anfitriones.
+            </p>
+          </div>
+        )}
         <p className="sr-only">
-          Vista previa de {actual.nombre} para {nombreSalon}, como la ve {miradaActual.nombre.toLowerCase()}
+          Vista previa de {actual.nombre} para {nombreSalon}, {evento.corto}, en la vista de {miradaActual.nombre.toLowerCase()}
           {producto === "invitacion" ? `, con la plantilla ${plantilla.nombre}` : ""}
         </p>
         <div className="relative">
@@ -223,7 +348,7 @@ export function Simulador() {
                 <Palette size={24} strokeWidth={1.8} aria-hidden="true" />
               </button>
               <span className="rounded-full bg-surface-raised px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-dorado shadow-piedra">
-                {plantilla.nombre}
+                {nPlantilla % plantillas.length + 1} de {plantillas.length}
               </span>
             </div>
           )}
@@ -254,9 +379,9 @@ export function Simulador() {
                 className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
                 style={{ backgroundColor: `${color}1a`, color }}
               >
-                Vista {perfil === "salon" ? "del salón" : perfil === "cliente" ? "del cliente" : "del invitado"}
+                Vista {perfil === "salon" ? "del staff" : perfil === "cliente" ? "de anfitriones" : "de invitados"}
               </span>
-              <Pantalla producto={producto} perfil={perfil} color={color} plantilla={plantilla} />
+              <Pantalla producto={producto} perfil={perfil} color={color} evento={evento} plantilla={plantilla} />
               <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
                 Hecho con Petra
               </p>
@@ -272,86 +397,76 @@ export function Simulador() {
   );
 }
 
-/** La invitación que recibe el invitado, con la plantilla que eligió el cliente. */
+/** La invitación que recibe el invitado, con la plantilla que eligieron los anfitriones. */
 function VistaInvitacion({
   color,
+  evento,
   plantilla,
   sinBotones = false,
 }: {
   color: string;
+  evento: Evento;
   plantilla: Plantilla;
   sinBotones?: boolean;
 }) {
+  const acento = plantilla.acento ?? color;
+  const tecno = plantilla.estilo === "tecno";
   const botones = sinBotones ? null : (
     <div className="relative mt-6 flex flex-col gap-2">
       <span
-        className="flex min-h-11 items-center justify-center rounded-xl text-[15px] font-semibold text-white"
-        style={{ backgroundColor: color }}
+        className={`flex min-h-11 items-center justify-center text-[15px] font-semibold ${tecno ? "rounded-md font-mono" : "rounded-xl"}`}
+        style={{ backgroundColor: acento, color: plantilla.sobreAcento }}
       >
         Confirmo asistencia
       </span>
-      <span className="flex min-h-11 items-center justify-center rounded-xl border text-[15px]" style={{ borderColor: plantilla.borde }}>
+      <span
+        className={`flex min-h-11 items-center justify-center border text-[15px] ${tecno ? "rounded-md font-mono" : "rounded-xl"}`}
+        style={{ borderColor: plantilla.borde }}
+      >
         No puedo ir
       </span>
     </div>
   );
   const suave = { color: plantilla.suave };
 
-  if (plantilla.id === "elegante") {
+  if (plantilla.estilo === "elegante") {
     return (
       <div className="text-center">
         <p className="text-[11px] tracking-[0.2em] uppercase" style={{ color: plantilla.borde }}>
-          ✦ Mis XV ✦
+          ✦ {evento.etiqueta} ✦
         </p>
-        <p className="mt-3 font-display text-[36px] leading-10 italic">Sofía</p>
+        <p className="mt-3 font-display text-[32px] leading-10 italic">{evento.protagonista}</p>
         <div className="mx-auto mt-3 flex items-center justify-center gap-2" aria-hidden="true">
           <span className="h-px w-10" style={{ backgroundColor: plantilla.borde }} />
           <span className="size-1.5 rotate-45" style={{ backgroundColor: plantilla.borde }} />
           <span className="h-px w-10" style={{ backgroundColor: plantilla.borde }} />
         </div>
         <p className="mt-4 text-[13px]" style={suave}>
-          Tenemos el honor de invitarte
+          {evento.invita}
         </p>
-        <p className="mt-2 text-[14px] font-semibold">Sábado 14 de diciembre · 21:30</p>
-        {botones}
-      </div>
-    );
-  }
-
-  if (plantilla.id === "floral") {
-    return (
-      <div className="relative text-center">
-        <span aria-hidden="true" className="absolute -top-16 -left-14 size-20 rounded-full opacity-15" style={{ backgroundColor: color }} />
-        <span aria-hidden="true" className="absolute -top-14 -right-12 size-14 rounded-full opacity-15" style={{ backgroundColor: color }} />
-        <span aria-hidden="true" className="absolute top-24 -left-12 size-10 rounded-full opacity-10" style={{ backgroundColor: color }} />
-        <p className="relative text-[13px] italic" style={suave}>
-          Con mucha alegría te invito a
-        </p>
-        <p className="relative mt-1 font-display text-[32px] leading-9 italic">mis XV, Sofía</p>
-        <p className="relative mt-4 text-[14px] font-semibold">Sábado 14 de diciembre</p>
-        <p className="relative text-[13px]" style={suave}>
-          21:30 hs
+        <p className="mt-2 text-[14px] font-semibold">
+          {evento.fecha} · {evento.hora}
         </p>
         {botones}
       </div>
     );
   }
 
-  if (plantilla.id === "moderna") {
+  if (plantilla.estilo === "moderna") {
     return (
       <div>
-        <p className="font-sans text-[56px] leading-none font-extrabold tracking-[-0.04em]" style={{ color }}>
-          XV
+        <p className="font-sans text-[52px] leading-none font-extrabold tracking-[-0.04em]" style={{ color: acento }}>
+          {evento.sigla}
         </p>
-        <p className="mt-1 font-sans text-[26px] leading-8 font-bold tracking-[-0.02em] uppercase">Sofía</p>
-        <div className="mt-4 flex items-stretch overflow-hidden rounded-xl text-white" style={{ backgroundColor: color }}>
+        <p className="mt-1 font-sans text-[24px] leading-8 font-bold tracking-[-0.02em] uppercase">{evento.protagonista}</p>
+        <div className="mt-4 flex items-stretch overflow-hidden rounded-xl" style={{ backgroundColor: acento, color: plantilla.sobreAcento }}>
           <span className="flex flex-col items-center justify-center bg-black/15 px-4 py-2">
-            <span className="text-[11px] font-semibold uppercase">Dic</span>
-            <span className="text-[24px] leading-7 font-extrabold">14</span>
+            <span className="text-[11px] font-semibold uppercase">{evento.mes}</span>
+            <span className="text-[24px] leading-7 font-extrabold">{evento.dia}</span>
           </span>
           <span className="flex flex-col justify-center px-4 text-[13px]">
-            <span className="font-semibold">Sábado</span>
-            <span>21:30 hs</span>
+            <span className="font-semibold">{evento.diaSemana}</span>
+            <span>{evento.hora} hs</span>
           </span>
         </div>
         {botones}
@@ -359,23 +474,63 @@ function VistaInvitacion({
     );
   }
 
-  if (plantilla.id === "fiesta") {
-    const confeti = ["#e8505b", "#f9a826", "#14b1ab", "#7c5cbf", color];
+  if (plantilla.estilo === "animada") {
+    // En las bodas flotan corazones; en el resto, papel picado. Se quedan quietos si la persona pidió menos movimiento.
+    const casamiento = evento.id === "casamiento";
+    const colores = casamiento ? [acento, plantilla.borde, acento, plantilla.borde, acento] : ["#e8505b", "#f9a826", "#14b1ab", "#7c5cbf", acento];
     return (
       <div className="relative text-center">
-        {confeti.map((c, i) => (
+        {colores.map((c, i) => (
           <span
             key={i}
             aria-hidden="true"
-            className="absolute size-2.5 rounded-sm"
-            style={{ backgroundColor: c, top: `${[-14, -8, 96, 104, -18][i]}px`, left: `${[2, 94, -4, 98, 48][i]}%`, rotate: `${i * 35}deg` }}
-          />
+            className={`flotar absolute ${casamiento ? "text-[16px] leading-none" : "size-2.5 rounded-sm"}`}
+            style={{
+              ...(casamiento ? { color: c } : { backgroundColor: c, rotate: `${i * 35}deg` }),
+              top: `${[-14, -8, 96, 104, -18][i]}px`,
+              left: `${[2, 92, -4, 96, 48][i]}%`,
+              animationDelay: `${i * 0.4}s`,
+            }}
+          >
+            {casamiento ? "♥" : null}
+          </span>
         ))}
-        <p className="relative font-sans text-[22px] leading-7 font-extrabold">¡Vení a festejar!</p>
-        <p className="relative mt-2 font-display text-[32px] leading-9" style={{ color }}>
-          los XV de Sofía
+        <p className="relative font-sans text-[22px] leading-7 font-extrabold">{evento.grito}</p>
+        <p className="relative mt-2 font-display text-[30px] leading-9" style={{ color: acento }}>
+          {evento.protagonista}
         </p>
-        <p className="relative mt-4 text-[14px] font-semibold">Sábado 14 de diciembre · 21:30</p>
+        <p className="relative mt-4 text-[14px] font-semibold">
+          {evento.fecha} · {evento.hora}
+        </p>
+        {botones}
+      </div>
+    );
+  }
+
+  if (tecno) {
+    return (
+      <div
+        className="-mx-2 rounded-lg px-2 py-3 font-mono"
+        style={{
+          backgroundImage: `linear-gradient(${plantilla.borde}1f 1px, transparent 1px), linear-gradient(90deg, ${plantilla.borde}1f 1px, transparent 1px)`,
+          backgroundSize: "18px 18px",
+        }}
+      >
+        <p className="text-[12px]" style={{ color: plantilla.borde }}>
+          &gt; {evento.etiqueta.toLowerCase()}_
+        </p>
+        <p
+          className="brillar mt-2 font-sans text-[40px] leading-[44px] font-extrabold tracking-[-0.02em] uppercase"
+          style={{ textShadow: `0 0 18px ${plantilla.borde}99` }}
+        >
+          {evento.protagonista}
+        </p>
+        <p className="mt-3 text-[13px]" style={suave}>
+          {evento.invita}
+        </p>
+        <p className="mt-3 inline-block rounded-md border px-2 py-1 text-[13px] font-semibold" style={{ borderColor: plantilla.borde }}>
+          {evento.dia}.{evento.mes.toUpperCase()} // {evento.hora}
+        </p>
         {botones}
       </div>
     );
@@ -384,13 +539,13 @@ function VistaInvitacion({
   return (
     <div className="text-center">
       <p className="text-[13px]" style={suave}>
-        Te invitamos a celebrar
+        {evento.invita}
       </p>
-      <p className="mt-1 font-display text-[30px] leading-9">los XV de Sofía</p>
-      <div className="mx-auto mt-4 h-px w-16" style={{ backgroundColor: color }} />
-      <p className="mt-4 text-[14px] font-semibold">Sábado 14 de diciembre</p>
+      <p className="mt-1 font-display text-[30px] leading-9">{evento.protagonista}</p>
+      <div className="mx-auto mt-4 h-px w-16" style={{ backgroundColor: acento }} />
+      <p className="mt-4 text-[14px] font-semibold">{evento.fecha}</p>
       <p className="text-[13px]" style={suave}>
-        21:30 hs
+        {evento.hora} hs
       </p>
       {botones}
     </div>
@@ -494,24 +649,26 @@ function Pantalla({
   producto,
   perfil,
   color,
+  evento,
   plantilla,
 }: {
   producto: string;
   perfil: Perfil;
   color: string;
+  evento: Evento;
   plantilla: Plantilla;
 }) {
   if (producto === "invitacion") {
-    if (perfil === "salon") return <InvitacionSalon color={color} />;
-    if (perfil === "cliente") return <InvitacionCliente color={color} plantilla={plantilla} />;
-    return <VistaInvitacion color={color} plantilla={plantilla} />;
+    if (perfil === "salon") return <InvitacionSalon color={color} evento={evento} />;
+    if (perfil === "cliente") return <InvitacionCliente color={color} evento={evento} plantilla={plantilla} />;
+    return <VistaInvitacion color={color} evento={evento} plantilla={plantilla} />;
   }
   if (producto === "lista_invitados") {
-    if (perfil === "salon") return <ListaSalon color={color} />;
+    if (perfil === "salon") return <ListaSalon color={color} evento={evento} />;
     if (perfil === "cliente") return <VistaLista color={color} />;
-    return <ListaInvitado color={color} />;
+    return <ListaInvitado color={color} evento={evento} />;
   }
-  if (perfil === "salon") return <MesasSalon color={color} />;
+  if (perfil === "salon") return <MesasSalon color={color} evento={evento} />;
   if (perfil === "cliente") return <VistaMesas color={color} />;
   return <MesasInvitado color={color} />;
 }
@@ -539,27 +696,27 @@ function BotonColor({ color, children }: { color: string; children: React.ReactN
   );
 }
 
-function InvitacionSalon({ color }: { color: string }) {
+function InvitacionSalon({ color, evento }: { color: string; evento: Evento }) {
   return (
     <div>
-      <p className="font-display text-[20px] leading-7">XV de Sofía</p>
-      <p className="text-[12px] text-[#56627a]">Sábado 14 de diciembre</p>
+      <p className="font-display text-[20px] leading-7">{evento.corto}</p>
+      <p className="text-[12px] text-[#56627a]">{evento.fecha}</p>
       <div className="mt-4 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
-        <Dato titulo="Invitación" valor="Asignada" color={color} />
-        <Dato titulo="Link del cliente" valor="Enviado" color={color} />
-        <Dato titulo="Diseño" valor="Con tu marca" color={color} />
+        <Dato titulo="Tipo de evento" valor={evento.nombre} color={color} />
+        <Dato titulo="Plantillas" valor={`${evento.plantillas.length} para elegir`} color={color} />
+        <Dato titulo="Link de anfitriones" valor="Enviado" color={color} />
         <Dato titulo="Confirmaron" valor="86 de 120" color={color} />
       </div>
-      <BotonColor color={color}>Copiar link para el cliente</BotonColor>
+      <BotonColor color={color}>Copiar link para anfitriones</BotonColor>
     </div>
   );
 }
 
-/** El cliente ve su invitación tal como va a salir, con la plantilla elegida, y la manda. */
-function InvitacionCliente({ color, plantilla }: { color: string; plantilla: Plantilla }) {
+/** Los anfitriones ven su invitación tal como va a salir, con la plantilla elegida, y la manda. */
+function InvitacionCliente({ color, evento, plantilla }: { color: string; evento: Evento; plantilla: Plantilla }) {
   return (
     <div>
-      <VistaInvitacion color={color} plantilla={plantilla} sinBotones />
+      <VistaInvitacion color={color} evento={evento} plantilla={plantilla} sinBotones />
       <div className="mt-5 flex items-center justify-between rounded-lg border px-3 py-2 text-[12px]" style={{ borderColor: plantilla.borde }}>
         <span style={{ color: plantilla.suave }}>Plantilla</span>
         <span className="font-semibold">{plantilla.nombre}</span>
@@ -569,10 +726,10 @@ function InvitacionCliente({ color, plantilla }: { color: string; plantilla: Pla
   );
 }
 
-function ListaSalon({ color }: { color: string }) {
+function ListaSalon({ color, evento }: { color: string; evento: Evento }) {
   return (
     <div>
-      <p className="font-display text-[20px] leading-7">Invitados · XV de Sofía</p>
+      <p className="font-display text-[20px] leading-7">Invitados · {evento.corto}</p>
       <div className="mt-3 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
         <Dato titulo="Invitados" valor="120" color={color} />
         <Dato titulo="Confirmados" valor="86" color={color} />
@@ -584,11 +741,11 @@ function ListaSalon({ color }: { color: string }) {
   );
 }
 
-function ListaInvitado({ color }: { color: string }) {
+function ListaInvitado({ color, evento }: { color: string; evento: Evento }) {
   return (
     <div className="text-center">
       <p className="text-[13px] text-[#56627a]">Hola, Familia Gómez</p>
-      <p className="mt-1 font-display text-[24px] leading-8">¿Vienen a los XV de Sofía?</p>
+      <p className="mt-1 font-display text-[24px] leading-8">¿Vienen {evento.aLa}?</p>
       <div className="mt-4 rounded-lg bg-white p-3 text-left text-[13px] shadow-sm">
         <p className="flex justify-between">
           <span>Personas</span>
@@ -607,10 +764,10 @@ function ListaInvitado({ color }: { color: string }) {
   );
 }
 
-function MesasSalon({ color }: { color: string }) {
+function MesasSalon({ color, evento }: { color: string; evento: Evento }) {
   return (
     <div>
-      <p className="font-display text-[20px] leading-7">Mesas · XV de Sofía</p>
+      <p className="font-display text-[20px] leading-7">Mesas · {evento.corto}</p>
       <div className="mt-3 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
         <Dato titulo="Mesas" valor="12" color={color} />
         <Dato titulo="Lugares" valor="120" color={color} />
