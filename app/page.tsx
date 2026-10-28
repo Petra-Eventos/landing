@@ -8,8 +8,7 @@ import {
   Store,
 } from "lucide-react";
 import { Firma } from "@/components/logo";
-import { CarruselPerfiles } from "@/components/carrusel-perfiles";
-import { Simulador } from "@/components/simulador";
+import { PerfilesEnVivo } from "@/components/perfiles-en-vivo";
 import { TiendaApps } from "@/components/tienda-apps";
 import { PLANES } from "@/lib/catalogo";
 import { URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_SOCIOS, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
@@ -86,10 +85,7 @@ export default function Home() {
               Probá acá mismo la invitación digital y mirala desde los tres lados.
             </p>
           </div>
-          <CarruselPerfiles />
-          <div className="mt-10">
-            <Simulador />
-          </div>
+          <PerfilesEnVivo />
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
               Crear mi cuenta gratis

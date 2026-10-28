@@ -1,13 +1,16 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Palette, PartyPopper } from "lucide-react";
 import { FondoFiesta, type IdFondo } from "@/components/fondos-fiesta";
 
 // Color del salón de ejemplo en el celular (dato del salón, no token de Petra).
 const COLOR_SALON = "#1c79a4";
 
-type Perfil = "salon" | "cliente" | "invitado";
+export type Perfil = "salon" | "cliente" | "invitado";
+
+/** El orden de las vistas: el mismo que las tarjetas de arriba (Tu staff, Tus clientes, Los invitados). */
+export const VISTAS: Perfil[] = ["salon", "cliente", "invitado"];
 
 type IdEvento = "casamiento" | "cumple" | "xv";
 
@@ -134,23 +137,48 @@ const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
   { id: "invitado", nombre: "Los invitados", texto: "Lo usan desde su celular, sin bajar ninguna app." },
 ];
 
-/** Simulador: el salón ve cómo queda la invitación digital en el celular, desde los tres lados. */
-export function Simulador() {
-  const [perfil, setPerfil] = useState<Perfil>("salon");
+/**
+ * Simulador: el salón ve cómo queda la invitación digital en el celular, desde los tres lados.
+ * La vista la maneja quien lo usa (para que pase sola junto con las tarjetas de arriba);
+ * al cambiar, la pantalla se desvanece y aparece la nueva.
+ */
+export function Simulador({
+  perfil,
+  onElegir,
+  onTocar,
+}: {
+  perfil: Perfil;
+  onElegir: (vista: Perfil) => void;
+  /** Avisa que la persona tocó el simulador, para que deje de pasar solo. */
+  onTocar: () => void;
+}) {
+  // La vista que se ve en el celular: cambia después de desvanecer la anterior.
+  const [vista, setVista] = useState<Perfil>(perfil);
+  const [visible, setVisible] = useState(true);
   const [idEvento, setIdEvento] = useState<IdEvento>("xv");
   const [nPlantilla, setNPlantilla] = useState(0);
   const idVistas = useId();
 
+  useEffect(() => {
+    if (perfil === vista) return;
+    setVisible(false);
+    const id = window.setTimeout(() => {
+      setVista(perfil);
+      setVisible(true);
+    }, 300);
+    return () => window.clearTimeout(id);
+  }, [perfil, vista]);
+
   const color = COLOR_SALON;
   const nombreSalon = "Tu salón";
-  const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[0];
+  const miradaActual = PERFILES.find((p) => p.id === vista) ?? PERFILES[0];
   const evento = EVENTOS.find((e) => e.id === idEvento) ?? EVENTOS[2];
   const plantillas = evento.plantillas;
   const plantilla = plantillas[nPlantilla % plantillas.length];
   // La plantilla se ve en la invitación de tus clientes (que la eligen) y de los invitados (que la reciben).
-  const conPlantilla = perfil !== "salon";
+  const conPlantilla = vista !== "salon";
   const tema = conPlantilla ? plantilla : BASE;
-  const puedePersonalizar = perfil === "cliente";
+  const puedePersonalizar = vista === "cliente";
   const siguientePlantilla = () => setNPlantilla((n) => (n + 1) % plantillas.length);
   // Cada tipo de evento trae sus plantillas: al cambiarlo, tus clientes arrancan por la primera.
   const siguienteEvento = () => {
@@ -168,7 +196,7 @@ export function Simulador() {
         chip: `${(nPlantilla % plantillas.length) + 1} de ${plantillas.length}`,
         ayuda: "Tocá el círculo para cambiar la plantilla.",
       }
-    : perfil === "salon"
+    : vista === "salon"
       ? {
           accion: siguienteEvento,
           titulo: "Cambiar tipo de evento",
@@ -180,7 +208,7 @@ export function Simulador() {
       : null;
 
   return (
-    <div>
+    <div onPointerDown={onTocar} onKeyDown={onTocar}>
       {/* Celular */}
       <div className="mx-auto w-[280px] sm:w-[300px]">
         <p id={idVistas} className="type-etiqueta mb-2 text-center text-dorado">
@@ -192,7 +220,7 @@ export function Simulador() {
               key={p.id}
               type="button"
               aria-pressed={perfil === p.id}
-              onClick={() => setPerfil(p.id)}
+              onClick={() => onElegir(p.id)}
               className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
                 perfil === p.id ? "bg-dorado text-on-dorado" : "text-ink-muted hover:text-ink"
               }`}
@@ -229,7 +257,9 @@ export function Simulador() {
         <div aria-hidden="true" className="rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
           {/* La pantalla del invitado va en claro: así la ven los invitados del salón (colores fijos a propósito). */}
           <div
-            className="relative flex min-h-[520px] flex-col overflow-hidden rounded-[32px]"
+            className={`relative flex min-h-[520px] flex-col overflow-hidden rounded-[32px] transition-opacity duration-300 motion-reduce:transition-none ${
+              visible ? "opacity-100" : "opacity-0"
+            }`}
             style={{ backgroundColor: tema.fondo, color: tema.texto }}
           >
             {conPlantilla && (
@@ -251,9 +281,9 @@ export function Simulador() {
                 className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
                 style={{ backgroundColor: `${color}1a`, color }}
               >
-                Vista {perfil === "salon" ? "de tu staff" : perfil === "cliente" ? "de tus clientes" : "de los invitados"}
+                Vista {vista === "salon" ? "de tu staff" : vista === "cliente" ? "de tus clientes" : "de los invitados"}
               </span>
-              <Pantalla perfil={perfil} color={color} evento={evento} plantilla={plantilla} />
+              <Pantalla perfil={vista} color={color} evento={evento} plantilla={plantilla} />
               <p className="mt-auto pt-4 text-center text-[10px]" style={{ color: tema.suave }}>
                 Hecho con Petra
               </p>
