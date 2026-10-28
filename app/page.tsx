@@ -18,7 +18,9 @@ import {
   Quote,
   Sparkles,
   Star,
+  Smartphone,
   Store,
+  UserRound,
   Video,
   Vote,
 } from "lucide-react";
@@ -53,6 +55,13 @@ const ICONOS: Record<string, LucideIcon> = {
   aviso_padres: BellRing,
   video_resumen: Film,
 };
+
+// Los tres perfiles de cada producto (se configuran desde el sistema).
+const PERFILES_LANDING: { icono: LucideIcon; nombre: string; texto: string }[] = [
+  { icono: Store, nombre: "Vos, el salón", texto: "Asignás el producto a la fiesta y seguís todo desde tu panel." },
+  { icono: UserRound, nombre: "Tu cliente", texto: "Lo configura desde un link: sin cuenta y sin contraseñas." },
+  { icono: Smartphone, nombre: "Sus invitados", texto: "Lo usan desde el celular, sin bajar ninguna app." },
+];
 
 const COLOR_PLAN: Record<Plan, string> = {
   Básico: "text-azul-text",
@@ -122,10 +131,22 @@ export default function Home() {
               Ofrecele a tus invitados <span className="text-dorado">toda la tecnología que quieren.</span>
             </h1>
             <p className="type-cuerpo mt-4 text-ink-muted">
-              Probalo acá mismo: elegí un producto, poné el nombre y el logo de tu salón y mirá cómo lo ven tus
-              invitados.
+              Probalo acá mismo: elegí un producto, poné el nombre y el logo de tu salón y miralo desde los tres lados.
             </p>
           </div>
+          <ul className="mt-6 grid gap-3 sm:grid-cols-3">
+            {PERFILES_LANDING.map(({ icono: Icono, nombre, texto }) => (
+              <li key={nombre} className="flex items-start gap-3 rounded-lg border border-line bg-surface-raised/60 p-4">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-dorado-soft text-dorado">
+                  <Icono size={18} strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="type-boton block text-ink">{nombre}</span>
+                  <span className="block text-[13px] leading-5 text-ink-muted">{texto}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
           <div className="mt-10">
             <Simulador />
           </div>

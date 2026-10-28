@@ -14,6 +14,15 @@ const COLORES = [
   { nombre: "Violeta", valor: "#6a4fb0" },
 ];
 
+type Perfil = "salon" | "cliente" | "invitado";
+
+// Las tres miradas de cada producto: el salón lo asigna, el cliente lo configura y el invitado lo usa.
+const PERFILES: { id: Perfil; nombre: string; texto: string }[] = [
+  { id: "salon", nombre: "Salón", texto: "Lo asignás y seguís todo desde tu panel." },
+  { id: "cliente", nombre: "Cliente", texto: "Lo configura desde un link, sin crearse una cuenta." },
+  { id: "invitado", nombre: "Invitado", texto: "Lo usa desde su celular, sin bajar ninguna app." },
+];
+
 const ICONOS: Record<string, LucideIcon> = {
   invitacion: Mail,
   lista_invitados: ListChecks,
@@ -26,6 +35,7 @@ const ICONOS: Record<string, LucideIcon> = {
  */
 export function Simulador() {
   const [producto, setProducto] = useState(DESTACADOS[0].id);
+  const [perfil, setPerfil] = useState<Perfil>("invitado");
   const [salon, setSalon] = useState("");
   const [color, setColor] = useState(COLORES[0].valor);
   const [logo, setLogo] = useState<string | null>(null);
@@ -41,6 +51,7 @@ export function Simulador() {
 
   const nombreSalon = salon.trim() || "Tu salón";
   const actual = DESTACADOS.find((p) => p.id === producto) ?? DESTACADOS[0];
+  const miradaActual = PERFILES.find((p) => p.id === perfil) ?? PERFILES[2];
 
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[1fr_auto] lg:gap-14">
@@ -150,8 +161,28 @@ export function Simulador() {
       </div>
 
       {/* Celular */}
-      <div className="mx-auto w-[280px] sm:w-[300px]" aria-live="polite">
-        <p className="sr-only">Vista previa de {actual.nombre} para {nombreSalon}</p>
+      <div className="mx-auto w-[280px] sm:w-[300px]">
+        <div role="group" aria-label="Ver como" className="grid grid-cols-3 gap-1 rounded-md border border-line bg-surface-raised p-1">
+          {PERFILES.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              aria-pressed={perfil === p.id}
+              onClick={() => setPerfil(p.id)}
+              className={`min-h-10 rounded-[8px] text-[14px] font-semibold transition-colors ${
+                perfil === p.id ? "bg-dorado text-on-dorado" : "text-ink-muted hover:text-ink"
+              }`}
+            >
+              {p.nombre}
+            </button>
+          ))}
+        </div>
+        <p className="mt-2 mb-4 min-h-10 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
+          {miradaActual.texto}
+        </p>
+        <p className="sr-only">
+          Vista previa de {actual.nombre} para {nombreSalon}, como la ve {miradaActual.nombre.toLowerCase()}
+        </p>
         <div aria-hidden="true" className="rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
           {/* La pantalla del invitado va en claro: así la ven los invitados del salón (colores fijos a propósito). */}
           <div className="flex min-h-[520px] flex-col overflow-hidden rounded-[32px] bg-[#fbf8f3] text-[#1b2d52]">
@@ -172,9 +203,13 @@ export function Simulador() {
               </p>
             </div>
             <div className="flex flex-1 flex-col px-5 pt-4 pb-5">
-              {producto === "invitacion" && <VistaInvitacion color={color} />}
-              {producto === "lista_invitados" && <VistaLista color={color} />}
-              {producto === "armado_mesas" && <VistaMesas color={color} />}
+              <span
+                className="mb-3 self-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase"
+                style={{ backgroundColor: `${color}1a`, color }}
+              >
+                Vista {perfil === "salon" ? "del salón" : perfil === "cliente" ? "del cliente" : "del invitado"}
+              </span>
+              <Pantalla producto={producto} perfil={perfil} color={color} />
               <p className="mt-auto pt-4 text-center text-[10px] text-[#56627a]">Hecho con Petra</p>
             </div>
           </div>
@@ -292,6 +327,154 @@ function VistaMesas({ color }: { color: string }) {
         <p className="font-semibold">Sin mesa: 6</p>
         <p className="text-[#56627a]">Amigas del colegio, Tío Carlos…</p>
       </div>
+    </div>
+  );
+}
+
+/** Qué pantalla mostrar según el producto y quién lo mira. */
+function Pantalla({ producto, perfil, color }: { producto: string; perfil: Perfil; color: string }) {
+  if (producto === "invitacion") {
+    if (perfil === "salon") return <InvitacionSalon color={color} />;
+    if (perfil === "cliente") return <InvitacionCliente color={color} />;
+    return <VistaInvitacion color={color} />;
+  }
+  if (producto === "lista_invitados") {
+    if (perfil === "salon") return <ListaSalon color={color} />;
+    if (perfil === "cliente") return <VistaLista color={color} />;
+    return <ListaInvitado color={color} />;
+  }
+  if (perfil === "salon") return <MesasSalon color={color} />;
+  if (perfil === "cliente") return <VistaMesas color={color} />;
+  return <MesasInvitado color={color} />;
+}
+
+/** Fila de dato para las vistas del salón. */
+function Dato({ titulo, valor, color }: { titulo: string; valor: string; color: string }) {
+  return (
+    <div className="flex items-center justify-between py-2 text-[13px]">
+      <span className="text-[#56627a]">{titulo}</span>
+      <span className="font-semibold" style={{ color }}>
+        {valor}
+      </span>
+    </div>
+  );
+}
+
+function BotonColor({ color, children }: { color: string; children: React.ReactNode }) {
+  return (
+    <span
+      className="mt-3 flex min-h-10 items-center justify-center rounded-xl text-[14px] font-semibold text-white"
+      style={{ backgroundColor: color }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function InvitacionSalon({ color }: { color: string }) {
+  return (
+    <div>
+      <p className="font-display text-[20px] leading-7">XV de Sofía</p>
+      <p className="text-[12px] text-[#56627a]">Sábado 14 de diciembre</p>
+      <div className="mt-4 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
+        <Dato titulo="Invitación" valor="Asignada" color={color} />
+        <Dato titulo="Link del cliente" valor="Enviado" color={color} />
+        <Dato titulo="Diseño" valor="Con tu marca" color={color} />
+        <Dato titulo="Confirmaron" valor="86 de 120" color={color} />
+      </div>
+      <BotonColor color={color}>Copiar link para el cliente</BotonColor>
+    </div>
+  );
+}
+
+function InvitacionCliente({ color }: { color: string }) {
+  const campos = [
+    ["Quién festeja", "Sofía"],
+    ["Fecha y hora", "Sábado 14 · 21:30"],
+    ["Mensaje", "¡Te espero para festejar!"],
+  ];
+  return (
+    <div>
+      <p className="font-display text-[20px] leading-7">Armá tu invitación</p>
+      <div className="mt-3 flex flex-col gap-2">
+        {campos.map(([etiqueta, valor]) => (
+          <div key={etiqueta}>
+            <p className="text-[11px] font-semibold text-[#56627a]">{etiqueta}</p>
+            <p className="mt-0.5 rounded-lg border border-[#c9bfae] bg-white px-3 py-2 text-[13px]">{valor}</p>
+          </div>
+        ))}
+      </div>
+      <BotonColor color={color}>Enviar por WhatsApp</BotonColor>
+    </div>
+  );
+}
+
+function ListaSalon({ color }: { color: string }) {
+  return (
+    <div>
+      <p className="font-display text-[20px] leading-7">Invitados · XV de Sofía</p>
+      <div className="mt-3 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
+        <Dato titulo="Invitados" valor="120" color={color} />
+        <Dato titulo="Confirmados" valor="86" color={color} />
+        <Dato titulo="Menores" valor="18" color={color} />
+        <Dato titulo="Menú especial" valor="7" color={color} />
+      </div>
+      <BotonColor color={color}>Descargar para Excel</BotonColor>
+    </div>
+  );
+}
+
+function ListaInvitado({ color }: { color: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-[13px] text-[#56627a]">Hola, Familia Gómez</p>
+      <p className="mt-1 font-display text-[24px] leading-8">¿Vienen a los XV de Sofía?</p>
+      <div className="mt-4 rounded-lg bg-white p-3 text-left text-[13px] shadow-sm">
+        <p className="flex justify-between">
+          <span>Personas</span>
+          <span className="font-semibold">4</span>
+        </p>
+        <p className="mt-2 flex justify-between">
+          <span>Menú especial</span>
+          <span className="font-semibold">1 celíaco</span>
+        </p>
+      </div>
+      <BotonColor color={color}>Sí, confirmamos</BotonColor>
+      <span className="mt-2 flex min-h-10 items-center justify-center rounded-xl border border-[#c9bfae] text-[14px]">
+        No podemos ir
+      </span>
+    </div>
+  );
+}
+
+function MesasSalon({ color }: { color: string }) {
+  return (
+    <div>
+      <p className="font-display text-[20px] leading-7">Mesas · XV de Sofía</p>
+      <div className="mt-3 divide-y divide-[#e4ddd1] rounded-lg bg-white px-3 shadow-sm">
+        <Dato titulo="Mesas" valor="12" color={color} />
+        <Dato titulo="Lugares" valor="120" color={color} />
+        <Dato titulo="Sentados" valor="114" color={color} />
+        <Dato titulo="Sin mesa" valor="6" color={color} />
+      </div>
+      <BotonColor color={color}>Ver el plano de mesas</BotonColor>
+    </div>
+  );
+}
+
+function MesasInvitado({ color }: { color: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-[13px] text-[#56627a]">Hola, Tía Marta</p>
+      <p className="mt-1 text-[14px]">Tu mesa es la</p>
+      <span
+        className="mx-auto mt-2 flex size-24 items-center justify-center rounded-full font-display text-[44px] text-white"
+        style={{ backgroundColor: color }}
+      >
+        7
+      </span>
+      <p className="mt-4 text-[12px] font-semibold text-[#56627a]">Compartís mesa con</p>
+      <p className="mt-1 text-[13px]">Familia Ruiz, Abuela Elsa y 5 más</p>
     </div>
   );
 }
