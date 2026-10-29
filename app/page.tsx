@@ -22,7 +22,6 @@ import {
 import { Antetitulo, Encabezado, Separador } from "@/components/adornos";
 import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
-import { TiendaApps } from "@/components/tienda-apps";
 import { PLANES } from "@/lib/catalogo";
 import { SELECCION_INICIAL, fechaLarga, pesos, precioSugerido } from "@/lib/cotizador-demo";
 import {
@@ -121,34 +120,6 @@ const RAZONES = [
     icono: HandCoins,
     titulo: "Más venta en cada fiesta",
     texto: "Los extras aparecen en el presupuesto y suman a cada evento.",
-  },
-];
-
-// Datos del nicho, siempre con su fuente (solo estudios reales: nunca inventar cifras).
-const DATOS = [
-  {
-    cifra: "72%",
-    texto: "de las parejas dice que su prioridad número uno es que sus invitados se sientan atendidos.",
-    fuente: "The Knot, Real Weddings Study 2025 · EE. UU.",
-    url: "https://www.businesswire.com/news/home/20250227544757/en",
-  },
-  {
-    cifra: "64%",
-    texto: "de los asistentes pone las experiencias inmersivas entre lo que más mejora un evento.",
-    fuente: "Freeman, Attendee Intent and Behavior 2024",
-    url: "https://www.pcma.org/freeman-trends-report-2024-what-event-attendees-want/",
-  },
-  {
-    cifra: "57%",
-    texto: "de los organizadores de eventos empresariales vio crecer sus eventos presenciales en el último año.",
-    fuente: "Bizzabo, State of Events 2025",
-    url: "https://www.bizzabo.com/blog/power-of-in-person-events-2025",
-  },
-  {
-    cifra: "36%",
-    texto: "de las parejas ya usa inteligencia artificial para planear su casamiento: casi el doble que a comienzos de 2025.",
-    fuente: "The Knot, Real Weddings Study 2026 · EE. UU.",
-    url: "https://www.theknotww.com/press-releases/the-knot-worldwide-unveils-2026-real-weddings-study",
   },
 ];
 
@@ -337,9 +308,6 @@ export default function Home() {
           <nav aria-label="Secciones" className="hidden items-center gap-7 text-[14px] text-ink-muted lg:flex">
             <a href="#como-funciona" className="hover:text-ink">
               Cómo funciona
-            </a>
-            <a href="#extras" className="hover:text-ink">
-              Extras
             </a>
             <a href="#planes" className="hover:text-ink">
               Planes
@@ -571,79 +539,7 @@ export default function Home() {
 
         <Separador />
 
-        {/* 5. Por qué ahora: datos reales del nicho, con su fuente */}
-        <section id="datos" className={`${contenedor} scroll-mt-20 py-20 lg:py-24`} aria-labelledby="titulo-datos">
-          <Encabezado
-            id="titulo-datos"
-            ante="Por qué ahora"
-            centrado
-            titulo={
-              <>
-                Las fiestas cambiaron. <span className="text-dorado">Tus clientes también.</span>
-              </>
-            }
-            texto="Lo que muestran los estudios más grandes de la industria de eventos."
-          />
-          <ul className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {DATOS.map((d, i) => (
-              <li
-                key={d.cifra}
-                className={`aparecer flex flex-col rounded-xl border border-line bg-surface-raised p-4 sm:p-6 ${DEMORAS[i]}`}
-              >
-                <p className="font-display text-[40px] leading-none text-dorado sm:text-[52px]">{d.cifra}</p>
-                <p className="mt-3 flex-1 text-[14px] leading-5 text-ink sm:mt-4 sm:text-[16px] sm:leading-6">{d.texto}</p>
-                <a
-                  href={d.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 border-t border-line pt-3 text-[11px] leading-4 text-ink-muted underline-offset-4 hover:text-ink hover:underline sm:mt-5 sm:text-[12px]"
-                >
-                  Fuente: {d.fuente}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* 6. Los extras para invitados: se suman al presupuesto. Todas las webapps, como la pantalla de inicio de un celular */}
-        <section
-          id="extras"
-          className="relative scroll-mt-20 overflow-hidden border-y border-line bg-noche/60 py-20 lg:py-28"
-          aria-labelledby="titulo-extras"
-        >
-          {/* Dos luces suaves de la marca de fondo (decorativas): dorado y azul. */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <span className="absolute -top-32 -left-24 size-96 rounded-full bg-dorado/10 blur-3xl" />
-            <span className="absolute -right-24 -bottom-32 size-96 rounded-full bg-azul/15 blur-3xl" />
-          </div>
-          <div className={`${contenedor} relative`}>
-            <Encabezado
-              id="titulo-extras"
-              ante="Vendé más en cada fiesta"
-              centrado
-              titulo={
-                <>
-                  Lo que tus clientes buscan afuera, <span className="text-dorado">sumado a tu presupuesto.</span>
-                </>
-              }
-              texto="Invitación digital, lista de invitados, mesas, fotos y juegos, con la marca de tu salón. Aparecen como extras en tu cotizador y los cobrás vos."
-            />
-            <h3
-              id="apps"
-              className="aparecer mt-14 scroll-mt-24 text-center font-display text-[22px] leading-7 text-ink lg:text-[26px] lg:leading-8"
-            >
-              Conocé las <span className="text-dorado">más de 30 webapps</span> que podés ofrecer
-            </h3>
-            <p className="aparecer type-cuerpo mx-auto mt-2 max-w-[560px] text-center text-ink-muted">
-              Se abren desde el celular, sin bajar nada. Vos elegís cuáles sumar a cada fiesta.
-            </p>
-            <div className="mt-10">
-              <TiendaApps />
-            </div>
-          </div>
-        </section>
-
-        {/* 7. Cuando cierra: la fiesta sigue en el panel */}
+        {/* 5. Cuando cierra: la fiesta sigue en el panel */}
         <section id="gestion" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-gestion">
           <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -677,7 +573,7 @@ export default function Home() {
 
         <Separador />
 
-        {/* 8. Planes */}
+        {/* 6. Planes */}
         <section id="planes" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-planes">
           <Encabezado
             id="titulo-planes"
@@ -741,7 +637,7 @@ export default function Home() {
 
         <Separador />
 
-        {/* 9. Preguntas frecuentes (se abren sin JavaScript) */}
+        {/* 7. Preguntas frecuentes (se abren sin JavaScript) */}
         <section id="preguntas" className={`${contenedor} scroll-mt-20 py-20 lg:py-28`} aria-labelledby="titulo-preguntas">
           <Encabezado id="titulo-preguntas" ante="Preguntas" centrado titulo="Preguntas frecuentes" />
           <div className="mt-12 flex flex-col gap-3 lg:mx-auto lg:max-w-[760px]">
@@ -765,7 +661,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 10. Cierre: reseñas (cuando haya), la invitación a sumarse y quién está detrás */}
+        {/* 8. Cierre: reseñas (cuando haya), la invitación a sumarse y quién está detrás */}
         <section
           id="salones"
           className="relative scroll-mt-20 overflow-hidden border-t border-line bg-noche/60 py-20 lg:py-28"
