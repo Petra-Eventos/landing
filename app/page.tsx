@@ -340,9 +340,11 @@ export default function Home() {
           className={`${contenedor} scroll-mt-20 pt-12 pb-20 md:pt-16 lg:pt-8 lg:pb-28`}
           aria-labelledby="titular"
         >
-          {/* En la compu: texto y botones a la izquierda; el celular a la derecha. */}
-          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-x-16 xl:gap-x-24">
-            <div className="max-w-[640px]">
+          {/* En la compu: texto y botones a la izquierda; el celular a la derecha.
+              En pantallas bajas (notebooks) van arriba los dos: el celular es más alto que la pantalla
+              y, centrado, dejaba un hueco grande arriba del título. En pantallas altas, centrados. */}
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-16 xl:gap-x-24 [@media(min-width:64rem)_and_(max-height:53.99rem)]:items-start [@media(min-width:64rem)_and_(min-height:54rem)]:items-center">
+            <div className="max-w-[640px] [@media(min-width:64rem)_and_(max-height:53.99rem)]:pt-14">
               <Antetitulo>Cotizador para salones de eventos</Antetitulo>
               <h1 id="titular" className="type-display mt-5 text-balance text-ink">
                 Respondé primero, <span className="text-dorado">gestioná más fiestas.</span>
