@@ -348,7 +348,7 @@ export default function Home() {
                 Respondé primero, <span className="text-dorado">gestioná más fiestas.</span>
               </h1>
               <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
-                Generá tu link para que tus clientes coticen su evento las 24 horas.
+                Generá un link para que tus clientes coticen su evento las 24 horas.
               </p>
               <div className="mt-8">
                 <Acciones />
