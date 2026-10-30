@@ -345,7 +345,7 @@ export default function Home() {
             <div className="max-w-[640px]">
               <Antetitulo>Cotizador para salones de eventos</Antetitulo>
               <h1 id="titular" className="type-display mt-5 text-balance text-ink">
-                Tus clientes cotizan solos. <span className="text-dorado">Vos cerrás la fiesta.</span>
+                Respondé primero, <span className="text-dorado">gestioná más fiestas.</span>
               </h1>
               <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
                 Generá tu link para que tus clientes coticen su evento las 24 horas.
