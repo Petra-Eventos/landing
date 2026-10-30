@@ -334,10 +334,11 @@ export default function Home() {
       </header>
 
       <main>
-        {/* 1. La promesa y la demo del cotizador */}
+        {/* 1. La promesa y la demo del cotizador.
+            overflow-x-clip: el rebote del título no puede correr la página de costado en el celular. */}
         <section
           id="cotizador"
-          className={`${contenedor} scroll-mt-20 pt-12 pb-20 md:pt-16 lg:pt-8 lg:pb-28`}
+          className={`${contenedor} scroll-mt-20 overflow-x-clip pt-12 pb-20 md:pt-16 lg:pt-8 lg:pb-28`}
           aria-labelledby="titular"
         >
           {/* En la compu: texto y botones a la izquierda; el celular a la derecha.
@@ -346,10 +347,10 @@ export default function Home() {
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-16 xl:gap-x-24 [@media(min-width:64rem)_and_(max-height:53.99rem)]:items-start [@media(min-width:64rem)_and_(min-height:54rem)]:items-center">
             <div className="max-w-[640px] [@media(min-width:64rem)_and_(max-height:53.99rem)]:pt-14">
               <Antetitulo>Cotizador para salones de eventos</Antetitulo>
-              <h1 id="titular" className="type-display mt-5 text-balance text-ink">
+              <h1 id="titular" className="entrar-frenando type-display mt-5 text-balance text-ink">
                 Respondé primero, <span className="text-dorado">gestioná más fiestas.</span>
               </h1>
-              <p className="mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
+              <p className="aparecer-despues mt-5 max-w-[560px] text-[17px] leading-7 text-ink-muted">
                 Generá un link para que tus clientes coticen su evento las 24 horas.
               </p>
               <div className="mt-8">
