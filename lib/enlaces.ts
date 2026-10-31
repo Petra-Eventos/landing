@@ -1,8 +1,8 @@
 /**
  * Links al sistema de Petra. La dirección se cambia con NEXT_PUBLIC_URL_SISTEMA
- * (por ejemplo, cuando el sistema pase a app.petraeventos.com).
+ * (por ejemplo, para probar contra una preview).
  */
-const SISTEMA = (process.env.NEXT_PUBLIC_URL_SISTEMA ?? "https://sistema-one-wheat.vercel.app").replace(/\/$/, "");
+const SISTEMA = (process.env.NEXT_PUBLIC_URL_SISTEMA ?? "https://app.petraeventos.com").replace(/\/$/, "");
 
 /** Crear la cuenta gratis (con Google). */
 export const URL_REGISTRARME = `${SISTEMA}/registrarme`;

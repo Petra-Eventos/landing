@@ -31,9 +31,8 @@ Y abrí http://localhost:3000.
 
 ## La dirección del sistema
 
-Los botones apuntan a `https://sistema-one-wheat.vercel.app`. Cuando el sistema tenga su dominio
-(por ejemplo `app.petraeventos.com`), se cambia en Vercel con la variable `NEXT_PUBLIC_URL_SISTEMA`,
-sin tocar el código.
+Los botones apuntan a `https://app.petraeventos.com`. Si hace falta otra dirección (por ejemplo, una preview),
+se cambia en Vercel con la variable `NEXT_PUBLIC_URL_SISTEMA`, sin tocar el código.
 
 ## Notas
 
