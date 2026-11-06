@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------
-   Tokens de marca de Petra · paleta "noche y oro":
-   azul noche profundo, el azul de la marca (#1C79A4) para la acción principal
-   y el dorado de las lamparitas para lo que se puede tocar. Sin celestes chillones.
+   Tokens de marca de Petra · paleta de noche:
+   fondo casi negro, crema para el texto y la acción principal, y el azul de la marca (#1C79A4) para la luz.
    En los componentes usá siempre el token, nunca el hex suelto.
    ------------------------------------------------------------ */
 :root {
-  --surface: #070d1c; /* fondo: azul noche profundo */
-  --surface-raised: #0f1a33; /* tarjetas */
+  --surface: #070a12; /* fondo: casi negro, apenas azul */
+  --surface-raised: #0e1320; /* tarjetas */
   --line: #1f2d4f; /* bordes finos */
   --line-strong: #34466f; /* bordes de botones secundarios */
   --ink: #f3eee6; /* texto principal (crema de la marca) */
@@ -16,13 +15,13 @@
   --azul: #1c79a4; /* botón principal: el azul de la marca */
   --azul-hover: #2287b6;
   --on-azul: #ffffff;
-  --azul-text: #8fb4cf; /* íconos y links: azul acero, suave */
+  --azul-text: #7cc0e6; /* íconos y links: azul acero, suave */
   --azul-soft: #13254a; /* fondos teñidos de azul */
   --dorado: #d4b06a; /* toques dorados: destacados, etiquetas y socios */
   --dorado-hover: #e2c286;
   --on-dorado: #1a1306; /* texto sobre el dorado */
   --dorado-soft: #2a2312; /* fondo de etiquetas doradas */
-  --noche: #050a16; /* pie, más oscuro que el fondo */
+  --noche: #05070d; /* pie, más oscuro que el fondo */
   --oliva: #8c9a52;
   --oliva-text: #b7c37c;
   --oliva-soft: #1d2414;
@@ -30,7 +29,7 @@
   --oliva-marca: #6b7a3a; /* el oliva del logo, para fondos */
 
   --shadow-piedra: 0 1px 2px #00000080, 0 12px 32px #00000066;
-  --focus-ring: 0 0 0 2px #070d1c, 0 0 0 4px #d4b06a;
+  --focus-ring: 0 0 0 2px #070a12, 0 0 0 4px #7cc0e6;
 
   color-scheme: dark;
 }
@@ -73,21 +72,20 @@
   --shadow-piedra: var(--shadow-piedra);
 }
 
-/* Escala tipográfica: los títulos grandes también miran el alto de la pantalla,
-   para que el primer pantallazo entre entero en una notebook. */
+/* Escala tipográfica: títulos en Manrope, grandes y apretados. Fraunces queda solo para el logo. */
 @utility type-display {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(42px, min(8vw, 13vh), 104px);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(38px, min(7vw, 11vh), 84px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
 }
 @utility type-titulo {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(34px, 5vw, 64px);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
 }
 @utility type-subtitulo {
   font-family: var(--font-sans);
@@ -191,52 +189,29 @@
   }
 }
 
-/* El único momento "show" de la página: al cargar, las lamparitas del salón se prenden de a una.
-   Con movimiento reducido quedan prendidas desde el principio. */
-.lampara {
-  animation: prender 0.9s ease-out both;
-  animation-delay: var(--orden, 0s);
-}
-@keyframes prender {
-  0% {
-    opacity: 0.06;
-  }
-  55% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 0.55;
-  }
-  100% {
-    opacity: 1;
+/* Lo primero que se ve entra una sola vez, suave y en orden (--orden). */
+@media (prefers-reduced-motion: no-preference) {
+  .aparecer {
+    animation: aparecer 0.7s ease-out both;
+    animation-delay: var(--orden, 0s);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .lampara {
-    animation: none;
-  }
-}
-
-/* El precio de la primera pantalla: cambia cuando la persona toca algo. */
-.precio-nuevo {
-  animation: precio 0.35s ease-out;
-}
-@keyframes precio {
+@keyframes aparecer {
   from {
-    opacity: 0.25;
-    translate: 0 6px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .precio-nuevo {
-    animation: none;
+    opacity: 0;
+    translate: 0 16px;
   }
 }
 
-/* El riel de tarjetas: se desliza de costado, sin barra a la vista. */
-.riel {
-  scrollbar-width: none;
+/* El borde de abajo se funde con el fondo (primera pantalla). */
+.fundir-abajo {
+  mask-image: linear-gradient(to top, transparent 0%, black 30%);
 }
-.riel::-webkit-scrollbar {
-  display: none;
+
+/* El título con un degradé apenas perceptible. */
+.titulo-degrade {
+  background: linear-gradient(to bottom, var(--ink) 40%, var(--ink-muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

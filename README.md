@@ -23,10 +23,8 @@ Y abrí http://localhost:3000.
 | `app/page.tsx`         | Todas las secciones y sus textos                                             |
 | `app/layout.tsx`       | Título y descripción para Google y WhatsApp                                  |
 | `app/globals.css`      | Tokens de marca (colores de la versión nocturna, tipografía, esquinas)       |
-| `components/escena-noche.tsx` | El salón de noche con las lamparitas (primera pantalla y cierre)      |
-| `components/cotizacion-en-linea.tsx` | La frase de la primera pantalla: tocás una palabra y cambia el precio |
+| `components/panel-ejemplo.tsx` | El panel de ejemplo de la primera pantalla                        |
 | `components/historia.tsx` | Los tres pasos: el dibujo queda quieto y cambia al bajar                  |
-| `components/riel.tsx`  | Las tarjetas de colores que se deslizan de costado                           |
 | `components/cotizador-demo.tsx` | La demo del celular, con las dos vistas                             |
 | `components/logo.tsx`  | Isotipo, firma y recurso de las piedras (no modificar)                       |
 | `lib/enlaces.ts`       | Links al sistema (registrarme, entrar, términos, privacidad) y al WhatsApp   |
@@ -40,8 +38,7 @@ se cambia en Vercel con la variable `NEXT_PUBLIC_URL_SISTEMA`, sin tocar el cód
 
 ## Notas
 
-- **Versión nocturna:** un salón de noche cuyas lamparitas se prenden al cargar, salvo que la persona tenga activado
-  "reducir movimiento". Es el único movimiento que arranca solo. Los colores se cambian desde `app/globals.css`.
+- **Diseño:** la estructura y el estilo se basan en [Launch UI](https://github.com/launch-ui/launch-ui) (licencia MIT, copia en `licencias/launch-ui.md`). Los títulos van en Manrope; Fraunces queda solo para el logo.
 - **Una sola acción:** "Armá tu cotizador gratis" en toda la página. WhatsApp y el cotizador de ejemplo van como links.
 - Las fuentes están dentro del proyecto en vez de bajarse de Google Fonts: se ven igual y no dependen de Google.
 - El formulario de "acceso anticipado" se sacó: ahora cada salón se registra solo en el sistema.

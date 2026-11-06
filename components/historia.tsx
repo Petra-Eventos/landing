@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { FileText } from "lucide-react";
 import { BARRAS, EXTRAS, MENUS, SELECCION_INICIAL, fechaLarga, pesos, precioSugerido } from "@/lib/cotizador-demo";
 
-const marco = "w-full max-w-[420px] rounded-xl border border-line bg-surface-raised p-5 shadow-piedra";
+const marco = "w-full max-w-[420px] rounded-2xl border border-white/10 bg-linear-to-b from-white/8 to-white/2 p-5 shadow-2xl";
 
 /** El PDF de promos que se vuelve paquetes. */
 function VisualPdf() {
@@ -20,7 +20,7 @@ function VisualPdf() {
       <ul className="mt-4 flex flex-col divide-y divide-line">
         {MENUS.map((m) => (
           <li key={m.id} className="flex items-center justify-between gap-3 py-3">
-            <span className="font-display text-[20px] text-ink">{m.nombre}</span>
+            <span className="font-semibold tracking-tight text-[20px] text-ink">{m.nombre}</span>
             <span className="text-[14px] text-ink-muted tabular-nums">{pesos(m.precio)} por persona</span>
           </li>
         ))}
@@ -42,7 +42,7 @@ function VisualLink() {
   return (
     <div className={marco}>
       <div className="flex items-center gap-3">
-        <span className="flex size-14 items-center justify-center rounded-full bg-azul font-display text-[22px] text-on-azul">T</span>
+        <span className="flex size-14 items-center justify-center rounded-full bg-azul font-semibold tracking-tight text-[22px] text-on-azul">T</span>
         <span>
           <span className="block text-[15px] font-semibold text-ink">tusalon</span>
           <span className="block text-[13px] text-ink-muted">Bio de Instagram</span>
@@ -70,7 +70,7 @@ function VisualPedido() {
   return (
     <div className={marco}>
       <div className="flex items-center gap-3 border-b border-line pb-3">
-        <span className="flex size-9 items-center justify-center rounded-full bg-dorado-soft font-display text-[15px] text-dorado">L</span>
+        <span className="flex size-9 items-center justify-center rounded-full bg-azul-soft font-semibold tracking-tight text-[15px] text-azul-text">L</span>
         <span>
           <span className="block text-[14px] font-semibold text-ink">Laura</span>
           <span className="block text-[12px] text-ink-muted">Desde tu cotizador</span>
@@ -87,7 +87,7 @@ function VisualPedido() {
           <li className="first-letter:uppercase">{extras.join(" y ")}</li>
         </ul>
         <p className="mt-1.5">
-          Precio sugerido: <span className="font-semibold text-dorado">{pesos(precioSugerido(s))}</span>
+          Precio sugerido: <span className="font-semibold text-ink">{pesos(precioSugerido(s))}</span>
         </p>
         <p className="mt-1 text-right text-[12px] text-ink-muted">23:48</p>
       </div>
@@ -161,8 +161,8 @@ export function Historia() {
               {p.visual}
             </div>
             <div className={`transition-opacity duration-500 motion-reduce:transition-none ${i === activo ? "" : "lg:opacity-35"}`}>
-              <p className="font-display text-[20px] text-dorado">Paso {i + 1}</p>
-              <h3 className="mt-2 font-display text-[32px] leading-[1.12] tracking-[-0.02em] text-ink lg:text-[46px]">{p.titulo}</h3>
+              <p className="text-[14px] font-semibold text-azul-text">Paso {i + 1}</p>
+              <h3 className="mt-2 font-semibold tracking-tight text-[30px] leading-[1.15] text-ink lg:text-[40px]">{p.titulo}</h3>
               <p className="mt-4 max-w-[480px] text-[17px] leading-7 text-ink-muted">{p.texto}</p>
             </div>
           </li>
