@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Check, ChevronDown, Star, Store } from "lucide-react";
 import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
+import { PasosApilados } from "@/components/pasos-apilados";
 import { URL_EJEMPLO, URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
 import { RESENAS, SALONES } from "@/lib/resenas";
 
@@ -14,12 +15,6 @@ const ACCION = "Armá tu cotizador gratis";
 const botonPrincipal =
   "inline-flex min-h-12 items-center justify-center rounded-lg bg-linear-to-b from-white to-crema-claro px-6 text-[16px] font-semibold text-noche shadow-md transition-opacity hover:opacity-90";
 const linkSecundario = "text-[15px] font-semibold text-ink underline decoration-white/30 underline-offset-4 hover:decoration-white";
-
-const PASOS = [
-  { titulo: "Cargás tus precios", texto: "Subís tu PDF de promos o cargás tus menús y extras. Lo hacés una vez." },
-  { titulo: "Compartís tu link", texto: "En la bio de Instagram, en WhatsApp o con un QR en el salón." },
-  { titulo: "Te llega el pedido", texto: "Tu cliente arma su fiesta, ve el precio y te escribe con todo listo." },
-];
 
 const POR_QUE = [
   { titulo: "Dejás de contestar «¿precio?»", texto: "El cotizador responde solo, también a las 23 y los fines de semana." },
@@ -95,15 +90,7 @@ export default function Home() {
             <h2 id="titulo-como" className="type-titulo text-center text-ink">
               Cómo funciona
             </h2>
-            <ol className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
-              {PASOS.map((p, i) => (
-                <li key={p.titulo} className="flex flex-col items-center text-center">
-                  <span className="flex size-12 items-center justify-center rounded-full border border-white/15 bg-white/5 text-[18px] font-bold text-ink">{i + 1}</span>
-                  <h3 className="mt-5 text-[20px] font-bold tracking-tight text-ink">{p.titulo}</h3>
-                  <p className="mt-2 max-w-[300px] text-[16px] leading-6 text-ink-muted">{p.texto}</p>
-                </li>
-              ))}
-            </ol>
+            <PasosApilados />
           </div>
         </section>
 
