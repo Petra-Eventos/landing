@@ -23,8 +23,6 @@ Y abrí http://localhost:3000.
 | `app/page.tsx`         | Todas las secciones y sus textos                                             |
 | `app/layout.tsx`       | Título y descripción para Google y WhatsApp                                  |
 | `app/globals.css`      | Tokens de marca (colores de la versión nocturna, tipografía, esquinas)       |
-| `components/panel-ejemplo.tsx` | El panel de ejemplo de la primera pantalla                        |
-| `components/historia.tsx` | Los tres pasos: el dibujo queda quieto y cambia al bajar                  |
 | `components/cotizador-demo.tsx` | La demo del celular, con las dos vistas                             |
 | `components/logo.tsx`  | Isotipo, firma y recurso de las piedras (no modificar)                       |
 | `lib/enlaces.ts`       | Links al sistema (registrarme, entrar, términos, privacidad) y al WhatsApp   |
