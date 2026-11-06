@@ -13,14 +13,12 @@ export const URL_ENTRAR = `${SISTEMA}/entrar`;
 export const URL_TERMINOS = `${SISTEMA}/terminos`;
 export const URL_PRIVACIDAD = `${SISTEMA}/privacidad`;
 
+/** El cotizador de ejemplo del sistema (salón y precios ficticios): se abre sin cuenta y no guarda pedidos. */
+export const URL_EJEMPLO = `${SISTEMA}/q/petra-ejemplo-aromos-001`;
+
 /** WhatsApp de Petra, con un mensaje ya escrito. */
 export const URL_WHATSAPP = `https://wa.me/5491139561326?text=${encodeURIComponent(
   "Hola, quiero saber más de Petra para mi salón.",
-)}`;
-
-/** WhatsApp para pedir el cotizador (mientras se suma a Petra, los salones lo piden por acá). */
-export const URL_WHATSAPP_COTIZADOR = `https://wa.me/5491139561326?text=${encodeURIComponent(
-  "Hola, quiero el cotizador de Petra para mi salón.",
 )}`;
 
 /** WhatsApp para quien quiere ser socio de Petra (gestión total del salón). */

@@ -104,8 +104,8 @@ export function CotizadorDemo() {
 
   return (
     <div onPointerDown={parar} onKeyDown={parar} className="mx-auto w-[280px] sm:w-[300px]">
-      <p id={idVistas} className="type-etiqueta mb-2 text-center text-dorado">
-        Mirá las dos vistas
+      <p id={idVistas} className="sr-only">
+        Elegí qué vista mirar
       </p>
       <div role="group" aria-labelledby={idVistas} className="grid grid-cols-2 gap-1 rounded-md border border-line bg-surface-raised p-1">
         {(Object.keys(MIRADAS) as Vista[]).map((v) => (
@@ -115,28 +115,19 @@ export function CotizadorDemo() {
             aria-pressed={vista === v}
             onClick={() => setVista(v)}
             className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
-              vista === v ? "bg-dorado text-on-dorado" : "text-ink-muted hover:text-ink"
+              vista === v ? "bg-crema-claro text-noche" : "text-ink-muted hover:text-ink"
             }`}
           >
             {MIRADAS[v].nombre}
           </button>
         ))}
       </div>
-      <p className="mt-2 mb-8 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
+      <p className="mt-3 mb-6 text-center text-[14px] leading-5" aria-live="polite">
         {MIRADAS[vista].texto}
       </p>
 
       <div className="relative">
-        {/* Escenario: un arco dorado detrás del celular, como la columna del logo de Petra. */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-7 -top-6 -bottom-4 rounded-t-full border border-dorado/25 bg-linear-to-b from-dorado/12 via-azul/6 to-transparent sm:-inset-x-12"
-        />
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-3 -top-2 -bottom-2 rounded-t-full border border-dorado/10 sm:-inset-x-6"
-        />
-        <div className="relative rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
+        <div className="relative rounded-[42px] bg-noche p-3 shadow-[0_40px_80px_-30px_#1b2d5299]">
           <div
             className="relative flex h-[560px] flex-col overflow-hidden rounded-[32px]"
             style={vista === "cliente" ? { backgroundColor: C.fondo, color: C.texto } : undefined}
@@ -156,7 +147,7 @@ export function CotizadorDemo() {
           </div>
         </div>
       </div>
-      <p className="mt-5 text-center text-[12px] leading-4 text-ink-muted">Demostración con precios de ejemplo.</p>
+      <p className="mt-5 text-center text-[12px] leading-4">Demostración con precios de ejemplo.</p>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 /* ------------------------------------------------------------
    Tokens de marca de Petra · paleta "noche y oro":
    azul noche profundo, el azul de la marca (#1C79A4) para la acción principal
-   y toques dorados para lo que se destaca. Sin celestes chillones.
+   y el dorado de las lamparitas para lo que se puede tocar. Sin celestes chillones.
    En los componentes usá siempre el token, nunca el hex suelto.
    ------------------------------------------------------------ */
 :root {
@@ -27,6 +27,7 @@
   --oliva-text: #b7c37c;
   --oliva-soft: #1d2414;
   --crema-claro: #f3eee6;
+  --oliva-marca: #6b7a3a; /* el oliva del logo, para fondos */
 
   --shadow-piedra: 0 1px 2px #00000080, 0 12px 32px #00000066;
   --focus-ring: 0 0 0 2px #070d1c, 0 0 0 4px #d4b06a;
@@ -52,6 +53,7 @@
   --color-oliva-text: var(--oliva-text);
   --color-oliva-soft: var(--oliva-soft);
   --color-crema-claro: var(--crema-claro);
+  --color-oliva-marca: var(--oliva-marca);
   --color-dorado: var(--dorado);
   --color-dorado-hover: var(--dorado-hover);
   --color-on-dorado: var(--on-dorado);
@@ -71,33 +73,21 @@
   --shadow-piedra: var(--shadow-piedra);
 }
 
-/* Escala tipográfica */
-/* Escala proporcional: un poco más chica en el celular y crece en pantallas grandes. */
+/* Escala tipográfica: los títulos grandes también miran el alto de la pantalla,
+   para que el primer pantallazo entre entero en una notebook. */
 @utility type-display {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 36px;
-  line-height: 42px;
-  letter-spacing: -0.025em;
-  @media (width >= 48rem) {
-    font-size: 46px;
-    line-height: 52px;
-  }
-  @media (width >= 80rem) {
-    font-size: 58px;
-    line-height: 64px;
-  }
+  font-weight: 400;
+  font-size: clamp(42px, min(8vw, 13vh), 104px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
 }
 @utility type-titulo {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 28px;
-  line-height: 34px;
-  letter-spacing: -0.02em;
-  @media (width >= 64rem) {
-    font-size: 38px;
-    line-height: 44px;
-  }
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
 }
 @utility type-subtitulo {
   font-family: var(--font-sans);
@@ -137,11 +127,7 @@
     }
   }
   body {
-    /* Fondo sólido azul noche con dos luces suaves: azul arriba a la derecha y dorado a la izquierda. */
-    background:
-      radial-gradient(1100px 620px at 85% -8%, #1c79a426, transparent 70%),
-      radial-gradient(900px 560px at -10% 4%, #d4b06a12, transparent 70%),
-      var(--surface);
+    background: var(--surface);
     min-height: 100vh;
     color: var(--ink);
     font-family: var(--font-sans);
@@ -155,6 +141,7 @@
   button:focus-visible,
   summary:focus-visible,
   input:focus-visible,
+  select:focus-visible,
   [tabindex]:focus-visible {
     outline: none;
     box-shadow: var(--focus-ring);
@@ -166,45 +153,6 @@
 
   summary::-webkit-details-marker {
     display: none;
-  }
-}
-
-/* Franja de tipos de fiesta: se desplaza sola y los bordes se desvanecen.
-   La lista va dos veces seguidas para que la vuelta no se note. */
-.marquesina {
-  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
-}
-.marquesina-pista {
-  animation: marquesina 28s linear infinite;
-}
-.marquesina:hover .marquesina-pista {
-  animation-play-state: paused;
-}
-@keyframes marquesina {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquesina {
-    mask-image: none;
-  }
-  .marquesina-pista {
-    animation: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: auto;
-    row-gap: 0.5rem;
-  }
-  .marquesina-pista > li[aria-hidden="true"],
-  .marquesina-pista > li > span {
-    display: none;
-  }
-  .marquesina-pista > li {
-    padding-inline: 0.75rem;
   }
 }
 
@@ -243,73 +191,52 @@
   }
 }
 
-/* Aparecer al bajar: cada bloque entra suave a medida que llega a la pantalla.
-   Va atado al scroll, sin JavaScript. Si el navegador no lo soporta o la persona pidió
-   menos movimiento, todo se ve quieto, como siempre. --demora atrasa un poco la entrada
-   de los que van uno al lado del otro (ver DEMORAS en la página). */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .aparecer {
-      animation: aparecer ease-out both;
-      animation-timeline: view();
-      animation-range: entry var(--demora, 0%) entry calc(var(--demora, 0%) + 70%);
-    }
-  }
+/* El único momento "show" de la página: al cargar, las lamparitas del salón se prenden de a una.
+   Con movimiento reducido quedan prendidas desde el principio. */
+.lampara {
+  animation: prender 0.9s ease-out both;
+  animation-delay: var(--orden, 0s);
 }
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    translate: 0 40px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
-/* Inicio: el título entra rápido desde la izquierda y frena con un rebote chico, como un auto
-   que clava los frenos (viene inclinado por la velocidad, se echa atrás al frenar y se acomoda).
-   Arranca 0,15 s después de cargar para que se vea entrar. Llega a su lugar a los 0,65 s y el
-   texto de abajo aparece suave 0,7 s después (1,35 s). Con movimiento reducido, quedan quietos. */
-.entrar-frenando {
-  transform-origin: bottom left;
-  animation: frenar 1.1s 0.15s both;
-}
-/* Todo en "transform" (desplazamiento + inclinación juntos): si se separan en "translate" y
-   "transform", el compilador de CSS descarta el desplazamiento. */
-@keyframes frenar {
+@keyframes prender {
   0% {
-    transform: translateX(-60vw) skewX(-18deg);
-    animation-timing-function: cubic-bezier(0.3, 0.75, 0.45, 1);
+    opacity: 0.06;
   }
-  45% {
-    transform: translateX(26px) skewX(12deg);
-    animation-timing-function: ease-in-out;
+  55% {
+    opacity: 1;
   }
-  62% {
-    transform: translateX(-10px) skewX(-4deg);
-  }
-  78% {
-    transform: translateX(4px) skewX(1.5deg);
+  70% {
+    opacity: 0.55;
   }
   100% {
-    transform: none;
-  }
-}
-.aparecer-despues {
-  animation: aparecer-suave 0.6s ease-out 1.35s both;
-}
-@keyframes aparecer-suave {
-  from {
-    opacity: 0;
-  }
-  to {
     opacity: 1;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .entrar-frenando,
-  .aparecer-despues {
+  .lampara {
     animation: none;
   }
+}
+
+/* El precio de la primera pantalla: cambia cuando la persona toca algo. */
+.precio-nuevo {
+  animation: precio 0.35s ease-out;
+}
+@keyframes precio {
+  from {
+    opacity: 0.25;
+    translate: 0 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .precio-nuevo {
+    animation: none;
+  }
+}
+
+/* El riel de tarjetas: se desliza de costado, sin barra a la vista. */
+.riel {
+  scrollbar-width: none;
+}
+.riel::-webkit-scrollbar {
+  display: none;
 }
