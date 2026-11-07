@@ -13,7 +13,7 @@ const seccion = "scroll-mt-20 border-t border-white/8 py-20 sm:py-28";
 
 const ACCION = "Armá tu cotizador gratis";
 const botonPrincipal =
-  "inline-flex min-h-12 items-center justify-center rounded-lg bg-linear-to-b from-white to-crema-claro px-6 text-[16px] font-semibold text-noche shadow-md transition-opacity hover:opacity-90";
+  "inline-flex min-h-12 items-center justify-center rounded-lg bg-linear-to-b from-[#f2d9a6] to-dorado px-6 text-[16px] font-semibold text-noche shadow-[0_8px_30px_-8px_#d4b06a99] transition-[filter] hover:brightness-110";
 const linkSecundario = "text-[15px] font-semibold text-ink underline decoration-white/30 underline-offset-4 hover:decoration-white";
 
 /** El título de la primera pantalla: entra palabra por palabra y "las 24 horas" se subraya en dorado. */
@@ -79,7 +79,7 @@ export default function Home() {
             <a href={URL_ENTRAR} className="inline-flex min-h-10 items-center rounded-lg px-3 text-[14px] font-semibold text-ink hover:underline hover:underline-offset-4">
               Entrar
             </a>
-            <a href={URL_REGISTRARME} className="inline-flex min-h-10 items-center rounded-lg bg-linear-to-b from-white to-crema-claro px-4 text-[14px] font-semibold text-noche transition-opacity hover:opacity-90">
+            <a href={URL_REGISTRARME} className="inline-flex min-h-10 items-center rounded-lg bg-linear-to-b from-[#f2d9a6] to-dorado px-4 text-[14px] font-semibold text-noche transition-[filter] hover:brightness-110">
               Empezar gratis
             </a>
           </div>
