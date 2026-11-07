@@ -56,7 +56,7 @@ export default function Home() {
             <div className="text-center lg:text-left">
               <p className="text-[15px] font-semibold text-azul-text">Para salones de eventos</p>
               <h1 id="titular" className="type-display mt-4 text-balance text-ink">
-                Tus clientes cotizan su fiesta solos.
+                Tus clientes cotizan su evento las 24 horas.
               </h1>
               <p className="mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink-muted lg:mx-0 sm:text-[20px] sm:leading-8">
                 Petra te da un link donde tu cliente arma su evento y ve el precio al instante. A vos te llega el pedido por WhatsApp.
