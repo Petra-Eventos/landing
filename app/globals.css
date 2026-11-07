@@ -189,17 +189,64 @@
   }
 }
 
-/* Lo primero que se ve entra una sola vez, suave y en orden (--orden). */
+/* Entrada de la primera pantalla: el título palabra por palabra, después el resto, en orden (--orden).
+   Cada cosa sale de un desenfoque y sube un poco. Pasa una sola vez, al cargar. */
+.palabra {
+  display: inline-block;
+}
 @media (prefers-reduced-motion: no-preference) {
-  .aparecer {
-    animation: aparecer 0.7s ease-out both;
+  .palabra {
+    animation: palabra 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
     animation-delay: var(--orden, 0s);
+  }
+  .aparecer {
+    animation: aparecer 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--orden, 0s);
+  }
+  .trazo path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: trazo 0.9s ease-out forwards;
+    animation-delay: var(--orden, 0s);
+  }
+}
+@keyframes palabra {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    translate: 0 0.35em;
   }
 }
 @keyframes aparecer {
   from {
     opacity: 0;
-    translate: 0 16px;
+    filter: blur(8px);
+    translate: 0 24px;
+  }
+}
+@keyframes trazo {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* El dorado cálido que resalta las palabras importantes. */
+.resaltado {
+  background: linear-gradient(100deg, #f3dcaa 0%, var(--dorado) 45%, #e8a85c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Al bajar, cada bloque entra igual que la primera pantalla. Solo en los navegadores que lo saben hacer;
+   en los demás, el contenido ya está a la vista. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .revelar {
+      animation: aparecer linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 70%;
+    }
   }
 }
 

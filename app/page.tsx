@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Check, ChevronDown, Star, Store } from "lucide-react";
+import { Check, ChevronDown, Clock, MessageCircle, Palette, Star, Store } from "lucide-react";
 import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
 import { PasosApilados } from "@/components/pasos-apilados";
@@ -16,10 +16,48 @@ const botonPrincipal =
   "inline-flex min-h-12 items-center justify-center rounded-lg bg-linear-to-b from-white to-crema-claro px-6 text-[16px] font-semibold text-noche shadow-md transition-opacity hover:opacity-90";
 const linkSecundario = "text-[15px] font-semibold text-ink underline decoration-white/30 underline-offset-4 hover:decoration-white";
 
+/** El título de la primera pantalla: entra palabra por palabra y "las 24 horas" se subraya en dorado. */
+function Titular() {
+  const antes = ["Tus", "clientes", "cotizan", "su", "evento"];
+  const dorado = ["las", "24", "horas"];
+  const paso = 0.09;
+  return (
+    <h1 id="titular" className="type-display mt-4 text-balance text-ink">
+      {antes.map((p, i) => (
+        <span key={p}>
+          <span className="palabra" style={{ "--orden": `${0.1 + i * paso}s` } as React.CSSProperties}>
+            {p}
+          </span>{" "}
+        </span>
+      ))}
+      <span className="relative inline-block whitespace-nowrap">
+        {dorado.map((p, i) => (
+          <span key={p}>
+            <span className="palabra resaltado" style={{ "--orden": `${0.1 + (antes.length + i) * paso}s` } as React.CSSProperties}>
+              {p}
+            </span>
+            {i < dorado.length - 1 ? " " : ""}
+          </span>
+        ))}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 300 20"
+          preserveAspectRatio="none"
+          className="trazo absolute -bottom-[0.08em] left-0 h-[0.22em] w-full text-dorado"
+          style={{ "--orden": "1s" } as React.CSSProperties}
+        >
+          <path d="M4 14C70 5 160 3 296 9" pathLength="1" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+        </svg>
+      </span>
+      .
+    </h1>
+  );
+}
+
 const POR_QUE = [
-  { titulo: "Dejás de contestar «¿precio?»", texto: "El cotizador responde solo, también a las 23 y los fines de semana." },
-  { titulo: "Te escriben los que ya saben cuánto sale", texto: "Llegan con fecha, invitados y presupuesto. Hablás con quien está decidiendo." },
-  { titulo: "Con tu marca, no la nuestra", texto: "Tu cliente ve tu nombre, tu logo y tus colores. Nunca ve tus costos." },
+  { icono: Clock, titulo: "Dejás de contestar «¿precio?»", texto: "El cotizador responde solo, también a las 23 y los fines de semana." },
+  { icono: MessageCircle, titulo: "Te escriben los que ya saben cuánto sale", texto: "Llegan con fecha, invitados y presupuesto. Hablás con quien está decidiendo." },
+  { icono: Palette, titulo: "Con tu marca, no la nuestra", texto: "Tu cliente ve tu nombre, tu logo y tus colores. Nunca ve tus costos." },
 ];
 
 const PREGUNTAS = [
@@ -52,16 +90,15 @@ export default function Home() {
         {/* 1. Qué es: en una frase, con el cotizador al lado para tocarlo */}
         <section aria-labelledby="titular" className="relative overflow-hidden">
           <div aria-hidden="true" className="pointer-events-none absolute top-0 left-1/2 h-[520px] w-[900px] -translate-x-1/2 rounded-[50%] bg-radial from-azul/30 to-azul/0 to-65%" />
+          <div aria-hidden="true" className="pointer-events-none absolute top-40 left-[8%] h-[380px] w-[520px] rounded-[50%] bg-radial from-dorado/14 to-dorado/0 to-65%" />
           <div className={`${contenedor} relative grid grid-cols-1 items-center gap-14 py-16 sm:py-24 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20`}>
             <div className="text-center lg:text-left">
-              <p className="text-[15px] font-semibold text-azul-text">Para salones de eventos</p>
-              <h1 id="titular" className="type-display mt-4 text-balance text-ink">
-                Tus clientes cotizan su evento las 24 horas.
-              </h1>
-              <p className="mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink-muted lg:mx-0 sm:text-[20px] sm:leading-8">
+              <p className="aparecer text-[15px] font-semibold text-dorado">Para salones de eventos</p>
+              <Titular />
+              <p style={{ "--orden": "0.9s" } as React.CSSProperties} className="aparecer mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink-muted lg:mx-0 sm:text-[20px] sm:leading-8">
                 Petra te da un link donde tu cliente arma su evento y ve el precio al instante. A vos te llega el pedido por WhatsApp.
               </p>
-              <div className="mt-9 flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:justify-start">
+              <div style={{ "--orden": "1.05s" } as React.CSSProperties} className="aparecer mt-9 flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:justify-start">
                 <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
                   {ACCION}
                 </a>
@@ -69,16 +106,16 @@ export default function Home() {
                   Ver un ejemplo real
                 </a>
               </div>
-              <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] text-ink-muted lg:justify-start">
+              <ul style={{ "--orden": "1.2s" } as React.CSSProperties} className="aparecer mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] text-ink-muted lg:justify-start">
                 {["Gratis para empezar", "Sin tarjeta", "Con tu marca"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5">
-                    <Check size={16} strokeWidth={2.4} className="text-azul-text" aria-hidden="true" />
+                    <Check size={16} strokeWidth={2.4} className="text-dorado" aria-hidden="true" />
                     {t}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="text-ink-muted">
+            <div style={{ "--orden": "0.6s" } as React.CSSProperties} className="aparecer text-ink-muted">
               <CotizadorDemo />
             </div>
           </div>
@@ -87,8 +124,8 @@ export default function Home() {
         {/* 2. Cómo funciona: tres pasos de verdad, en orden */}
         <section id="como-funciona" className={seccion} aria-labelledby="titulo-como">
           <div className={contenedor}>
-            <h2 id="titulo-como" className="type-titulo text-center text-ink">
-              Cómo funciona
+            <h2 id="titulo-como" className="revelar type-titulo text-center text-ink">
+              Cómo <span className="resaltado">funciona</span>
             </h2>
             <PasosApilados />
           </div>
@@ -97,13 +134,16 @@ export default function Home() {
         {/* 3. Por qué conviene */}
         <section id="por-que" className={seccion} aria-labelledby="titulo-por-que">
           <div className={contenedor}>
-            <h2 id="titulo-por-que" className="type-titulo text-center text-balance text-ink">
-              Menos mensajes, más fiestas cerradas
+            <h2 id="titulo-por-que" className="revelar type-titulo text-center text-balance text-ink">
+              Menos mensajes, <span className="resaltado">más fiestas cerradas</span>
             </h2>
             <ul className="mt-14 grid gap-5 md:grid-cols-3">
               {POR_QUE.map((b) => (
-                <li key={b.titulo} className="rounded-2xl border border-white/10 bg-linear-to-b from-white/6 to-white/1 p-7">
-                  <h3 className="text-[19px] leading-7 font-bold tracking-tight text-ink">{b.titulo}</h3>
+                <li key={b.titulo} className="revelar rounded-2xl border border-white/10 bg-linear-to-b from-white/6 to-white/1 p-7">
+                  <span className="flex size-11 items-center justify-center rounded-xl bg-dorado/15 text-dorado">
+                    <b.icono size={22} strokeWidth={1.8} aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-5 text-[19px] leading-7 font-bold tracking-tight text-ink">{b.titulo}</h3>
                   <p className="mt-3 text-[16px] leading-6 text-ink-muted">{b.texto}</p>
                 </li>
               ))}
@@ -154,10 +194,10 @@ export default function Home() {
         {/* 4. Preguntas (se abren sin JavaScript) */}
         <section id="preguntas" className={seccion} aria-labelledby="titulo-preguntas">
           <div className={`${contenedor} max-w-[760px]!`}>
-            <h2 id="titulo-preguntas" className="type-titulo text-center text-ink">
+            <h2 id="titulo-preguntas" className="revelar type-titulo text-center text-ink">
               Preguntas frecuentes
             </h2>
-            <div className="mt-12 flex flex-col divide-y divide-white/10 border-y border-white/10">
+            <div className="revelar mt-12 flex flex-col divide-y divide-white/10 border-y border-white/10">
               {PREGUNTAS.map(({ p, r }) => (
                 <details key={p} className="group">
                   <summary className="flex min-h-16 cursor-pointer items-center justify-between gap-4 py-4 text-[17px] leading-6 font-semibold text-ink">
@@ -174,8 +214,8 @@ export default function Home() {
         {/* 5. Cierre */}
         <section aria-labelledby="titulo-cierre" className={seccion}>
           <div className={`${contenedor} flex flex-col items-center text-center`}>
-            <h2 id="titulo-cierre" className="type-titulo max-w-[680px] text-balance text-ink">
-              Armá tu cotizador hoy. Es gratis.
+            <h2 id="titulo-cierre" className="revelar type-titulo max-w-[680px] text-balance text-ink">
+              Armá tu cotizador hoy. <span className="resaltado">Es gratis.</span>
             </h2>
             <div className="mt-8 flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row">
               <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
