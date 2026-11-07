@@ -104,10 +104,10 @@ export function CotizadorDemo() {
 
   return (
     <div onPointerDown={parar} onKeyDown={parar} className="mx-auto w-[280px] sm:w-[300px]">
-      <p id={idVistas} className="type-etiqueta mb-2 text-center text-dorado">
-        Mirá las dos vistas
+      <p id={idVistas} className="sr-only">
+        Elegí qué vista mirar
       </p>
-      <div role="group" aria-labelledby={idVistas} className="grid grid-cols-2 gap-1 rounded-md border border-line bg-surface-raised p-1">
+      <div role="group" aria-labelledby={idVistas} className="grid grid-cols-2 gap-1 rounded-md border border-white/10 bg-white/5 p-1">
         {(Object.keys(MIRADAS) as Vista[]).map((v) => (
           <button
             key={v}
@@ -115,28 +115,19 @@ export function CotizadorDemo() {
             aria-pressed={vista === v}
             onClick={() => setVista(v)}
             className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
-              vista === v ? "bg-dorado text-on-dorado" : "text-ink-muted hover:text-ink"
+              vista === v ? "bg-crema-claro text-noche" : "text-ink-muted hover:text-ink"
             }`}
           >
             {MIRADAS[v].nombre}
           </button>
         ))}
       </div>
-      <p className="mt-2 mb-8 text-center text-[13px] leading-5 text-ink-muted" aria-live="polite">
+      <p className="mt-3 mb-6 text-center text-[14px] leading-5" aria-live="polite">
         {MIRADAS[vista].texto}
       </p>
 
       <div className="relative">
-        {/* Escenario: un arco dorado detrás del celular, como la columna del logo de Petra. */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-7 -top-6 -bottom-4 rounded-t-full border border-dorado/25 bg-linear-to-b from-dorado/12 via-azul/6 to-transparent sm:-inset-x-12"
-        />
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-x-3 -top-2 -bottom-2 rounded-t-full border border-dorado/10 sm:-inset-x-6"
-        />
-        <div className="relative rounded-[42px] border border-line-strong bg-noche p-3 shadow-piedra">
+        <div className="relative rounded-[42px] border border-white/15 bg-noche p-3 shadow-2xl">
           <div
             className="relative flex h-[560px] flex-col overflow-hidden rounded-[32px]"
             style={vista === "cliente" ? { backgroundColor: C.fondo, color: C.texto } : undefined}
@@ -156,7 +147,7 @@ export function CotizadorDemo() {
           </div>
         </div>
       </div>
-      <p className="mt-5 text-center text-[12px] leading-4 text-ink-muted">Demostración con precios de ejemplo.</p>
+      <p className="mt-5 text-center text-[12px] leading-4">Demostración con precios de ejemplo.</p>
     </div>
   );
 }
@@ -196,7 +187,7 @@ function PantallaCliente({
         <span className="inline-flex items-center gap-1.5">
           <span
             aria-hidden="true"
-            className="flex size-5 items-center justify-center rounded-full font-display text-[10px] text-white"
+            className="flex size-5 items-center justify-center rounded-full font-semibold tracking-tight text-[10px] text-white"
             style={{ backgroundColor: C.acento }}
           >
             {NOMBRE_SALON.charAt(0)}
@@ -239,7 +230,7 @@ function PantallaCliente({
             <p className="text-[10px] leading-3 font-semibold tracking-[0.06em] uppercase" style={{ color: C.suave }}>
               Precio sugerido
             </p>
-            <p className="font-display text-[17px] leading-6 tabular-nums">{pesos(total)}</p>
+            <p className="font-semibold tracking-tight text-[17px] leading-6 tabular-nums">{pesos(total)}</p>
           </div>
           <button
             type="button"
@@ -259,7 +250,7 @@ function PantallaCliente({
 function Pregunta({ children, ayuda }: { children: ReactNode; ayuda?: string }) {
   return (
     <div>
-      <h3 className="font-display text-[22px] leading-7">{children}</h3>
+      <h3 className="font-semibold tracking-tight text-[22px] leading-7">{children}</h3>
       {ayuda && (
         <p className="mt-1 text-[12px] leading-4" style={{ color: C.suave }}>
           {ayuda}
@@ -395,7 +386,7 @@ function PasoInvitados({ sel, onCambiar }: PropsPaso) {
           <Minus size={18} strokeWidth={2} aria-hidden="true" />
         </button>
         <p className="w-24 text-center">
-          <span className="block font-display text-[48px] leading-none tabular-nums">{sel.invitados}</span>
+          <span className="block font-semibold tracking-tight text-[48px] leading-none tabular-nums">{sel.invitados}</span>
           <span className="mt-1 block text-[12px]" style={{ color: C.suave }}>
             invitados
           </span>
@@ -521,7 +512,7 @@ function PasoPrecio({ sel, total, onPedir }: { sel: Seleccion; total: number; on
         <p className="text-[10px] font-semibold tracking-[0.08em] uppercase" style={{ color: C.acento }}>
           Precio sugerido
         </p>
-        <p className="mt-1 font-display text-[28px] leading-8 tabular-nums">{pesos(total)}</p>
+        <p className="mt-1 font-semibold tracking-tight text-[28px] leading-8 tabular-nums">{pesos(total)}</p>
         <p className="mt-1 text-[11px] leading-4" style={{ color: C.suave }}>
           El final depende de la forma de pago.
         </p>
@@ -554,14 +545,14 @@ function PantallaPanel({ sel, total }: { sel: Seleccion; total: number }) {
   return (
     <div className="entrar-de-a-una flex h-full flex-col bg-surface px-4 pt-4 pb-4 text-ink">
       <div className="flex items-center justify-between">
-        <p className="font-display text-[20px] leading-6">Cotizaciones</p>
-        <span className="rounded-full bg-dorado-soft px-2 py-0.5 text-[10px] font-semibold text-dorado">3 nuevas</span>
+        <p className="font-semibold tracking-tight text-[20px] leading-6">Cotizaciones</p>
+        <span className="rounded-full bg-azul-soft px-2 py-0.5 text-[10px] font-semibold text-azul-text">3 nuevas</span>
       </div>
 
       {/* La que acaba de llegar: es lo que armó el cliente en la otra vista */}
-      <div className="mt-2.5 rounded-[14px] border border-dorado/50 bg-surface-raised p-3">
+      <div className="mt-2.5 rounded-[14px] border border-azul/60 bg-surface-raised p-3">
         <div className="flex items-center justify-between">
-          <span className="rounded-full bg-dorado px-2 py-0.5 text-[10px] font-bold tracking-wide text-on-dorado uppercase">
+          <span className="rounded-full bg-azul px-2 py-0.5 text-[10px] font-bold tracking-wide text-on-azul uppercase">
             Nueva
           </span>
           <span className="text-[10px] text-ink-muted">Recién</span>
@@ -571,7 +562,7 @@ function PantallaPanel({ sel, total }: { sel: Seleccion; total: number }) {
           {festejo.nombre} · {fechaCorta(sel.dia)} · {sel.invitados} invitados
         </p>
         <p className="mt-2 text-[11px] text-ink-muted">
-          Precio sugerido <span className="font-display text-[16px] text-ink tabular-nums">{pesos(total)}</span>
+          Precio sugerido <span className="font-semibold tracking-tight text-[16px] text-ink tabular-nums">{pesos(total)}</span>
         </p>
         <div className="mt-2.5 grid grid-cols-2 gap-1.5">
           <span className="inline-flex min-h-8 items-center justify-center gap-1 rounded-[8px] bg-oliva-soft text-[11px] font-semibold text-oliva-text">
@@ -598,7 +589,7 @@ function PantallaPanel({ sel, total }: { sel: Seleccion; total: number }) {
       </ul>
 
       {/* Lo que el salón ofrece en su cotizador: lo prende, lo apaga y le pone precio */}
-      <p className="mt-3 text-[10px] font-bold tracking-[0.08em] text-dorado uppercase">Lo que ofrecés</p>
+      <p className="mt-3 text-[10px] font-bold tracking-[0.08em] text-azul-text uppercase">Lo que ofrecés</p>
       <ul className="mt-1.5 flex flex-col divide-y divide-line rounded-[12px] border border-line bg-surface-raised text-[12px]">
         {ofrecido.map((o) => (
           <li key={o.nombre} className="flex items-center justify-between gap-2 px-3 py-1.5">
