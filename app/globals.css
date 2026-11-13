@@ -1,37 +1,41 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------
-   Tokens de marca de Petra · paleta de noche:
-   fondo casi negro, crema para el texto y la acción principal, y el azul de la marca (#1C79A4) para la luz.
+   Tokens de marca de Petra · paleta clara, la misma del sistema:
+   fondo hueso, tarjetas blanco crema, texto marino, el azul de la marca (#1C79A4) para la acción,
+   celeste para suavizar y ámbar solo como detalle (nunca para texto chico).
    En los componentes usá siempre el token, nunca el hex suelto.
    ------------------------------------------------------------ */
 :root {
-  --surface: #070a12; /* fondo: casi negro, apenas azul */
-  --surface-raised: #0e1320; /* tarjetas */
-  --line: #1f2d4f; /* bordes finos */
-  --line-strong: #34466f; /* bordes de botones secundarios */
-  --ink: #f3eee6; /* texto principal (crema de la marca) */
-  --ink-muted: #a8b1c6; /* texto secundario */
+  --surface: #f8f4ee; /* fondo: hueso */
+  --surface-raised: #fffefa; /* tarjetas: blanco crema */
+  --line: #e6ddd0; /* bordes finos */
+  --line-strong: #cfc4b4; /* bordes más marcados */
+  --ink: #2a4573; /* texto principal: marino, el de la barra lateral del sistema */
+  --ink-muted: #4a5a7a; /* texto secundario */
   --azul: #1c79a4; /* botón principal: el azul de la marca */
-  --azul-hover: #2287b6;
+  --azul-hover: #176a91;
   --on-azul: #ffffff;
-  --azul-text: #7cc0e6; /* íconos y links: azul acero, suave */
-  --azul-soft: #13254a; /* fondos teñidos de azul */
-  --dorado: #d4b06a; /* toques dorados: destacados, etiquetas y socios */
-  --dorado-hover: #e2c286;
-  --on-dorado: #1a1306; /* texto sobre el dorado */
-  --dorado-soft: #2a2312; /* fondo de etiquetas doradas */
-  --noche: #05070d; /* pie, más oscuro que el fondo */
-  --oliva: #8c9a52;
-  --oliva-text: #b7c37c;
-  --oliva-soft: #1d2414;
+  --azul-text: #17688f; /* íconos y links: el azul de la marca, un poco más oscuro para que se lea */
+  --azul-soft: #e3f0f4; /* celeste: fondos de íconos y bloques suaves */
+  --dorado: #caa23b; /* ámbar: subrayados y detalles. Sobre él, texto marino */
+  --dorado-hover: #b8912f;
+  --on-dorado: #2a4573;
+  --dorado-soft: #f5ead9;
+  --marino: #2a4573; /* bandas oscuras y pie */
+  --on-marino: #f3eee6; /* texto sobre marino */
+  --on-marino-muted: #c9d4e6; /* texto secundario sobre marino */
+  --arenisca: #e3c9ae; /* el tono de la roca de Petra, arriba de la primera pantalla */
+  --oliva: #6b7a3c;
+  --oliva-text: #4f5b2b;
+  --oliva-soft: #e7ecd3;
   --crema-claro: #f3eee6;
   --oliva-marca: #6b7a3a; /* el oliva del logo, para fondos */
 
-  --shadow-piedra: 0 1px 2px #00000080, 0 12px 32px #00000066;
-  --focus-ring: 0 0 0 2px #070a12, 0 0 0 4px #7cc0e6;
+  --shadow-piedra: 0 1px 2px #2a45730f, 0 12px 32px #2a457314;
+  --focus-ring: 0 0 0 2px #f8f4ee, 0 0 0 4px #1c79a4;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -47,7 +51,10 @@
   --color-on-azul: var(--on-azul);
   --color-azul-text: var(--azul-text);
   --color-azul-soft: var(--azul-soft);
-  --color-noche: var(--noche);
+  --color-marino: var(--marino);
+  --color-on-marino: var(--on-marino);
+  --color-on-marino-muted: var(--on-marino-muted);
+  --color-arenisca: var(--arenisca);
   --color-oliva: var(--oliva);
   --color-oliva-text: var(--oliva-text);
   --color-oliva-soft: var(--oliva-soft);
@@ -72,20 +79,20 @@
   --shadow-piedra: var(--shadow-piedra);
 }
 
-/* Escala tipográfica: títulos en Manrope, grandes y apretados. Fraunces queda solo para el logo. */
+/* Escala tipográfica: títulos en Fraunces, como los saludos y títulos del sistema. Manrope para el resto. */
 @utility type-display {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: clamp(38px, min(7vw, 11vh), 84px);
-  line-height: 1.08;
-  letter-spacing: -0.04em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(38px, min(6.5vw, 10vh), 76px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
 }
 @utility type-titulo {
-  font-family: var(--font-sans);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: clamp(30px, 4vw, 48px);
-  line-height: 1.12;
-  letter-spacing: -0.035em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 @utility type-subtitulo {
   font-family: var(--font-sans);
@@ -230,12 +237,25 @@
   }
 }
 
-/* El dorado cálido que resalta las palabras importantes. */
+/* Las palabras importantes de un título, en el azul de la marca (solo en títulos grandes). */
 .resaltado {
-  background: linear-gradient(100deg, #f3dcaa 0%, var(--dorado) 45%, #e8a85c 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--azul);
+}
+
+/* Subrayado ámbar, para resaltar sobre fondos oscuros o junto al azul. */
+.subrayado {
+  text-decoration-line: underline;
+  text-decoration-color: var(--dorado);
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.16em;
+  text-decoration-skip-ink: none;
+}
+
+/* La primera pantalla: el tono de la roca de Petra arriba, que se funde con el fondo. */
+.fondo-roca {
+  background:
+    radial-gradient(900px 420px at 78% 0%, #ffffff99, #ffffff00 70%),
+    linear-gradient(180deg, var(--arenisca) 0%, #ebdccb 50%, var(--surface) 100%);
 }
 
 /* Al bajar, cada bloque entra igual que la primera pantalla. Solo en los navegadores que lo saben hacer;

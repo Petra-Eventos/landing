@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Check, ChevronDown, Clock, MessageCircle, Palette, Star, Store } from "lucide-react";
 import { CotizadorDemo } from "@/components/cotizador-demo";
-import { Firma } from "@/components/logo";
+import { Firma, Isotipo } from "@/components/logo";
 import { PasosApilados } from "@/components/pasos-apilados";
 import { URL_EJEMPLO, URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
 import { RESENAS, SALONES } from "@/lib/resenas";
@@ -9,17 +9,17 @@ import { RESENAS, SALONES } from "@/lib/resenas";
 // Estilo basado en Launch UI (MIT): ver licencias/launch-ui.md.
 // La página dice tres cosas: qué es, cómo funciona y por qué conviene. Una sola acción.
 const contenedor = "mx-auto w-full max-w-[1120px] px-5 md:px-8";
-const seccion = "scroll-mt-20 border-t border-white/8 py-20 sm:py-28";
+const seccion = "scroll-mt-20 py-20 sm:py-28";
 
 const ACCION = "Armá tu cotizador gratis";
 const botonPrincipal =
-  "inline-flex min-h-12 items-center justify-center rounded-lg bg-linear-to-b from-[#f2d9a6] to-dorado px-6 text-[16px] font-semibold text-noche shadow-[0_8px_30px_-8px_#d4b06a99] transition-[filter] hover:brightness-110";
-const linkSecundario = "text-[15px] font-semibold text-ink underline decoration-white/30 underline-offset-4 hover:decoration-white";
+  "inline-flex min-h-12 items-center justify-center rounded-[12px] bg-azul px-6 text-[16px] font-bold text-on-azul shadow-[0_10px_24px_-8px_#1c79a466] transition-colors hover:bg-azul-hover";
+const linkSecundario = "text-[15px] font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink";
 
-/** El título de la primera pantalla: entra palabra por palabra y "las 24 horas" se subraya en dorado. */
+/** El título de la primera pantalla: entra palabra por palabra y "las 24 horas" se subraya en ámbar. */
 function Titular() {
   const antes = ["Tus", "clientes", "cotizan", "su", "evento"];
-  const dorado = ["las", "24", "horas"];
+  const subrayadas = ["las", "24", "horas"];
   const paso = 0.09;
   return (
     <h1 id="titular" className="type-display mt-4 text-balance text-ink">
@@ -31,12 +31,12 @@ function Titular() {
         </span>
       ))}
       <span className="relative inline-block whitespace-nowrap">
-        {dorado.map((p, i) => (
+        {subrayadas.map((p, i) => (
           <span key={p}>
-            <span className="palabra resaltado" style={{ "--orden": `${0.1 + (antes.length + i) * paso}s` } as React.CSSProperties}>
+            <span className="palabra" style={{ "--orden": `${0.1 + (antes.length + i) * paso}s` } as React.CSSProperties}>
               {p}
             </span>
-            {i < dorado.length - 1 ? " " : ""}
+            {i < subrayadas.length - 1 ? " " : ""}
           </span>
         ))}
         <svg
@@ -70,16 +70,16 @@ const PREGUNTAS = [
 export default function Home() {
   return (
     <>
-      <header className="sticky top-0 z-20 border-b border-white/8 bg-surface/75 backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b border-line bg-surface/80 backdrop-blur-xl">
         <div className={`${contenedor} flex min-h-16 items-center justify-between gap-3`}>
           <a href="#" aria-label="Petra, inicio" className="rounded-md">
-            <Firma variante="clara" />
+            <Firma />
           </a>
           <div className="flex items-center gap-1 sm:gap-3">
             <a href={URL_ENTRAR} className="inline-flex min-h-10 items-center rounded-lg px-3 text-[14px] font-semibold text-ink hover:underline hover:underline-offset-4">
               Entrar
             </a>
-            <a href={URL_REGISTRARME} className="inline-flex min-h-10 items-center rounded-lg bg-linear-to-b from-[#f2d9a6] to-dorado px-4 text-[14px] font-semibold text-noche transition-[filter] hover:brightness-110">
+            <a href={URL_REGISTRARME} className="inline-flex min-h-10 items-center rounded-[12px] bg-azul px-4 text-[14px] font-bold text-on-azul transition-colors hover:bg-azul-hover">
               Empezar gratis
             </a>
           </div>
@@ -88,14 +88,16 @@ export default function Home() {
 
       <main>
         {/* 1. Qué es: en una frase, con el cotizador al lado para tocarlo */}
-        <section aria-labelledby="titular" className="relative overflow-hidden">
-          <div aria-hidden="true" className="pointer-events-none absolute top-0 left-1/2 h-[520px] w-[900px] -translate-x-1/2 rounded-[50%] bg-radial from-azul/30 to-azul/0 to-65%" />
-          <div aria-hidden="true" className="pointer-events-none absolute top-40 left-[8%] h-[380px] w-[520px] rounded-[50%] bg-radial from-dorado/14 to-dorado/0 to-65%" />
+        <section aria-labelledby="titular" className="fondo-roca relative overflow-hidden">
+          <Isotipo variante="clara" className="pointer-events-none absolute -top-6 -right-10 hidden h-[640px] w-auto opacity-40 brightness-0 invert lg:block" />
           <div className={`${contenedor} relative grid grid-cols-1 items-center gap-14 py-16 sm:py-24 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20`}>
             <div className="text-center lg:text-left">
-              <p className="aparecer text-[15px] font-semibold text-dorado">Para salones de eventos</p>
+              <p className="aparecer type-etiqueta flex items-center justify-center gap-3 text-ink lg:justify-start">
+                <span aria-hidden="true" className="h-[3px] w-8 rounded-full bg-dorado" />
+                Para salones de eventos
+              </p>
               <Titular />
-              <p style={{ "--orden": "0.9s" } as React.CSSProperties} className="aparecer mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink-muted lg:mx-0 sm:text-[20px] sm:leading-8">
+              <p style={{ "--orden": "0.9s" } as React.CSSProperties} className="aparecer mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink lg:mx-0 sm:text-[20px] sm:leading-8">
                 Petra te da un link donde tu cliente arma su evento y ve el precio al instante. A vos te llega el pedido por WhatsApp.
               </p>
               <div style={{ "--orden": "1.05s" } as React.CSSProperties} className="aparecer mt-9 flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:justify-start">
@@ -106,10 +108,10 @@ export default function Home() {
                   Ver un ejemplo real
                 </a>
               </div>
-              <ul style={{ "--orden": "1.2s" } as React.CSSProperties} className="aparecer mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] text-ink-muted lg:justify-start">
+              <ul style={{ "--orden": "1.2s" } as React.CSSProperties} className="aparecer mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] font-semibold text-ink lg:justify-start">
                 {["Gratis para empezar", "Sin tarjeta", "Con tu marca"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5">
-                    <Check size={16} strokeWidth={2.4} className="text-dorado" aria-hidden="true" />
+                    <Check size={16} strokeWidth={2.4} className="text-oliva" aria-hidden="true" />
                     {t}
                   </li>
                 ))}
@@ -132,19 +134,19 @@ export default function Home() {
         </section>
 
         {/* 3. Por qué conviene */}
-        <section id="por-que" className={seccion} aria-labelledby="titulo-por-que">
+        <section id="por-que" className={`${seccion} bg-marino`} aria-labelledby="titulo-por-que">
           <div className={contenedor}>
-            <h2 id="titulo-por-que" className="revelar type-titulo text-center text-balance text-ink">
-              Menos mensajes, <span className="resaltado">más fiestas cerradas</span>
+            <h2 id="titulo-por-que" className="revelar type-titulo text-center text-balance text-on-marino">
+              Menos mensajes, <span className="subrayado">más fiestas cerradas</span>
             </h2>
             <ul className="mt-14 grid gap-5 md:grid-cols-3">
               {POR_QUE.map((b) => (
-                <li key={b.titulo} className="revelar rounded-2xl border border-white/10 bg-linear-to-b from-white/6 to-white/1 p-7">
-                  <span className="flex size-11 items-center justify-center rounded-xl bg-dorado/15 text-dorado">
+                <li key={b.titulo} className="revelar rounded-[20px] border border-white/10 bg-white/5 p-7">
+                  <span className="flex size-12 items-center justify-center rounded-[14px] bg-azul-soft text-ink">
                     <b.icono size={22} strokeWidth={1.8} aria-hidden="true" />
                   </span>
-                  <h3 className="mt-5 text-[19px] leading-7 font-bold tracking-tight text-ink">{b.titulo}</h3>
-                  <p className="mt-3 text-[16px] leading-6 text-ink-muted">{b.texto}</p>
+                  <h3 className="mt-5 font-display text-[22px] leading-7 font-semibold text-white">{b.titulo}</h3>
+                  <p className="mt-3 text-[16px] leading-6 text-on-marino-muted">{b.texto}</p>
                 </li>
               ))}
             </ul>
@@ -161,8 +163,8 @@ export default function Home() {
               {RESENAS.length > 0 && (
                 <ul className="mt-10 grid gap-5 md:grid-cols-3">
                   {RESENAS.map((r) => (
-                    <li key={`${r.nombre}-${r.salon}`} className="flex flex-col rounded-2xl border border-white/10 p-6">
-                      <div className="flex gap-1 text-azul-text" aria-hidden="true">
+                    <li key={`${r.nombre}-${r.salon}`} className="flex flex-col rounded-[20px] border border-line bg-surface-raised p-6 shadow-piedra">
+                      <div className="flex gap-1 text-dorado" aria-hidden="true">
                         {[0, 1, 2, 3, 4].map((i) => (
                           <Star key={i} size={16} fill="currentColor" strokeWidth={0} />
                         ))}
@@ -180,7 +182,7 @@ export default function Home() {
               {SALONES.length > 0 && (
                 <ul className="mt-10 flex flex-wrap justify-center gap-3">
                   {SALONES.map((s) => (
-                    <li key={s} className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/10 px-4 text-[15px] font-semibold text-ink">
+                    <li key={s} className="inline-flex min-h-11 items-center gap-2 rounded-[12px] border border-line bg-surface-raised px-4 text-[15px] font-semibold text-ink">
                       <Store size={16} strokeWidth={1.8} className="text-azul-text" aria-hidden="true" />
                       {s}
                     </li>
@@ -197,10 +199,10 @@ export default function Home() {
             <h2 id="titulo-preguntas" className="revelar type-titulo text-center text-ink">
               Preguntas frecuentes
             </h2>
-            <div className="revelar mt-12 flex flex-col divide-y divide-white/10 border-y border-white/10">
+            <div className="revelar mt-12 flex flex-col gap-3">
               {PREGUNTAS.map(({ p, r }) => (
-                <details key={p} className="group">
-                  <summary className="flex min-h-16 cursor-pointer items-center justify-between gap-4 py-4 text-[17px] leading-6 font-semibold text-ink">
+                <details key={p} className="group rounded-[20px] border border-line bg-surface-raised px-6 shadow-piedra">
+                  <summary className="flex min-h-16 cursor-pointer items-center justify-between gap-4 py-4 font-display text-[19px] leading-6 font-semibold text-ink">
                     {p}
                     <ChevronDown size={18} strokeWidth={2} className="shrink-0 text-ink-muted transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
                   </summary>
@@ -213,40 +215,42 @@ export default function Home() {
 
         {/* 5. Cierre */}
         <section aria-labelledby="titulo-cierre" className={seccion}>
-          <div className={`${contenedor} flex flex-col items-center text-center`}>
-            <h2 id="titulo-cierre" className="revelar type-titulo max-w-[680px] text-balance text-ink">
-              Armá tu cotizador hoy. <span className="resaltado">Es gratis.</span>
-            </h2>
-            <div className="mt-8 flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row">
-              <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
-                {ACCION}
-              </a>
-              <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={linkSecundario}>
-                Preguntar por WhatsApp
-              </a>
-            </div>
-            <figure className="mt-14 flex max-w-[460px] items-center gap-4 text-left">
-              <Image src="/rodrigo-torres.jpg" alt="Rodrigo Torres, creador de Petra" width={403} height={449} sizes="56px" className="size-14 shrink-0 rounded-full object-cover object-top" />
-              <div>
-                <blockquote className="text-[15px] leading-6 font-medium text-ink">“Creé Petra para que cada salón pueda ofrecer una experiencia completa.”</blockquote>
-                <figcaption className="mt-1 text-[13px] text-ink-muted">Rodrigo Torres, creador de Petra</figcaption>
+          <div className={contenedor}>
+            <div className="flex flex-col items-center rounded-[28px] bg-azul-soft px-5 py-14 text-center sm:px-10 sm:py-20">
+              <h2 id="titulo-cierre" className="revelar type-titulo max-w-[680px] text-balance text-ink">
+                Armá tu cotizador hoy. <span className="subrayado">Es gratis.</span>
+              </h2>
+              <div className="mt-8 flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row">
+                <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
+                  {ACCION}
+                </a>
+                <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={linkSecundario}>
+                  Preguntar por WhatsApp
+                </a>
               </div>
-            </figure>
+              <figure className="mt-14 flex max-w-[460px] items-center gap-4 text-left">
+                <Image src="/rodrigo-torres.jpg" alt="Rodrigo Torres, creador de Petra" width={403} height={449} sizes="56px" className="size-14 shrink-0 rounded-full object-cover object-top" />
+                <div>
+                  <blockquote className="text-[15px] leading-6 font-medium text-ink">“Creé Petra para que cada salón pueda ofrecer una experiencia completa.”</blockquote>
+                  <figcaption className="mt-1 text-[13px] text-ink-muted">Rodrigo Torres, creador de Petra</figcaption>
+                </div>
+              </figure>
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-white/8">
-        <div className={`${contenedor} flex flex-col gap-6 py-10 text-[14px] text-ink-muted sm:flex-row sm:items-center sm:justify-between`}>
-          <div className="flex flex-col gap-1.5">
+      <footer className="bg-marino">
+        <div className={`${contenedor} flex flex-col gap-6 py-12 text-[14px] text-on-marino-muted sm:flex-row sm:items-center sm:justify-between`}>
+          <div className="flex flex-col gap-2">
             <Firma variante="clara" />
-            <span>Tu salón sobre la roca</span>
+            <span className="font-display text-[17px]">Tu salón sobre la roca</span>
           </div>
           <nav aria-label="Contacto y legales" className="flex flex-wrap gap-x-5 gap-y-2">
-            <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="hover:text-ink">WhatsApp</a>
-            <a href="mailto:hola@petraeventos.com" className="hover:text-ink">hola@petraeventos.com</a>
-            <a href={URL_TERMINOS} className="hover:text-ink">Términos</a>
-            <a href={URL_PRIVACIDAD} className="hover:text-ink">Privacidad</a>
+            <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="hover:text-on-marino">WhatsApp</a>
+            <a href="mailto:hola@petraeventos.com" className="hover:text-on-marino">hola@petraeventos.com</a>
+            <a href={URL_TERMINOS} className="hover:text-on-marino">Términos</a>
+            <a href={URL_PRIVACIDAD} className="hover:text-on-marino">Privacidad</a>
             <span>© 2026 Petra</span>
           </nav>
         </div>

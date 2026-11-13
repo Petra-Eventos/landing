@@ -107,7 +107,7 @@ export function CotizadorDemo() {
       <p id={idVistas} className="sr-only">
         Elegí qué vista mirar
       </p>
-      <div role="group" aria-labelledby={idVistas} className="grid grid-cols-2 gap-1 rounded-md border border-white/10 bg-white/5 p-1">
+      <div role="group" aria-labelledby={idVistas} className="grid grid-cols-2 gap-1 rounded-[12px] border border-line bg-surface-raised p-1 shadow-piedra">
         {(Object.keys(MIRADAS) as Vista[]).map((v) => (
           <button
             key={v}
@@ -115,7 +115,7 @@ export function CotizadorDemo() {
             aria-pressed={vista === v}
             onClick={() => setVista(v)}
             className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
-              vista === v ? "bg-crema-claro text-noche" : "text-ink-muted hover:text-ink"
+              vista === v ? "bg-marino text-white" : "text-ink-muted hover:text-ink"
             }`}
           >
             {MIRADAS[v].nombre}
@@ -127,7 +127,7 @@ export function CotizadorDemo() {
       </p>
 
       <div className="relative">
-        <div className="relative rounded-[42px] border border-white/15 bg-noche p-3 shadow-2xl">
+        <div className="relative rounded-[42px] bg-marino p-3 shadow-[0_30px_60px_-12px_#2a457366]">
           <div
             className="relative flex h-[560px] flex-col overflow-hidden rounded-[32px]"
             style={vista === "cliente" ? { backgroundColor: C.fondo, color: C.texto } : undefined}
@@ -531,7 +531,7 @@ function PasoPrecio({ sel, total, onPedir }: { sel: Seleccion; total: number; on
 }
 
 // ---------------------------------------------------------------------------
-// Lo que ve el salón en su panel de Petra (modo noche, con los tokens de la marca)
+// Lo que ve el salón en su panel de Petra (con los tokens de la marca, como en el sistema)
 // ---------------------------------------------------------------------------
 
 function PantallaPanel({ sel, total }: { sel: Seleccion; total: number }) {
