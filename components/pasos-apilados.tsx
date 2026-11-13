@@ -18,7 +18,7 @@ const PASOS = [
   },
   {
     titulo: "Compartís tu link",
-    texto: "En la bio de Instagram, en WhatsApp o con un QR en el salón. Tu cliente lo abre sin registrarse.",
+    texto: "En la bio de Instagram, en WhatsApp o con un QR. Tu cliente lo abre sin registrarse.",
     icono: Link2,
     color: "bg-azul text-on-azul",
     fondoVisual: "bg-surface-raised",
@@ -58,10 +58,10 @@ function Visual({ tipo, fondo }: { tipo: (typeof PASOS)[number]["visual"]; fondo
     return (
       <div className={`${panel} ${fondo}`}>
         <p className="text-[13px] text-ink-muted">Bio de Instagram</p>
-        <p className="mt-1 text-[16px] font-semibold">tusalon</p>
+        <p className="mt-1 text-[16px] font-semibold">tumarca</p>
         <p className="mt-4 flex items-center gap-2 rounded-[12px] bg-azul-soft px-3 py-2.5 text-[14px]">
           <Link2 size={16} strokeWidth={2} className="text-azul-text" />
-          app.petraeventos.com/q/tu-salon
+          app.petraeventos.com/q/tu-marca
         </p>
         <p className="mt-3 rounded-[12px] bg-azul py-2.5 text-center text-[14px] font-semibold text-on-azul">Armá tu fiesta</p>
       </div>

@@ -64,7 +64,7 @@ const PREGUNTAS = [
   { p: "¿Cuánto cuesta?", r: "Empezás gratis y sin tarjeta. Cuando quieras sumar más herramientas, pasás de plan. Escribinos y te pasamos los precios." },
   { p: "¿El cliente reserva la fecha solo?", r: "No. Ve qué fechas tenés libres y te manda el pedido. La fecha la confirmás vos, cuando cierran." },
   { p: "¿Necesito saber de tecnología?", r: "No. Si tenés tu PDF de promos, en un rato tenés tu link. Y te ayudamos por WhatsApp." },
-  { p: "¿Quién ve mis precios y mis costos?", r: "Tu cliente ve el precio que vos decidís. Tus costos y tu ganancia no los ve nadie, y ningún otro salón entra a tus datos." },
+  { p: "¿Quién ve mis precios y mis costos?", r: "Tu cliente ve el precio que vos decidís. Tus costos y tu ganancia no los ve nadie, y nadie más entra a tus datos." },
 ];
 
 export default function Home() {
@@ -94,7 +94,7 @@ export default function Home() {
             <div className="text-center lg:text-left">
               <p className="aparecer type-etiqueta flex items-center justify-center gap-3 text-ink lg:justify-start">
                 <span aria-hidden="true" className="h-[3px] w-8 rounded-full bg-dorado" />
-                Para salones de eventos
+                Cotizador para eventos
               </p>
               <Titular />
               <p style={{ "--orden": "0.9s" } as React.CSSProperties} className="aparecer mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink lg:mx-0 sm:text-[20px] sm:leading-8">
@@ -153,12 +153,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Reseñas (solo reales) y salones (solo con permiso): aparecen cuando las listas tengan datos */}
+        {/* Reseñas (solo reales) y clientes (solo con permiso): aparecen cuando las listas tengan datos */}
         {(RESENAS.length > 0 || SALONES.length > 0) && (
-          <section id="salones" className={seccion} aria-labelledby="titulo-resenas">
+          <section id="resenas" className={seccion} aria-labelledby="titulo-resenas">
             <div className={contenedor}>
               <h2 id="titulo-resenas" className="type-titulo text-center text-ink">
-                Lo que dicen los salones
+                Lo que dicen quienes usan Petra
               </h2>
               {RESENAS.length > 0 && (
                 <ul className="mt-10 grid gap-5 md:grid-cols-3">
@@ -231,7 +231,7 @@ export default function Home() {
               <figure className="mt-14 flex max-w-[460px] items-center gap-4 text-left">
                 <Image src="/rodrigo-torres.jpg" alt="Rodrigo Torres, creador de Petra" width={403} height={449} sizes="56px" className="size-14 shrink-0 rounded-full object-cover object-top" />
                 <div>
-                  <blockquote className="text-[15px] leading-6 font-medium text-ink">“Creé Petra para que cada salón pueda ofrecer una experiencia completa.”</blockquote>
+                  <blockquote className="text-[15px] leading-6 font-medium text-ink">“Creé Petra para que cada evento pueda ser una experiencia completa.”</blockquote>
                   <figcaption className="mt-1 text-[13px] text-ink-muted">Rodrigo Torres, creador de Petra</figcaption>
                 </div>
               </figure>
@@ -244,7 +244,7 @@ export default function Home() {
         <div className={`${contenedor} flex flex-col gap-6 py-12 text-[14px] text-on-marino-muted sm:flex-row sm:items-center sm:justify-between`}>
           <div className="flex flex-col gap-2">
             <Firma variante="clara" />
-            <span className="font-display text-[17px]">Tu salón sobre la roca</span>
+            <span className="font-display text-[17px]">Tus eventos sobre la roca</span>
           </div>
           <nav aria-label="Contacto y legales" className="flex flex-wrap gap-x-5 gap-y-2">
             <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="hover:text-on-marino">WhatsApp</a>

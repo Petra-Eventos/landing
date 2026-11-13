@@ -59,7 +59,7 @@ const C = {
   acento: "#1c79a4",
   sobreAcento: "#ffffff",
 };
-const NOMBRE_SALON = "Tu salón";
+const NOMBRE_SALON = "Tu marca";
 
 const ICONO_FESTEJO: Record<IdFestejo, LucideIcon> = {
   xv: Crown,
@@ -319,7 +319,7 @@ function PasoFecha({ sel, onCambiar }: PropsPaso) {
   const celdas = [...Array.from({ length: MES.primerDia }, () => null), ...Array.from({ length: MES.dias }, (_, i) => i + 1)];
   return (
     <>
-      <Pregunta ayuda="Elegir la fecha no la reserva: la confirma el salón.">¿Qué fecha te gustaría?</Pregunta>
+      <Pregunta ayuda="Elegir la fecha no la reserva: te la confirman después.">¿Qué fecha te gustaría?</Pregunta>
       <p className="mt-4 text-[13px] font-semibold">{MES.nombre}</p>
       <div className="mt-2 grid grid-cols-7 gap-1 text-center">
         {["L", "M", "M", "J", "V", "S", "D"].map((d, i) => (
@@ -373,7 +373,7 @@ function PasoInvitados({ sel, onCambiar }: PropsPaso) {
     onCambiar({ invitados: Math.min(CAPACIDAD, Math.max(INVITADOS_MIN, sel.invitados + d)) });
   return (
     <>
-      <Pregunta ayuda={`En el salón entran hasta ${CAPACIDAD} personas.`}>¿Cuántos invitados?</Pregunta>
+      <Pregunta ayuda={`Entran hasta ${CAPACIDAD} personas.`}>¿Cuántos invitados?</Pregunta>
       <div className="mt-10 flex items-center justify-center gap-5">
         <button
           type="button"
@@ -447,7 +447,7 @@ function PasoExtras({ sel, onCambiar }: PropsPaso) {
     <>
       <Pregunta>Sumá extras</Pregunta>
       <p className="mt-3 text-[11px] font-semibold tracking-[0.06em] uppercase" style={{ color: C.suave }}>
-        Ya viene con el salón
+        Ya viene incluido
       </p>
       <ul className="mt-1.5 flex flex-wrap gap-1.5">
         {INCLUIDO.map((t) => (
@@ -538,7 +538,7 @@ function PantallaPanel({ sel, total }: { sel: Seleccion; total: number }) {
   const festejo = FESTEJOS.find((f) => f.id === sel.festejo)!;
   const menu = MENUS.find((m) => m.id === sel.menu)!;
   const ofrecido = [
-    { nombre: "Salón", detalle: `sábados +${RECARGO_SABADO}%`, precio: PRECIO_SALON },
+    { nombre: "Espacio", detalle: `sábados +${RECARGO_SABADO}%`, precio: PRECIO_SALON },
     { nombre: `Menú ${menu.nombre}`, detalle: "por invitado", precio: menu.precio },
     { nombre: "Invitación digital", detalle: "extra para invitados", precio: EXTRAS[0].precio },
   ];

@@ -40,4 +40,4 @@ se cambia en Vercel con la variable `NEXT_PUBLIC_URL_SISTEMA`, sin tocar el cód
 - **Diseño:** la estructura se basa en [Launch UI](https://github.com/launch-ui/launch-ui) (licencia MIT, copia en `licencias/launch-ui.md`). Los colores y la tipografía son los del sistema: fondo hueso, texto marino, el azul de la marca para la acción, celeste para suavizar y ámbar solo como detalle. Los títulos van en Fraunces, como en el sistema; Manrope para el resto.
 - **Una sola acción:** "Armá tu cotizador gratis" en toda la página. WhatsApp y el cotizador de ejemplo van como links.
 - Las fuentes están dentro del proyecto en vez de bajarse de Google Fonts: se ven igual y no dependen de Google.
-- El formulario de "acceso anticipado" se sacó: ahora cada salón se registra solo en el sistema.
+- El formulario de "acceso anticipado" se sacó: ahora cada cliente se registra solo en el sistema.

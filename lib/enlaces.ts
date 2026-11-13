@@ -18,10 +18,10 @@ export const URL_EJEMPLO = `${SISTEMA}/q/petra-ejemplo-aromos-001`;
 
 /** WhatsApp de Petra, con un mensaje ya escrito. */
 export const URL_WHATSAPP = `https://wa.me/5491139561326?text=${encodeURIComponent(
-  "Hola, quiero saber más de Petra para mi salón.",
+  "Hola, quiero saber más de Petra.",
 )}`;
 
-/** WhatsApp para quien quiere ser socio de Petra (gestión total del salón). */
+/** WhatsApp para quien quiere ser socio de Petra (gestión total de sus eventos). */
 export const URL_SOCIOS = `https://wa.me/5491139561326?text=${encodeURIComponent(
-  "Hola, quiero ser socio de Petra y que gestionen todo mi salón.",
+  "Hola, quiero ser socio de Petra y que gestionen todos mis eventos.",
 )}`;

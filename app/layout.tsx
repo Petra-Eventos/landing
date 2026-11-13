@@ -18,13 +18,13 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Petra · Cotizador para salones de eventos",
+  title: "Petra · Cotizador para eventos",
   description:
-    "Respondé primero, gestioná más fiestas. Generá un link para que tus clientes coticen su evento las 24 horas, con la marca de tu salón. Empezá gratis.",
+    "Respondé primero, gestioná más fiestas. Generá un link para que tus clientes coticen su evento las 24 horas, con tu marca. Empezá gratis.",
   openGraph: {
-    title: "Petra · Cotizador para salones de eventos",
+    title: "Petra · Cotizador para eventos",
     description:
-      "Respondé primero, gestioná más fiestas. Generá un link para que tus clientes coticen su evento las 24 horas, con la marca de tu salón. Empezá gratis.",
+      "Respondé primero, gestioná más fiestas. Generá un link para que tus clientes coticen su evento las 24 horas, con tu marca. Empezá gratis.",
     locale: "es_AR",
     type: "website",
   },
