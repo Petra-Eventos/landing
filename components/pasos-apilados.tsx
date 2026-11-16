@@ -5,6 +5,9 @@ import {
   ArrowLeft,
   Bell,
   Briefcase,
+  Camera,
+  CheckCheck,
+  ChevronLeft,
   Crown,
   EllipsisVertical,
   FileText,
@@ -12,10 +15,14 @@ import {
   Heart,
   Link2,
   MessageCircle,
+  Mic,
+  Phone,
+  Plus,
   Sparkles,
   SquarePlay,
   SquareUser,
   UserPlus,
+  Video,
 } from "lucide-react";
 import { MENUS, SELECCION_INICIAL, fechaLarga, pesos, precioSugerido } from "@/lib/cotizador-demo";
 
@@ -167,18 +174,70 @@ function Visual({ tipo, fondo }: { tipo: (typeof PASOS)[number]["visual"]; fondo
       </div>
     );
   if (tipo === "link") return <PerfilInstagram />;
+  return <ChatWhatsApp />;
+}
+
+// Un chat de WhatsApp en modo claro: el pedido del cliente llega armado y el negocio responde. Datos de ejemplo.
+const WA = {
+  barra: "#f7f7f7",
+  fondo: "#efeae2",
+  recibido: "#ffffff",
+  enviado: "#d9fdd3",
+  texto: "#111b21",
+  suave: "#667781",
+  verde: "#008069",
+  tilde: "#53bdeb",
+  borde: "#e9edef",
+};
+
+function ChatWhatsApp() {
   const s = SELECCION_INICIAL;
+  const hora = "text-[10px] leading-none";
   return (
-    <div className={`${panel} ${fondo}`}>
-      <p className="text-[13px] text-ink-muted">WhatsApp, 23:48</p>
-      <div className="mt-3 rounded-[12px] rounded-tl-sm bg-azul-soft p-4 text-[14px] leading-6">
-        <p>Hola, quiero presupuesto para un XV:</p>
-        <p className="text-ink-muted">
-          {fechaLarga(s.dia)}, {s.invitados} invitados
-        </p>
-        <p className="mt-1">
-          Precio sugerido: <span className="font-semibold">{pesos(precioSugerido(s))}</span>
-        </p>
+    <div className="flex w-full max-w-[380px] flex-col overflow-hidden rounded-[20px] text-left shadow-piedra" style={{ color: WA.texto }}>
+      <div className="flex items-center gap-2 border-b px-3 py-2.5" style={{ backgroundColor: WA.barra, borderColor: WA.borde }}>
+        <ChevronLeft size={22} strokeWidth={2.2} style={{ color: WA.verde }} />
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-arenisca text-[15px] font-bold text-ink">L</span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[15px] leading-5 font-semibold">Laura</span>
+          <span className="block truncate text-[11px] leading-4" style={{ color: WA.suave }}>
+            en línea
+          </span>
+        </span>
+        <Video size={21} strokeWidth={1.9} style={{ color: WA.verde }} />
+        <Phone size={19} strokeWidth={1.9} className="ml-2" style={{ color: WA.verde }} />
+      </div>
+
+      <div className="flex flex-col gap-1.5 px-3 py-3 text-[13px] leading-[18px]" style={{ backgroundColor: WA.fondo }}>
+        <span className="mx-auto mb-1 rounded-[8px] bg-white/90 px-2.5 py-1 text-[11px] font-medium" style={{ color: WA.suave }}>
+          Hoy
+        </span>
+        <div className="max-w-[88%] self-start rounded-[10px] rounded-tl-none px-2.5 pt-1.5 pb-1 shadow-[0_1px_0.5px_#0b141a21]" style={{ backgroundColor: WA.recibido }}>
+          <p>Hola, quiero presupuesto para un XV:</p>
+          <p>
+            {fechaLarga(s.dia)}, {s.invitados} invitados
+          </p>
+          <p>
+            Precio sugerido: <span className="font-semibold">{pesos(precioSugerido(s))}</span>
+          </p>
+          <p className={`mt-0.5 text-right ${hora}`} style={{ color: WA.suave }}>
+            23:48
+          </p>
+        </div>
+        <div className="max-w-[88%] self-end rounded-[10px] rounded-tr-none px-2.5 pt-1.5 pb-1 shadow-[0_1px_0.5px_#0b141a21]" style={{ backgroundColor: WA.enviado }}>
+          <p>¡Hola Laura! Sí, el 13 de marzo está libre. ¿Querés que te reservemos la fecha?</p>
+          <p className={`mt-0.5 flex items-center justify-end gap-1 ${hora}`} style={{ color: WA.suave }}>
+            23:52
+            <CheckCheck size={14} strokeWidth={2.2} style={{ color: WA.tilde }} />
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2.5 px-3 py-2" style={{ backgroundColor: WA.barra }}>
+        <Plus size={22} strokeWidth={2} style={{ color: WA.verde }} />
+        <span className="h-8 flex-1 rounded-full border bg-white" style={{ borderColor: WA.borde }} />
+        <Camera size={20} strokeWidth={1.9} style={{ color: WA.verde }} />
+        <Mic size={20} strokeWidth={1.9} style={{ color: WA.verde }} />
       </div>
     </div>
   );
