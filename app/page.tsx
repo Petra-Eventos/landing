@@ -90,7 +90,7 @@ export default function Home() {
         {/* 1. Qué es: en una frase, con el cotizador al lado para tocarlo */}
         <section aria-labelledby="titular" className="fondo-roca relative overflow-hidden">
           <Isotipo variante="clara" className="pointer-events-none absolute -top-6 -right-10 hidden h-[640px] w-auto opacity-40 brightness-0 invert lg:block" />
-          <div className={`${contenedor} relative grid grid-cols-1 items-center gap-14 py-16 sm:py-24 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20`}>
+          <div className={`${contenedor} relative grid grid-cols-1 items-center gap-14 py-16 sm:py-24 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20 lg:py-[clamp(16px,3vh,96px)]`}>
             <div className="text-center lg:text-left">
               <p className="aparecer type-etiqueta flex items-center justify-center gap-3 text-ink lg:justify-start">
                 <span aria-hidden="true" className="h-[3px] w-8 rounded-full bg-dorado" />
@@ -117,7 +117,7 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <div style={{ "--orden": "0.6s" } as React.CSSProperties} className="aparecer text-ink-muted">
+            <div style={{ "--orden": "0.6s" } as React.CSSProperties} className="aparecer demo-ajustada text-ink-muted">
               <CotizadorDemo />
             </div>
           </div>
