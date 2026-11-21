@@ -67,9 +67,28 @@ const PREGUNTAS = [
   { p: "¿Quién ve mis precios y mis costos?", r: "Tu cliente ve el precio que vos decidís. Tus costos y tu ganancia no los ve nadie, y nadie más entra a tus datos." },
 ];
 
+// Ficha para Google (datos estructurados): qué es Petra, que es web y que se empieza gratis.
+// Solo datos ciertos: sin estrellas ni reseñas hasta que existan de verdad.
+const FICHA_GOOGLE = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Petra",
+  url: "https://www.petraeventos.com",
+  description:
+    "Cotizador online para salones y organizadores de eventos: generá un link para que tus clientes coticen su evento las 24 horas, con tu marca.",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  inLanguage: "es-AR",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "ARS", description: "Plan Gratis para empezar" },
+};
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FICHA_GOOGLE).replace(/</g, "\\u003c") }}
+      />
       <header className="sticky top-0 z-20 border-b border-line bg-surface/80 backdrop-blur-xl">
         <div className={`${contenedor} flex min-h-16 items-center justify-between gap-3`}>
           <a href="#" aria-label="Petra, inicio" className="rounded-md">
