@@ -21,6 +21,9 @@ export const URL_WHATSAPP = `https://wa.me/5491139561326?text=${encodeURICompone
   "Hola, quiero saber más de Petra.",
 )}`;
 
+/** Instagram de Petra (por ahora, el de Rodri). */
+export const URL_INSTAGRAM = "https://www.instagram.com/rodrigotorres.lab/";
+
 /** WhatsApp para quien quiere ser socio de Petra (gestión total de sus eventos). */
 export const URL_SOCIOS = `https://wa.me/5491139561326?text=${encodeURIComponent(
   "Hola, quiero ser socio de Petra y que gestionen todos mis eventos.",
