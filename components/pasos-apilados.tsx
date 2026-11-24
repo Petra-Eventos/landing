@@ -282,7 +282,8 @@ export function PasosApilados() {
   }, []);
 
   return (
-    <ol className="mt-14 flex flex-col gap-[12vh] pb-[4vh]">
+    // data-parada-pila: el scroll de a una sección (components/scroll-por-pantallas.tsx) frena en cada tarjeta.
+    <ol data-parada-pila className="mt-14 flex flex-col gap-[12vh] pb-[4vh]">
       {PASOS.map((p, i) => {
         const Icono = p.icono;
         return (
