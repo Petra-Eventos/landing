@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Check, ChevronDown, Clock, MessageCircle, Palette, Star, Store } from "lucide-react";
 import { CotizadorDemo } from "@/components/cotizador-demo";
-import { Firma, Isotipo } from "@/components/logo";
+import { Firma } from "@/components/logo";
 import { PasosApilados } from "@/components/pasos-apilados";
 import { BotonWhatsApp, LinkInstagram } from "@/components/redes";
 import { URL_EJEMPLO, URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
@@ -108,8 +108,21 @@ export default function Home() {
 
       <main>
         {/* 1. Qué es: en una frase, con el cotizador al lado para tocarlo */}
-        <section aria-labelledby="titular" className="fondo-roca relative overflow-hidden">
-          <Isotipo variante="clara" className="pointer-events-none absolute -top-6 -right-10 hidden h-[640px] w-auto opacity-40 brightness-0 invert lg:block" />
+        <section aria-labelledby="titular" className="relative overflow-hidden bg-surface">
+          {/* Foto de fondo: mesa de fiesta, sin personas (Unsplash, licencia libre, sin atribución obligatoria).
+              Encima, una capa crema para que el texto se lea (más tapada del lado del texto). */}
+          <Image
+            src="/fondo-inicio.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="pointer-events-none object-cover object-center"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-surface/85 lg:bg-transparent lg:bg-linear-to-r lg:from-surface lg:via-surface/90 lg:to-surface/35"
+          />
           <div className={`${contenedor} relative grid grid-cols-1 items-center gap-14 py-16 sm:py-24 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20 lg:py-[clamp(16px,3vh,96px)]`}>
             <div className="text-center lg:text-left">
               <p className="aparecer type-etiqueta flex items-center justify-center gap-3 text-ink lg:justify-start">
