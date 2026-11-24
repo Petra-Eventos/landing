@@ -4,6 +4,7 @@ import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
 import { PasosApilados } from "@/components/pasos-apilados";
 import { BotonWhatsApp, LinkInstagram } from "@/components/redes";
+import { ScrollPorPantallas } from "@/components/scroll-por-pantallas";
 import { URL_EJEMPLO, URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
 import { RESENAS, SALONES } from "@/lib/resenas";
 
@@ -320,6 +321,7 @@ export default function Home() {
       </footer>
 
       <BotonWhatsApp />
+      <ScrollPorPantallas />
     </>
   );
 }
