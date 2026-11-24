@@ -283,7 +283,7 @@ export function PasosApilados() {
 
   return (
     // data-parada-pila: el scroll de a una sección (components/scroll-por-pantallas.tsx) frena en cada tarjeta.
-    <ol data-parada-pila className="mt-14 flex flex-col gap-[12vh] pb-[4vh]">
+    <ol data-parada-pila className="mt-8 flex flex-col gap-[12vh] pb-[4vh] sm:mt-10">
       {PASOS.map((p, i) => {
         const Icono = p.icono;
         return (
@@ -299,7 +299,7 @@ export function PasosApilados() {
               ref={(el) => {
                 tarjetas.current[i] = el;
               }}
-              className={`grid origin-top items-center gap-8 rounded-[28px] p-5 shadow-[0_-20px_60px_-20px_#2a457340] will-change-transform sm:p-10 md:min-h-[420px] md:grid-cols-2 md:p-14 ${p.color}`}
+              className={`grid origin-top items-center gap-6 rounded-[28px] p-5 shadow-[0_-20px_60px_-20px_#2a457340] will-change-transform sm:p-8 md:grid-cols-2 md:gap-10 lg:px-12 ${p.color}`}
             >
               <div>
                 <p className="flex items-center gap-2 text-[15px] font-semibold">
@@ -309,7 +309,8 @@ export function PasosApilados() {
                 <h3 className="mt-4 font-display text-[32px] leading-[1.1] font-semibold tracking-[-0.02em] sm:text-[44px]">{p.titulo}</h3>
                 <p className="mt-4 max-w-[420px] text-[17px] leading-7">{p.texto}</p>
               </div>
-              <div aria-hidden="true" className="flex min-w-0 justify-center md:justify-end">
+              {/* visual-paso: en pantallas bajas se achica (globals.css) para que la tarjeta entre completa. */}
+              <div aria-hidden="true" className="visual-paso flex min-w-0 justify-center md:justify-end">
                 <Visual tipo={p.visual} fondo={p.fondoVisual} />
               </div>
             </div>

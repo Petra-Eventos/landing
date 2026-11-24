@@ -162,7 +162,8 @@ export default function Home() {
         </section>
 
         {/* 2. Cómo funciona: tres pasos de verdad, en orden */}
-        <section id="como-funciona" className={seccion} aria-labelledby="titulo-como">
+        {/* Menos aire arriba que las otras secciones: así el título y el paso 1 entran juntos en la pantalla. */}
+        <section id="como-funciona" className="scroll-mt-20 pt-12 pb-20 sm:pt-14 sm:pb-28" aria-labelledby="titulo-como">
           <div className={contenedor}>
             <h2 id="titulo-como" className="revelar type-titulo text-center text-ink">
               Cómo <span className="resaltado">funciona</span>
