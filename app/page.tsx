@@ -136,7 +136,7 @@ export default function Home() {
               </p>
               <Titular />
               <p style={{ "--orden": "0.9s" } as React.CSSProperties} className="aparecer mx-auto mt-6 max-w-[520px] text-[18px] leading-7 text-ink lg:mx-0 sm:text-[20px] sm:leading-8">
-                Petra te da un link donde tu cliente arma su evento y ve el precio al instante. A vos te llega el pedido por WhatsApp.
+                Tus clientes arman su evento, obtienen el precio al instante y vos recibís el pedido en WhatsApp.
               </p>
               <div style={{ "--orden": "1.05s" } as React.CSSProperties} className="aparecer mt-9 flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:justify-start">
                 <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
