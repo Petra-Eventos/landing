@@ -4,6 +4,7 @@ import { useEffect, useId, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
+  Bell,
   Briefcase,
   Cake,
   CalendarPlus,
@@ -48,6 +49,18 @@ const MS_PASO = 2400;
 const MS_PRECIO = 3400;
 const MS_PANEL = 5200;
 
+// Al cargar: el celular vibra y le "llegan" consultas con campanita, como pasa hoy por WhatsApp.
+// Dura INTRO_MS (los tiempos de cada parte están en .celular-vibra y .aviso-llega, en globals.css);
+// recién después arranca el recorrido de siempre. Con movimiento reducido, no hay intro.
+const INTRO_MS = 3400;
+const AVISOS = [
+  { texto: "¿Precio para 120?", lado: "izquierda", arriba: 110, demora: 0.75 },
+  { texto: "¿Tienen el 13/3?", lado: "derecha", arriba: 190, demora: 1.05 },
+  { texto: "Info porfa", lado: "izquierda", arriba: 290, demora: 1.35 },
+  { texto: "¿Qué incluye?", lado: "derecha", arriba: 370, demora: 1.65 },
+  { texto: "¿Precio XV?", lado: "izquierda", arriba: 450, demora: 1.95 },
+] as const;
+
 // El link del cotizador lo ve el cliente con la marca del salón: claro y con el color del salón.
 // Son colores de producto (no tokens de Petra), igual que los tonos de las webapps.
 const C = {
@@ -83,10 +96,18 @@ export function CotizadorDemo() {
   const [paso, setPaso] = useState(0);
   const [sel, setSel] = useState<Seleccion>(SELECCION_INICIAL);
   const [solo, setSolo] = useState(true);
+  const [intro, setIntro] = useState(true);
   const idVistas = useId();
 
+  // Termina la intro de mensajes (o la salta si la persona pidió menos movimiento).
   useEffect(() => {
-    if (!solo || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const id = window.setTimeout(() => setIntro(false), reducido ? 0 : INTRO_MS);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (intro || !solo || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const espera = vista === "panel" ? MS_PANEL : paso === ULTIMO ? MS_PRECIO : MS_PASO;
     const id = window.setTimeout(() => {
       if (vista === "panel") {
@@ -96,7 +117,7 @@ export function CotizadorDemo() {
       else setPaso(paso + 1);
     }, espera);
     return () => window.clearTimeout(id);
-  }, [solo, vista, paso]);
+  }, [intro, solo, vista, paso]);
 
   const parar = () => setSolo(false);
   const total = precioSugerido(sel);
@@ -127,7 +148,27 @@ export function CotizadorDemo() {
       </p>
 
       <div className="relative">
-        <div className="relative rounded-[42px] bg-marino p-3 shadow-[0_30px_60px_-12px_#2a457366]">
+        {intro && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10">
+            {AVISOS.map((a) => (
+              <span
+                key={a.texto}
+                className={`aviso-llega absolute flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[12px] font-semibold whitespace-nowrap text-ink shadow-[0_8px_20px_-6px_#2a457366] ${
+                  a.lado === "izquierda" ? "-left-10" : "-right-10"
+                }`}
+                style={{ top: a.arriba, "--demora": `${a.demora}s` } as React.CSSProperties}
+              >
+                <span className="campanita flex size-5 items-center justify-center rounded-full bg-dorado text-on-dorado">
+                  <Bell size={12} strokeWidth={2.4} />
+                </span>
+                {a.texto}
+              </span>
+            ))}
+          </div>
+        )}
+        <div
+          className={`relative rounded-[42px] bg-marino p-3 shadow-[0_30px_60px_-12px_#2a457366] ${intro ? "celular-vibra" : ""}`}
+        >
           <div
             className="relative flex h-[560px] flex-col overflow-hidden rounded-[32px]"
             style={vista === "cliente" ? { backgroundColor: C.fondo, color: C.texto } : undefined}

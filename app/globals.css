@@ -325,3 +325,77 @@
   background-clip: text;
   color: transparent;
 }
+
+/* Intro del celular del inicio: vibra en tres tandas, como cuando entran mensajes
+   (de izquierda a derecha y vuelta), y aparecen consultas con campanita alrededor.
+   Empieza después de que aparece el celular (0,7 s). Ver INTRO_MS en cotizador-demo.tsx. */
+@media (prefers-reduced-motion: no-preference) {
+  .celular-vibra {
+    animation: vibrar 0.5s ease-in-out 0.75s 1, vibrar 0.5s ease-in-out 1.45s 1, vibrar 0.5s ease-in-out 2.15s 1;
+  }
+  .aviso-llega {
+    opacity: 0;
+    animation: aviso-llega 1.4s cubic-bezier(0.2, 0.8, 0.3, 1) var(--demora, 0.8s) both;
+  }
+  .campanita {
+    animation: campanita 0.6s ease-in-out calc(var(--demora, 0.8s) + 0.1s) 2;
+    transform-origin: 50% 10%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aviso-llega {
+    display: none;
+  }
+}
+/* Todo en "transform": separado en translate/rotate, el compilador de CSS puede descartar una parte. */
+@keyframes vibrar {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  15% {
+    transform: translateX(-7px) rotate(-1.5deg);
+  }
+  35% {
+    transform: translateX(7px) rotate(1.5deg);
+  }
+  55% {
+    transform: translateX(-5px) rotate(-1deg);
+  }
+  75% {
+    transform: translateX(4px) rotate(0.8deg);
+  }
+}
+@keyframes aviso-llega {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.7);
+  }
+  18% {
+    opacity: 1;
+    transform: translateY(0) scale(1.05);
+  }
+  28% {
+    transform: translateY(0) scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px) scale(0.95);
+  }
+}
+@keyframes campanita {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-18deg);
+  }
+  75% {
+    transform: rotate(18deg);
+  }
+}
