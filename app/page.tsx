@@ -3,6 +3,7 @@ import { Check, ChevronDown, Clock, MessageCircle, Palette, Star, Store } from "
 import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma, Isotipo } from "@/components/logo";
 import { PasosApilados } from "@/components/pasos-apilados";
+import { BotonWhatsApp, LinkInstagram } from "@/components/redes";
 import { URL_EJEMPLO, URL_ENTRAR, URL_PRIVACIDAD, URL_REGISTRARME, URL_TERMINOS, URL_WHATSAPP } from "@/lib/enlaces";
 import { RESENAS, SALONES } from "@/lib/resenas";
 
@@ -61,7 +62,7 @@ const POR_QUE = [
 ];
 
 const PREGUNTAS = [
-  { p: "¿Cuánto cuesta?", r: "Empezás gratis y sin tarjeta. Cuando quieras sumar más herramientas, pasás de plan. Escribinos y te pasamos los precios." },
+  { p: "¿Cuánto cuesta?", r: "Nada durante un año: todo Petra es gratis los primeros 12 meses y no te pedimos tarjeta." },
   { p: "¿El cliente reserva la fecha solo?", r: "No. Ve qué fechas tenés libres y te manda el pedido. La fecha la confirmás vos, cuando cierran." },
   { p: "¿Necesito saber de tecnología?", r: "No. Si tenés tu PDF de promos, en un rato tenés tu link. Y te ayudamos por WhatsApp." },
   { p: "¿Quién ve mis precios y mis costos?", r: "Tu cliente ve el precio que vos decidís. Tus costos y tu ganancia no los ve nadie, y nadie más entra a tus datos." },
@@ -79,7 +80,7 @@ const FICHA_GOOGLE = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "es-AR",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "ARS", description: "Plan Gratis para empezar" },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "ARS", description: "Gratis durante el primer año" },
 };
 
 export default function Home() {
@@ -128,7 +129,7 @@ export default function Home() {
                 </a>
               </div>
               <ul style={{ "--orden": "1.2s" } as React.CSSProperties} className="aparecer mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] font-semibold text-ink lg:justify-start">
-                {["Gratis para empezar", "Sin tarjeta", "Con tu marca"].map((t) => (
+                {["Gratis por un año", "Sin tarjeta", "Con tu marca"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5">
                     <Check size={16} strokeWidth={2.4} className="text-oliva" aria-hidden="true" />
                     {t}
@@ -212,6 +213,41 @@ export default function Home() {
           </section>
         )}
 
+        {/* Quién está detrás: una persona real a la que se le puede escribir */}
+        <section id="quien" className={seccion} aria-labelledby="titulo-quien">
+          <div className={`${contenedor} max-w-[880px]!`}>
+            <div className="revelar grid items-center gap-8 rounded-[28px] border border-line bg-surface-raised p-7 shadow-piedra sm:grid-cols-[auto_1fr] sm:gap-10 sm:p-10">
+              <Image
+                src="/rodrigo-torres.jpg"
+                alt="Rodrigo Torres, creador de Petra"
+                width={403}
+                height={449}
+                sizes="(min-width: 640px) 176px, 144px"
+                className="mx-auto h-44 w-36 rounded-t-full rounded-b-[20px] object-cover object-top sm:h-52 sm:w-44"
+              />
+              <div className="text-center sm:text-left">
+                <p className="type-etiqueta text-ink-muted">Quién está detrás</p>
+                <h2 id="titulo-quien" className="mt-2 type-titulo text-ink">
+                  Hola, soy Rodrigo.
+                </h2>
+                <p className="mt-4 text-[17px] leading-7 text-ink">
+                  Creé Petra para que cada evento pueda ser una experiencia completa, y para que quien lo organiza deje de
+                  perder clientes por contestar tarde.
+                </p>
+                <p className="mt-3 text-[16px] leading-6 text-ink-muted">
+                  Si tenés una duda, escribime: te respondo yo.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:justify-start">
+                  <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className={linkSecundario}>
+                    Escribime por WhatsApp
+                  </a>
+                  <LinkInstagram className={linkSecundario} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 4. Preguntas (se abren sin JavaScript) */}
         <section id="preguntas" className={seccion} aria-labelledby="titulo-preguntas">
           <div className={`${contenedor} max-w-[760px]!`}>
@@ -237,7 +273,7 @@ export default function Home() {
           <div className={contenedor}>
             <div className="flex flex-col items-center rounded-[28px] bg-azul-soft px-5 py-14 text-center sm:px-10 sm:py-20">
               <h2 id="titulo-cierre" className="revelar type-titulo max-w-[680px] text-balance text-ink">
-                Armá tu cotizador hoy. <span className="subrayado">Es gratis.</span>
+                Armá tu cotizador hoy. <span className="subrayado">Es gratis por un año.</span>
               </h2>
               <div className="mt-8 flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row">
                 <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
@@ -247,13 +283,6 @@ export default function Home() {
                   Preguntar por WhatsApp
                 </a>
               </div>
-              <figure className="mt-14 flex max-w-[460px] items-center gap-4 text-left">
-                <Image src="/rodrigo-torres.jpg" alt="Rodrigo Torres, creador de Petra" width={403} height={449} sizes="56px" className="size-14 shrink-0 rounded-full object-cover object-top" />
-                <div>
-                  <blockquote className="text-[15px] leading-6 font-medium text-ink">“Creé Petra para que cada evento pueda ser una experiencia completa.”</blockquote>
-                  <figcaption className="mt-1 text-[13px] text-ink-muted">Rodrigo Torres, creador de Petra</figcaption>
-                </div>
-              </figure>
             </div>
           </div>
         </section>
@@ -267,6 +296,7 @@ export default function Home() {
           </div>
           <nav aria-label="Contacto y legales" className="flex flex-wrap gap-x-5 gap-y-2">
             <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="hover:text-on-marino">WhatsApp</a>
+            <LinkInstagram className="hover:text-on-marino" />
             <a href="mailto:hola@petraeventos.com" className="hover:text-on-marino">hola@petraeventos.com</a>
             <a href={URL_TERMINOS} className="hover:text-on-marino">Términos</a>
             <a href={URL_PRIVACIDAD} className="hover:text-on-marino">Privacidad</a>
@@ -274,6 +304,8 @@ export default function Home() {
           </nav>
         </div>
       </footer>
+
+      <BotonWhatsApp />
     </>
   );
 }
