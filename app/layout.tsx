@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import "./globals.css";
 
 // Fraunces y Manrope (las mismas de Google Fonts), incluidas en el proyecto.
@@ -47,8 +47,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es-AR" className={`${fraunces.variable} ${manrope.variable}`}>
       <body>
         {children}
-        {/* Visitas (Vercel Web Analytics): sin cookies ni datos personales. Se ven en el panel de Vercel. */}
-        <Analytics />
+        {/* Visitas (Cloudflare Web Analytics, gratis): sin cookies ni datos personales. Se ven en
+            dash.cloudflare.com → Analytics & Logs → Web Analytics. El token es público (no es una clave). */}
+        <Script
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "d0bac71d23b24048bcb3a6c9bb8bd6e5"}'
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
