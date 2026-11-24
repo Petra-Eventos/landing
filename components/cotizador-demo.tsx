@@ -99,11 +99,21 @@ export function CotizadorDemo() {
   const [intro, setIntro] = useState(true);
   const idVistas = useId();
 
-  // Termina la intro de mensajes (o la salta si la persona pidió menos movimiento).
+  // Termina la intro de mensajes (o la salta si la persona pidió menos movimiento). Cuenta desde que se
+  // va la pantalla de carga (evento "petra:lista"), porque mientras tanto las animaciones están en pausa.
   useEffect(() => {
     const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const id = window.setTimeout(() => setIntro(false), reducido ? 0 : INTRO_MS);
-    return () => window.clearTimeout(id);
+    let id = 0;
+    const empezar = () => {
+      id = window.setTimeout(() => setIntro(false), reducido ? 0 : INTRO_MS);
+    };
+    if (document.documentElement.classList.contains("cargando")) {
+      window.addEventListener("petra:lista", empezar, { once: true });
+    } else empezar();
+    return () => {
+      window.removeEventListener("petra:lista", empezar);
+      window.clearTimeout(id);
+    };
   }, []);
 
   useEffect(() => {

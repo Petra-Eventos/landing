@@ -399,3 +399,55 @@
     transform: rotate(18deg);
   }
 }
+
+/* Pantalla de carga (components/pantalla-carga.tsx). Solo existe mientras <html> tiene "cargando",
+   que pone un script: sin JavaScript no aparece y la web se ve normal. Mientras carga, las animaciones
+   de la página quedan en pausa para que arranquen recién cuando se ve. */
+#pantalla-carga {
+  display: none;
+}
+html.cargando #pantalla-carga {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  transition: opacity 0.45s ease;
+}
+html.carga-lista #pantalla-carga {
+  opacity: 0;
+}
+html.cargando main *,
+html.cargando header * {
+  animation-play-state: paused !important;
+}
+html.cargando body {
+  overflow: hidden;
+}
+/* Cada pieza del pilar sube y aparece, de abajo hacia arriba; arriba completo, espera y vuelve a empezar.
+   Todo en "transform" para que el compilador de CSS no descarte nada. */
+.pieza-pilar {
+  animation: armar-pilar 1.8s cubic-bezier(0.2, 0.8, 0.3, 1) infinite both;
+}
+@keyframes armar-pilar {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  20%,
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pieza-pilar {
+    animation: none;
+  }
+}
