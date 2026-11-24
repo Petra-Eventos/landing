@@ -5,6 +5,8 @@ import {
   ArrowLeft,
   ArrowRight,
   Bell,
+  LayoutDashboard,
+  UserRound,
   Briefcase,
   Cake,
   CalendarPlus,
@@ -134,25 +136,9 @@ export function CotizadorDemo() {
   const cambiar = (c: Partial<Seleccion>) => setSel((s) => ({ ...s, ...c }));
 
   return (
-    <div onPointerDown={parar} onKeyDown={parar} className="mx-auto w-[280px] sm:w-[300px]">
-      <p id={idVistas} className="sr-only">
-        Elegí qué vista mirar
-      </p>
-      <div role="group" aria-labelledby={idVistas} className="grid grid-cols-2 gap-1 rounded-[12px] border border-line bg-surface-raised p-1 shadow-piedra">
-        {(Object.keys(MIRADAS) as Vista[]).map((v) => (
-          <button
-            key={v}
-            type="button"
-            aria-pressed={vista === v}
-            onClick={() => setVista(v)}
-            className={`min-h-10 rounded-[8px] px-1 text-[13px] leading-4 font-semibold transition-colors ${
-              vista === v ? "bg-marino text-white" : "text-ink-muted hover:text-ink"
-            }`}
-          >
-            {MIRADAS[v].nombre}
-          </button>
-        ))}
-      </div>
+    // El celular y, a su derecha, los botones de vista uno arriba del otro.
+    <div onPointerDown={parar} onKeyDown={parar} className="mx-auto flex w-fit items-start gap-2 sm:gap-3">
+      <div className="w-[250px] sm:w-[300px]">
       <p className="mt-3 mb-6 text-center text-[14px] leading-5" aria-live="polite">
         {MIRADAS[vista].texto}
       </p>
@@ -199,6 +185,34 @@ export function CotizadorDemo() {
         </div>
       </div>
       <p className="mt-5 text-center text-[12px] leading-4">Demostración con precios de ejemplo.</p>
+      </div>
+
+      <p id={idVistas} className="sr-only">
+        Elegí qué vista mirar
+      </p>
+      <div
+        role="group"
+        aria-labelledby={idVistas}
+        className="mt-24 flex w-[58px] flex-col gap-1 rounded-[12px] border border-line bg-surface-raised p-1 shadow-piedra sm:w-[76px]"
+      >
+        {(Object.keys(MIRADAS) as Vista[]).map((v) => {
+          const Icono = v === "cliente" ? UserRound : LayoutDashboard;
+          return (
+            <button
+              key={v}
+              type="button"
+              aria-pressed={vista === v}
+              onClick={() => setVista(v)}
+              className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-[8px] px-1 text-[11px] leading-3 font-semibold transition-colors sm:text-[12px] ${
+                vista === v ? "bg-marino text-white" : "text-ink-muted hover:text-ink"
+              }`}
+            >
+              <Icono size={18} strokeWidth={2} aria-hidden="true" />
+              {MIRADAS[v].nombre}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -278,15 +292,15 @@ function PantallaCliente({
       {paso < ULTIMO && (
         <div className="flex items-center justify-between gap-3 border-t px-4 py-3" style={{ borderColor: C.borde, backgroundColor: C.tarjeta }}>
           <div>
-            <p className="text-[10px] leading-3 font-semibold tracking-[0.06em] uppercase" style={{ color: C.suave }}>
+            <p className="text-[10px] leading-3 font-semibold tracking-[0.06em] whitespace-nowrap uppercase" style={{ color: C.suave }}>
               Precio sugerido
             </p>
-            <p className="font-semibold tracking-tight text-[17px] leading-6 tabular-nums">{pesos(total)}</p>
+            <p className="text-[15px] leading-6 font-semibold tracking-tight whitespace-nowrap tabular-nums sm:text-[17px]">{pesos(total)}</p>
           </div>
           <button
             type="button"
             onClick={() => onPaso(paso + 1)}
-            className="inline-flex min-h-10 items-center gap-1.5 rounded-[10px] px-3.5 text-[13px] font-semibold"
+            className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-[10px] px-3 text-[13px] font-semibold sm:px-3.5"
             style={{ backgroundColor: C.acento, color: C.sobreAcento }}
           >
             Siguiente
