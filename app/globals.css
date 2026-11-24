@@ -192,7 +192,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .entrar-de-a-una > * {
-    animation: none;
+    animation-name: fundido;
+    animation-duration: 0.5s;
   }
 }
 
@@ -343,8 +344,20 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Con menos movimiento: las consultas aparecen y se van con un fundido, sin moverse; el celular no vibra. */
   .aviso-llega {
-    display: none;
+    opacity: 0;
+    animation: aviso-fundido 1.4s ease-in-out var(--demora, 0.8s) both;
+  }
+}
+@keyframes aviso-fundido {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  20%,
+  75% {
+    opacity: 1;
   }
 }
 /* Todo en "transform": separado en translate/rotate, el compilador de CSS puede descartar una parte. */
@@ -448,6 +461,40 @@ html.cargando body {
 }
 @media (prefers-reduced-motion: reduce) {
   .pieza-pilar {
-    animation: none;
+    animation-name: armar-pilar-fundido;
+  }
+}
+@keyframes armar-pilar-fundido {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+}
+
+/* Quien tiene apagadas las animaciones en su compu o celular ("reducir movimiento") igual ve entrar
+   las cosas, pero solo con un fundido suave: sin desenfoque, sin saltos y sin vibración. */
+@keyframes fundido {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .palabra,
+  .aparecer {
+    animation: fundido 0.8s ease-out both;
+    animation-delay: var(--orden, 0s);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: reduce) {
+    .revelar {
+      animation: fundido linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 60%;
+    }
   }
 }
