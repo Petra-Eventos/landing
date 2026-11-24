@@ -9,7 +9,7 @@ import { useEffect } from "react";
  * en el celular, con el teclado o con Ctrl + rueda (zoom) todo sigue igual que siempre.
  */
 
-const DURACION_MS = 750;
+const DURACION_MS = 850;
 // Después de llegar, espera a que el touchpad deje de mandar "inercia" antes de aceptar otro gesto.
 const SILENCIO_MS = 160;
 
@@ -17,7 +17,8 @@ function suave(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-/** Los lugares donde puede quedar la página: el principio de cada sección y, en las altas, cada pantalla. */
+/** Los lugares donde puede quedar la página: el principio de cada sección, cada tarjeta de los pasos
+ *  apilados y, en las demás secciones altas, cada pantalla. */
 function paradas(): number[] {
   const alto = window.innerHeight;
   const cabecera = document.querySelector("header")?.getBoundingClientRect().height ?? 0;
@@ -26,10 +27,24 @@ function paradas(): number[] {
   const lista: number[] = [0, maximo];
   document.querySelectorAll<HTMLElement>("main > section, body > footer").forEach((s) => {
     const arriba = s.getBoundingClientRect().top + window.scrollY - cabecera;
-    const fin = arriba + s.offsetHeight;
-    // Siempre para al principio de la sección. Si es alta, también de a una pantalla por dentro,
-    // pero no en el pedacito que sobra al final.
     lista.push(arriba);
+    const pila = s.querySelector<HTMLElement>("[data-parada-pila]");
+    if (pila) {
+      // Tarjetas que se pegan arriba al bajar (sticky): frena justo cuando cada una llega a su lugar.
+      // Su lugar "sin pegar" se calcula sumando las de antes, porque getBoundingClientRect da la posición pegada.
+      const hueco = parseFloat(getComputedStyle(pila).rowGap) || 0;
+      // La lista en sí no se pega, así que su posición es la real; la de cada tarjeta se va sumando.
+      let y = pila.getBoundingClientRect().top + window.scrollY;
+      Array.from(pila.children).forEach((hijo, i) => {
+        const el = hijo as HTMLElement;
+        const tope = parseFloat(getComputedStyle(el).top) || 0;
+        if (i > 0) lista.push(y - tope);
+        y += el.offsetHeight + hueco;
+      });
+      return;
+    }
+    // Otras secciones altas: de a una pantalla, pero no en el pedacito que sobra al final.
+    const fin = arriba + s.offsetHeight;
     for (let y = arriba + util; y < fin - util * 0.8; y += util) lista.push(y);
   });
   return [...new Set(lista.map((y) => Math.round(Math.min(Math.max(y, 0), maximo))))].sort((a, b) => a - b);
@@ -45,8 +60,8 @@ export function ScrollPorPantallas() {
     function irA(destino: number) {
       ocupado = true;
       const inicio = window.scrollY;
-      const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const duracion = reducido ? 0 : DURACION_MS;
+      // Siempre se desliza (también con "reducir movimiento"): es un desplazamiento que pide la persona.
+      const duracion = DURACION_MS;
       const t0 = performance.now();
       const paso = (ahora: number) => {
         const t = duracion ? Math.min(1, (ahora - t0) / duracion) : 1;
