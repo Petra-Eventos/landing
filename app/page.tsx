@@ -109,19 +109,20 @@ export default function Home() {
       <main>
         {/* 1. Qué es: en una frase, con el cotizador al lado para tocarlo */}
         <section aria-labelledby="titular" className="relative overflow-hidden bg-surface">
-          {/* Foto de fondo: mesa de fiesta, sin personas (Unsplash, licencia libre, sin atribución obligatoria).
-              Encima, una capa crema para que el texto se lea (más tapada del lado del texto). */}
+          {/* Foto de fondo: Petra (Jordania) de noche, con velas. La eligió Rodri.
+              Encima, una capa crema para que el texto se lea: del lado del texto tapa casi todo y del lado
+              del celular deja ver la fachada y las velas. */}
           <Image
-            src="/fondo-inicio.jpg"
+            src="/fondo-petra.jpg"
             alt=""
             fill
             priority
             sizes="100vw"
-            className="pointer-events-none object-cover object-center"
+            className="pointer-events-none object-cover object-[center_72%]"
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-surface/85 lg:bg-transparent lg:bg-linear-to-r lg:from-surface lg:via-surface/90 lg:to-surface/35"
+            className="pointer-events-none absolute inset-0 bg-surface/80 lg:bg-transparent lg:bg-linear-to-r lg:from-surface lg:from-30% lg:via-surface/75 lg:via-50% lg:to-surface/0"
           />
           <div className={`${contenedor} relative grid grid-cols-1 items-center gap-14 py-16 sm:py-24 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20 lg:py-[clamp(16px,3vh,96px)]`}>
             <div className="text-center lg:text-left">
