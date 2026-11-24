@@ -51,7 +51,10 @@ function Titular() {
           <path d="M4 14C70 5 160 3 296 9" pathLength="1" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
         </svg>
       </span>
-      .
+      {/* El punto final entra junto con la última palabra (si no, queda solo a la vista antes que el título). */}
+      <span className="palabra" style={{ "--orden": `${0.1 + (antes.length + subrayadas.length - 1) * paso}s` } as React.CSSProperties}>
+        .
+      </span>
     </h1>
   );
 }
