@@ -484,7 +484,8 @@ html.cargando body {
 }
 @media (prefers-reduced-motion: reduce) {
   .palabra,
-  .aparecer {
+  .aparecer,
+  .trazo {
     animation: fundido 0.8s ease-out both;
     animation-delay: var(--orden, 0s);
   }
