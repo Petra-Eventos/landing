@@ -51,7 +51,7 @@ const MS_PANEL = 5200;
 
 // Al cargar: el celular vibra y le "llegan" consultas con campanita, como pasa hoy por WhatsApp.
 // Dura INTRO_MS (los tiempos de cada parte están en .celular-vibra y .aviso-llega, en globals.css);
-// recién después arranca el recorrido de siempre. Con movimiento reducido, no hay intro.
+// recién después arranca el recorrido de siempre. Con movimiento reducido, las consultas aparecen con un fundido.
 const INTRO_MS = 3400;
 const AVISOS = [
   { texto: "¿Precio para 120?", lado: "izquierda", arriba: 110, demora: 0.75 },
@@ -99,13 +99,12 @@ export function CotizadorDemo() {
   const [intro, setIntro] = useState(true);
   const idVistas = useId();
 
-  // Termina la intro de mensajes (o la salta si la persona pidió menos movimiento). Cuenta desde que se
+  // Termina la intro de mensajes. Cuenta desde que se
   // va la pantalla de carga (evento "petra:lista"), porque mientras tanto las animaciones están en pausa.
   useEffect(() => {
-    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let id = 0;
     const empezar = () => {
-      id = window.setTimeout(() => setIntro(false), reducido ? 0 : INTRO_MS);
+      id = window.setTimeout(() => setIntro(false), INTRO_MS);
     };
     if (document.documentElement.classList.contains("cargando")) {
       window.addEventListener("petra:lista", empezar, { once: true });
@@ -117,7 +116,8 @@ export function CotizadorDemo() {
   }, []);
 
   useEffect(() => {
-    if (intro || !solo || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // El recorrido pasa solo para todos (con "reducir movimiento", las pantallas cambian con un fundido).
+    if (intro || !solo) return;
     const espera = vista === "panel" ? MS_PANEL : paso === ULTIMO ? MS_PRECIO : MS_PASO;
     const id = window.setTimeout(() => {
       if (vista === "panel") {
