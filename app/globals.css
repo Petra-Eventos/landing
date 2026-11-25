@@ -517,3 +517,31 @@ html.cargando body {
     zoom: 0.64;
   }
 }
+
+/* Mensajes que cruzan la sección "Menos mensajes": entran por la izquierda, cruzan lento y se desvanecen.
+   Duran 4,5 s y el último sale a los 1,5 s: todo termina en 6 s. */
+.mensaje-volador {
+  opacity: 0;
+  animation: volar 4.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+@keyframes volar {
+  0% {
+    opacity: 0;
+    transform: translateX(-110%);
+  }
+  15% {
+    opacity: 0.95;
+  }
+  60% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mensaje-volador {
+    display: none;
+  }
+}

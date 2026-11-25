@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Check, ChevronDown, Clock, MessageCircle, Palette, Star, Store } from "lucide-react";
 import { CotizadorDemo } from "@/components/cotizador-demo";
 import { Firma } from "@/components/logo";
+import { MensajesVoladores } from "@/components/mensajes-voladores";
 import { PasosApilados } from "@/components/pasos-apilados";
 import { BotonWhatsApp, LinkInstagram } from "@/components/redes";
 import { ScrollPorPantallas } from "@/components/scroll-por-pantallas";
@@ -173,8 +174,9 @@ export default function Home() {
         </section>
 
         {/* 3. Por qué conviene */}
-        <section id="por-que" className={`${seccion} bg-marino`} aria-labelledby="titulo-por-que">
-          <div className={contenedor}>
+        <section id="por-que" className={`${seccion} relative overflow-hidden bg-marino`} aria-labelledby="titulo-por-que">
+          <MensajesVoladores />
+          <div className={`${contenedor} relative`}>
             <h2 id="titulo-por-que" className="revelar type-titulo text-center text-balance text-on-marino">
               Menos mensajes, <span className="subrayado">más fiestas cerradas</span>
             </h2>
