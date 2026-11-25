@@ -519,11 +519,11 @@ html.cargando body {
 }
 
 /* Mensajes que flotan en la sección "Menos mensajes": aparecen, se quedan casi quietos para que se puedan
-   leer (avanzan apenas hacia la derecha) y se desvanecen. Duran 5,5 s y el último sale al medio segundo:
-   a los 6 s ya no queda ninguno. */
+   leer (avanzan apenas hacia la derecha) y se desvanecen. Duran 11 s y el último sale al segundo:
+   a los 12 s ya no queda ninguno. */
 .mensaje-volador {
   opacity: 0;
-  animation: flotar 5.5s ease-out both;
+  animation: flotar 11s ease-out both;
 }
 @keyframes flotar {
   0% {
