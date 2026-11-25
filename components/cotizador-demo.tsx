@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -49,6 +49,13 @@ const ULTIMO = PASOS.length - 1;
 // Cuánto se queda cada pantalla cuando la demo pasa sola (la del precio y la del panel, más: hay más para leer).
 const MS_PASO = 2400;
 const MS_PRECIO = 3400;
+// Con el dedo que toca (ver "toque" más abajo), cada pantalla dura un poco más, para que sea tranquilo.
+const MS_PASO_CON_DEDO = 3600;
+const MS_PRECIO_CON_DEDO = 4200;
+// Cuánto antes del cambio de pantalla aparece el dedo, toca y se va (en ms).
+const DEDO_APARECE = 2000;
+const DEDO_TOCA = 1400;
+const DEDO_SE_VA = 700;
 const MS_PANEL = 5200;
 
 // Al cargar: el celular vibra y le "llegan" consultas con campanita, como pasa hoy por WhatsApp.
@@ -101,6 +108,33 @@ export function CotizadorDemo() {
   const [intro, setIntro] = useState(true);
   const idVistas = useId();
 
+  // El dedo de ayuda: un círculo que toca lo que el recorrido elige, para que se note que el celular se puede usar.
+  // Es solo visual: no cambia lo elegido ni el precio. Arranca cuando el celular está a la vista y se apaga
+  // para siempre (en esta visita) apenas la persona toca, pasa el mouse o hace scroll dentro del celular.
+  // Con "reducir movimiento" no aparece.
+  const celular = useRef<HTMLDivElement>(null);
+  const pantalla = useRef<HTMLDivElement>(null);
+  const [aLaVista, setALaVista] = useState(false);
+  const [conDedo, setConDedo] = useState(false);
+  const [dedo, setDedo] = useState<{ x: number; y: number; fase: "entra" | "toca" | "sale" } | null>(null);
+
+  useEffect(() => {
+    setConDedo(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const el = celular.current;
+    if (!el) return;
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        if (entrada.isIntersecting) {
+          setALaVista(true);
+          observador.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, []);
+
   // Termina la intro de mensajes. Cuenta desde que se
   // va la pantalla de carga (evento "petra:lista"), porque mientras tanto las animaciones están en pausa.
   useEffect(() => {
@@ -119,8 +153,46 @@ export function CotizadorDemo() {
 
   useEffect(() => {
     // El recorrido pasa solo para todos (con "reducir movimiento", las pantallas cambian con un fundido).
-    if (intro || !solo) return;
-    const espera = vista === "panel" ? MS_PANEL : paso === ULTIMO ? MS_PRECIO : MS_PASO;
+    if (intro || !solo || !aLaVista) return;
+    const espera =
+      vista === "panel" ? MS_PANEL : paso === ULTIMO ? (conDedo ? MS_PRECIO_CON_DEDO : MS_PRECIO) : conDedo ? MS_PASO_CON_DEDO : MS_PASO;
+    const relojes: number[] = [];
+    if (conDedo && vista === "cliente") {
+      // El dedo va a lo que el recorrido "elige": la opción marcada del paso, o "Siguiente", o "Pedir" en el precio.
+      const buscar = () => {
+        const p = pantalla.current;
+        if (!p) return null;
+        const objetivo =
+          paso === ULTIMO
+            ? p.querySelector<HTMLElement>('[data-toque="pedir"]')
+            : (p.querySelector<HTMLElement>('[data-paso] [aria-pressed="true"]') ?? p.querySelector<HTMLElement>('[data-toque="siguiente"]'));
+        if (!objetivo) return null;
+        // En pantallas bajas la demo está achicada (zoom): se pasa de píxeles de pantalla a píxeles del celular.
+        const caja = p.getBoundingClientRect();
+        const escala = caja.width / p.offsetWidth || 1;
+        const r = objetivo.getBoundingClientRect();
+        return { objetivo, x: (r.left - caja.left + r.width / 2) / escala, y: (r.top - caja.top + r.height / 2) / escala };
+      };
+      let destino: ReturnType<typeof buscar> = null;
+      relojes.push(
+        window.setTimeout(() => {
+          destino = buscar();
+          if (destino) setDedo({ x: destino.x, y: destino.y, fase: "entra" });
+        }, espera - DEDO_APARECE),
+        window.setTimeout(() => {
+          if (!destino) return;
+          setDedo({ x: destino.x, y: destino.y, fase: "toca" });
+          // La tarjeta se hunde un poquito y vuelve, como un toque de verdad.
+          destino.objetivo.animate([{ transform: "scale(1)" }, { transform: "scale(0.95)" }, { transform: "scale(1)" }], {
+            duration: 320,
+            easing: "ease-out",
+          });
+        }, espera - DEDO_TOCA),
+        window.setTimeout(() => {
+          if (destino) setDedo({ x: destino.x, y: destino.y, fase: "sale" });
+        }, espera - DEDO_SE_VA),
+      );
+    }
     const id = window.setTimeout(() => {
       if (vista === "panel") {
         setVista("cliente");
@@ -128,16 +200,28 @@ export function CotizadorDemo() {
       } else if (paso === ULTIMO) setVista("panel");
       else setPaso(paso + 1);
     }, espera);
-    return () => window.clearTimeout(id);
-  }, [intro, solo, vista, paso]);
+    return () => {
+      window.clearTimeout(id);
+      relojes.forEach((r) => window.clearTimeout(r));
+    };
+  }, [intro, solo, vista, paso, aLaVista, conDedo]);
 
-  const parar = () => setSolo(false);
+  const parar = () => {
+    setSolo(false);
+    setDedo(null);
+  };
   const total = precioSugerido(sel);
   const cambiar = (c: Partial<Seleccion>) => setSel((s) => ({ ...s, ...c }));
 
   return (
     // El celular y, a su derecha, los botones de vista uno arriba del otro.
-    <div onPointerDown={parar} onKeyDown={parar} className="mx-auto flex w-fit items-start gap-2 sm:gap-3">
+    <div
+      onPointerDown={parar}
+      onKeyDown={parar}
+      onWheel={parar}
+      onTouchMove={parar}
+      className="mx-auto flex w-fit items-start gap-2 sm:gap-3"
+    >
       <div className="w-[250px] sm:w-[300px]">
       <p className="mt-3 mb-6 text-center text-[14px] leading-5" aria-live="polite">
         {MIRADAS[vista].texto}
@@ -163,9 +247,14 @@ export function CotizadorDemo() {
           </div>
         )}
         <div
+          ref={celular}
+          onPointerEnter={(e) => {
+            if (e.pointerType === "mouse") parar();
+          }}
           className={`relative rounded-[42px] bg-marino p-3 shadow-[0_30px_60px_-12px_#2a457366] ${intro ? "celular-vibra" : ""}`}
         >
           <div
+            ref={pantalla}
             className="relative flex h-[560px] flex-col overflow-hidden rounded-[32px]"
             style={vista === "cliente" ? { backgroundColor: C.fondo, color: C.texto } : undefined}
           >
@@ -180,6 +269,13 @@ export function CotizadorDemo() {
               />
             ) : (
               <PantallaPanel sel={sel} total={total} />
+            )}
+            {dedo && solo && (
+              <span
+                aria-hidden="true"
+                className={`dedo dedo-${dedo.fase} pointer-events-none absolute z-20`}
+                style={{ left: dedo.x, top: dedo.y }}
+              />
             )}
           </div>
         </div>
@@ -279,7 +375,7 @@ function PantallaCliente({
       </p>
 
       {/* El paso: cada vez que cambia, sus partes entran de a una. */}
-      <div key={paso} className="entrar-de-a-una flex min-h-0 flex-1 flex-col px-4 pt-5">
+      <div key={paso} data-paso className="entrar-de-a-una flex min-h-0 flex-1 flex-col px-4 pt-5">
         {paso === 0 && <PasoFestejo sel={sel} onCambiar={onCambiar} />}
         {paso === 1 && <PasoFecha sel={sel} onCambiar={onCambiar} />}
         {paso === 2 && <PasoInvitados sel={sel} onCambiar={onCambiar} />}
@@ -299,6 +395,7 @@ function PantallaCliente({
           </div>
           <button
             type="button"
+            data-toque="siguiente"
             onClick={() => onPaso(paso + 1)}
             className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-[10px] px-3 text-[13px] font-semibold sm:px-3.5"
             style={{ backgroundColor: C.acento, color: C.sobreAcento }}
@@ -584,6 +681,7 @@ function PasoPrecio({ sel, total, onPedir }: { sel: Seleccion; total: number; on
       </div>
       <button
         type="button"
+        data-toque="pedir"
         onClick={onPedir}
         className="mt-auto mb-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-[12px] text-[13px] font-semibold"
         style={{ backgroundColor: C.acento, color: C.sobreAcento }}

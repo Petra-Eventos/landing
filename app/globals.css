@@ -559,3 +559,64 @@ html.cargando body {
   }
 }
 
+
+/* El dedo de ayuda del celular de la demo: un círculo suave que aparece, toca (con una onda que se agranda
+   y se desvanece) y se va. Colores de la marca, sin brillos. Con "reducir movimiento" no se muestra. */
+.dedo {
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-radius: 999px;
+  background: #2a457324;
+  border: 2px solid #2a457359;
+  box-shadow: 0 4px 12px #2a457326;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+.dedo::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  border: 2px solid var(--azul);
+  opacity: 0;
+}
+.dedo-entra {
+  animation: dedo-entra 0.45s ease-out both;
+}
+.dedo-toca {
+  transform: scale(0.85);
+}
+.dedo-toca::after {
+  animation: dedo-onda 0.7s ease-out both;
+}
+.dedo-sale {
+  opacity: 0;
+  transform: scale(1.05);
+}
+@keyframes dedo-entra {
+  from {
+    opacity: 0;
+    transform: translate(10px, 14px) scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+@keyframes dedo-onda {
+  from {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dedo {
+    display: none;
+  }
+}
