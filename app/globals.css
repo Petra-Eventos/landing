@@ -518,58 +518,44 @@ html.cargando body {
   }
 }
 
-/* Mensajes que flotan en la sección "Menos mensajes": aparecen, se quedan casi quietos para que se puedan
-   leer (avanzan apenas hacia la derecha) y se desvanecen. Duran 11 s y el último sale al segundo:
-   a los 12 s ya no queda ninguno. */
-.mensaje-volador {
+/* Notificaciones de la sección "Menos mensajes": aparecen, quedan casi quietas para poder leerlas
+   (avanzan apenas hacia la derecha) y se desvanecen. En pantallas grandes duran 5,4 s y llegan en dos tandas
+   (la segunda sale a los 6,2 s); en celular duran 3,8 s, en tres tandas de 4 s. A los 12 s no queda ninguna. */
+.notificacion {
+  left: var(--x3);
   opacity: 0;
-  animation: flotar 11s ease-out both;
+  animation: notificar 5.4s ease-out both;
 }
-@keyframes flotar {
+@media (min-width: 1280px) {
+  .notificacion {
+    left: var(--x4);
+  }
+}
+.notificacion-movil {
+  opacity: 0;
+  animation: notificar 3.8s ease-out both;
+}
+@keyframes notificar {
   0% {
     opacity: 0;
-    transform: translateX(-12px);
+    transform: translate(-10px, 6px) scale(0.97);
   }
-  12% {
+  10% {
     opacity: 1;
+    transform: translate(0, 0) scale(1);
   }
-  70% {
+  72% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translateX(70px);
-  }
-}
-
-/* En celular: salen desde el costado izquierdo, se mueven menos y solo van 4. */
-@media (max-width: 640px) {
-  .mensaje-volador {
-    left: 4% !important;
-    animation-name: flotar-corto;
-  }
-  .mensaje-volador[data-solo-pantalla-grande] {
-    display: none;
-  }
-}
-@keyframes flotar-corto {
-  0% {
-    opacity: 0;
-    transform: translateX(-8px);
-  }
-  12% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(36px);
+    transform: translate(4vw, 0) scale(1);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mensaje-volador {
-    display: none;
+  .notificacion,
+  .notificacion-movil {
+    display: none !important;
   }
 }
+
