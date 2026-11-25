@@ -52,6 +52,16 @@ const MS_PRECIO = 3400;
 // Con el dedo que toca (ver "toque" más abajo), cada pantalla dura un poco más, para que sea tranquilo.
 const MS_PASO_CON_DEDO = 3600;
 const MS_PRECIO_CON_DEDO = 4200;
+// Con el dedo, el recorrido arranca con otras opciones y el dedo va eligiendo las del ejemplo
+// (XV años, el 13, +10 invitados, Premium, Invitación digital): al final queda SELECCION_INICIAL.
+const INICIO_CON_DEDO: Seleccion = {
+  ...SELECCION_INICIAL,
+  festejo: "casamiento",
+  dia: 14,
+  invitados: SELECCION_INICIAL.invitados - INVITADOS_PASO,
+  menu: "clasico",
+  extras: SELECCION_INICIAL.extras.filter((e) => e !== "invitacion"),
+};
 // Cuánto antes del cambio de pantalla aparece el dedo, toca y se va (en ms).
 const DEDO_APARECE = 2000;
 const DEDO_TOCA = 1400;
@@ -109,9 +119,10 @@ export function CotizadorDemo() {
   const idVistas = useId();
 
   // El dedo de ayuda: un círculo que toca lo que el recorrido elige, para que se note que el celular se puede usar.
-  // Es solo visual: no cambia lo elegido ni el precio. Arranca cuando el celular está a la vista y se apaga
-  // para siempre (en esta visita) apenas la persona toca, pasa el mouse o hace scroll dentro del celular.
-  // Con "reducir movimiento" no aparece.
+  // El toque elige de verdad (y el precio se actualiza), partiendo de INICIO_CON_DEDO. Si algo ya está elegido,
+  // toca "Siguiente". Arranca cuando el celular está a la vista y se apaga para siempre (en esta visita) apenas
+  // la persona toca, pasa el mouse o hace scroll dentro del celular; ahí el ejemplo vuelve a SELECCION_INICIAL.
+  // Con "reducir movimiento" no aparece y el ejemplo queda como siempre.
   const celular = useRef<HTMLDivElement>(null);
   const pantalla = useRef<HTMLDivElement>(null);
   const [aLaVista, setALaVista] = useState(false);
@@ -119,7 +130,9 @@ export function CotizadorDemo() {
   const [dedo, setDedo] = useState<{ x: number; y: number; fase: "entra" | "toca" | "sale" } | null>(null);
 
   useEffect(() => {
-    setConDedo(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const dedoSi = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setConDedo(dedoSi);
+    if (dedoSi) setSel(INICIO_CON_DEDO);
     const el = celular.current;
     if (!el) return;
     const observador = new IntersectionObserver(
@@ -165,7 +178,7 @@ export function CotizadorDemo() {
         const objetivo =
           paso === ULTIMO
             ? p.querySelector<HTMLElement>('[data-toque="pedir"]')
-            : (p.querySelector<HTMLElement>('[data-paso] [aria-pressed="true"]') ?? p.querySelector<HTMLElement>('[data-toque="siguiente"]'));
+            : (p.querySelector<HTMLElement>("[data-paso] [data-meta]") ?? p.querySelector<HTMLElement>('[data-toque="siguiente"]'));
         if (!objetivo) return null;
         // En pantallas bajas la demo está achicada (zoom): se pasa de píxeles de pantalla a píxeles del celular.
         const caja = p.getBoundingClientRect();
@@ -182,6 +195,8 @@ export function CotizadorDemo() {
         window.setTimeout(() => {
           if (!destino) return;
           setDedo({ x: destino.x, y: destino.y, fase: "toca" });
+          // Si es una opción del paso, queda elegida de verdad (como si la persona la tocara).
+          if (destino.objetivo.hasAttribute("data-meta")) destino.objetivo.click();
           // La tarjeta se hunde un poquito y vuelve, como un toque de verdad.
           destino.objetivo.animate([{ transform: "scale(1)" }, { transform: "scale(0.95)" }, { transform: "scale(1)" }], {
             duration: 320,
@@ -197,6 +212,8 @@ export function CotizadorDemo() {
       if (vista === "panel") {
         setVista("cliente");
         setPaso(0);
+        // Vuelta nueva: el dedo vuelve a elegir desde el principio.
+        if (conDedo) setSel(INICIO_CON_DEDO);
       } else if (paso === ULTIMO) setVista("panel");
       else setPaso(paso + 1);
     }, espera);
@@ -207,6 +224,8 @@ export function CotizadorDemo() {
   }, [intro, solo, vista, paso, aLaVista, conDedo]);
 
   const parar = () => {
+    // La primera vez que la persona lo usa, el ejemplo vuelve a como estaba (con todo elegido).
+    if (solo && conDedo) setSel(SELECCION_INICIAL);
     setSolo(false);
     setDedo(null);
   };
@@ -428,15 +447,18 @@ function Opcion({
   onClick,
   children,
   className = "",
+  meta = false,
 }: {
   elegida: boolean;
   onClick: () => void;
   children: ReactNode;
   className?: string;
+  meta?: boolean;
 }) {
   return (
     <button
       type="button"
+      data-meta={meta && !elegida ? "" : undefined}
       aria-pressed={elegida}
       onClick={onClick}
       className={`rounded-[12px] border text-left text-[13px] font-semibold transition-colors ${className}`}
@@ -464,6 +486,7 @@ function PasoFestejo({ sel, onCambiar }: PropsPaso) {
             <Opcion
               key={f.id}
               elegida={sel.festejo === f.id}
+              meta={f.id === SELECCION_INICIAL.festejo}
               onClick={() => onCambiar({ festejo: f.id })}
               className="flex min-h-24 flex-col items-start justify-between p-3"
             >
@@ -499,6 +522,7 @@ function PasoFecha({ sel, onCambiar }: PropsPaso) {
               type="button"
               disabled={ocupado}
               aria-pressed={elegido}
+              data-meta={d === SELECCION_INICIAL.dia && !elegido ? "" : undefined}
               aria-label={`${fechaLarga(d)}${ocupado ? ", ocupado" : ""}`}
               onClick={() => onCambiar({ dia: d })}
               className={`flex h-8 items-center justify-center rounded-[8px] text-[12px] tabular-nums ${ocupado ? "line-through" : ""}`}
@@ -557,6 +581,7 @@ function PasoInvitados({ sel, onCambiar }: PropsPaso) {
           type="button"
           onClick={() => cambiar(INVITADOS_PASO)}
           disabled={sel.invitados >= CAPACIDAD}
+          data-meta={sel.invitados < SELECCION_INICIAL.invitados ? "" : undefined}
           aria-label="Más invitados"
           className="flex size-11 items-center justify-center rounded-full border disabled:opacity-40"
           style={{ borderColor: C.borde, backgroundColor: C.tarjeta }}
@@ -577,6 +602,7 @@ function PasoMenu({ sel, onCambiar }: PropsPaso) {
           <Opcion
             key={m.id}
             elegida={sel.menu === m.id}
+            meta={m.id === SELECCION_INICIAL.menu}
             onClick={() => onCambiar({ menu: m.id })}
             className="flex min-h-11 items-center justify-between px-3"
           >
@@ -630,7 +656,13 @@ function PasoExtras({ sel, onCambiar }: PropsPaso) {
         {EXTRAS.map((e) => {
           const elegido = sel.extras.includes(e.id);
           return (
-            <Opcion key={e.id} elegida={elegido} onClick={() => alternar(e.id)} className="flex min-h-10 items-center gap-2.5 px-3">
+            <Opcion
+              key={e.id}
+              elegida={elegido}
+              meta={SELECCION_INICIAL.extras.includes(e.id)}
+              onClick={() => alternar(e.id)}
+              className="flex min-h-10 items-center gap-2.5 px-3"
+            >
               <span
                 aria-hidden="true"
                 className="flex size-4 shrink-0 items-center justify-center rounded-[5px] border"
