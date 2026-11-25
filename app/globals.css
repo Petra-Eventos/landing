@@ -518,26 +518,52 @@ html.cargando body {
   }
 }
 
-/* Mensajes que cruzan la sección "Menos mensajes": entran por la izquierda, cruzan lento y se desvanecen.
-   Duran 4,5 s y el último sale a los 1,5 s: todo termina en 6 s. */
+/* Mensajes que flotan en la sección "Menos mensajes": avanzan lento un cuarto de pantalla y se desvanecen.
+   Duran 5 s y el último sale al segundo 1: a los 6 s ya no queda ninguno. */
 .mensaje-volador {
   opacity: 0;
-  animation: volar 4.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  animation: flotar 5s linear both;
 }
-@keyframes volar {
+@keyframes flotar {
   0% {
     opacity: 0;
-    transform: translateX(-110%);
+    transform: translateX(-24px);
   }
   15% {
-    opacity: 0.95;
+    opacity: 0.9;
   }
-  60% {
-    opacity: 0.6;
+  55% {
+    opacity: 0.75;
   }
   100% {
     opacity: 0;
-    transform: translateX(100vw);
+    transform: translateX(25vw);
+  }
+}
+/* En celular: menos recorrido, salen desde el costado izquierdo y solo van 4. */
+@media (max-width: 640px) {
+  .mensaje-volador {
+    left: 4% !important;
+    animation-name: flotar-corto;
+  }
+  .mensaje-volador[data-solo-pantalla-grande] {
+    display: none;
+  }
+}
+@keyframes flotar-corto {
+  0% {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  55% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(12vw);
   }
 }
 @media (prefers-reduced-motion: reduce) {

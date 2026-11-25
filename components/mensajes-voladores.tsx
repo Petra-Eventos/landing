@@ -2,16 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Mensajes que cruzan la sección "Menos mensajes" de izquierda a derecha y se desvanecen.
-// Pasan una sola vez, cuando la sección entra en pantalla, y todo termina en 6 segundos.
-// Con "reducir movimiento" no aparecen.
+// Mensajes que flotan en la sección "Menos mensajes": entran lento de izquierda a derecha, sin llegar al
+// borde derecho, y se desvanecen. Van solo en la franja de arriba del título y en la de abajo de las
+// tarjetas, para no tapar el texto. Pasan una sola vez, al llegar a la sección, y a los 6 s ya no queda
+// ninguno. En celular van 4 (los primeros), con menos recorrido. Con "reducir movimiento" no aparecen.
 const MENSAJES = [
-  { texto: "¿Precio para un XV de 120?", alto: "12%", demora: 0 },
-  { texto: "¿Tienen libre el sábado 13?", alto: "70%", demora: 0.3 },
-  { texto: "Info por privado porfa", alto: "38%", demora: 0.6 },
-  { texto: "¿Qué incluye el menú?", alto: "86%", demora: 0.9 },
-  { texto: "¿La barra es aparte?", alto: "24%", demora: 1.2 },
-  { texto: "Hola! ¿Precio?", alto: "56%", demora: 1.5 },
+  { texto: "¿Precio para un XV de 120?", inicio: "4%", arriba: "10px", demora: 0 },
+  { texto: "¿Tienen libre el sábado 13?", inicio: "8%", abajo: "46px", demora: 0.2 },
+  { texto: "Info por privado porfa", inicio: "22%", arriba: "46px", demora: 0.4 },
+  { texto: "¿Qué incluye el menú?", inicio: "2%", abajo: "10px", demora: 0.6 },
+  { texto: "¿La barra es aparte?", inicio: "48%", arriba: "10px", demora: 0.8 },
+  { texto: "Hola! ¿Precio?", inicio: "52%", abajo: "46px", demora: 1 },
 ];
 
 export function MensajesVoladores() {
@@ -37,11 +38,12 @@ export function MensajesVoladores() {
   return (
     <div ref={caja} aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {volando &&
-        MENSAJES.map((m) => (
+        MENSAJES.map((m, i) => (
           <span
             key={m.texto}
-            className="mensaje-volador absolute left-0 rounded-[14px] rounded-tl-[4px] bg-white px-3.5 py-2 text-[14px] font-medium whitespace-nowrap text-[#111b21] shadow-[0_6px_20px_#0b141a33]"
-            style={{ top: m.alto, animationDelay: `${m.demora}s` }}
+            className="mensaje-volador absolute rounded-[12px] rounded-tl-[4px] bg-white px-3 py-1.5 text-[13px] leading-5 font-medium whitespace-nowrap text-[#111b21] shadow-[0_6px_20px_#0b141a33]"
+            style={{ left: m.inicio, top: m.arriba, bottom: m.abajo, animationDelay: `${m.demora}s` }}
+            data-solo-pantalla-grande={i >= 4 ? "" : undefined}
           >
             {m.texto}
           </span>
