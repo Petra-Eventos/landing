@@ -2,17 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Mensajes que flotan en la sección "Menos mensajes": entran lento de izquierda a derecha, sin llegar al
-// borde derecho, y se desvanecen. Van solo en la franja de arriba del título y en la de abajo de las
+// Mensajes que flotan en la sección "Menos mensajes": aparecen, se quedan casi quietos para poder leerlos
+// (avanzan apenas hacia la derecha), y se desvanecen. Van solo en la franja de arriba del título y en la de abajo de las
 // tarjetas, para no tapar el texto. Pasan una sola vez, al llegar a la sección, y a los 6 s ya no queda
 // ninguno. En celular van 4 (los primeros), con menos recorrido. Con "reducir movimiento" no aparecen.
 const MENSAJES = [
   { texto: "¿Precio para un XV de 120?", inicio: "4%", arriba: "10px", demora: 0 },
-  { texto: "¿Tienen libre el sábado 13?", inicio: "8%", abajo: "46px", demora: 0.2 },
-  { texto: "Info por privado porfa", inicio: "22%", arriba: "46px", demora: 0.4 },
-  { texto: "¿Qué incluye el menú?", inicio: "2%", abajo: "10px", demora: 0.6 },
-  { texto: "¿La barra es aparte?", inicio: "48%", arriba: "10px", demora: 0.8 },
-  { texto: "Hola! ¿Precio?", inicio: "52%", abajo: "46px", demora: 1 },
+  { texto: "¿Tienen libre el sábado 13?", inicio: "8%", abajo: "46px", demora: 0.1 },
+  { texto: "Info por privado porfa", inicio: "22%", arriba: "46px", demora: 0.2 },
+  { texto: "¿Qué incluye el menú?", inicio: "2%", abajo: "10px", demora: 0.3 },
+  { texto: "¿La barra es aparte?", inicio: "48%", arriba: "10px", demora: 0.4 },
+  { texto: "Hola! ¿Precio?", inicio: "52%", abajo: "46px", demora: 0.5 },
 ];
 
 export function MensajesVoladores() {
