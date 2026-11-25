@@ -96,15 +96,17 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FICHA_GOOGLE).replace(/</g, "\\u003c") }}
       />
       <header className="sticky top-0 z-20 border-b border-line bg-surface/80 backdrop-blur-xl">
-        <div className={`${contenedor} flex min-h-16 items-center justify-between gap-3`}>
-          <a href="#" aria-label="Petra, inicio" className="rounded-md">
+        {/* En celular: más bajo (56 px) y con el botón más chico, para que no se vea apretado. El logo va en un
+            contenedor flex para que quede centrado en altura con los botones. */}
+        <div className={`${contenedor} flex min-h-14 items-center justify-between gap-3 sm:min-h-16`}>
+          <a href="#" aria-label="Petra, inicio" className="flex shrink-0 items-center rounded-md">
             <Firma />
           </a>
-          <div className="flex items-center gap-1 sm:gap-3">
-            <a href={URL_ENTRAR} className="inline-flex min-h-10 items-center rounded-lg px-3 text-[14px] font-semibold text-ink hover:underline hover:underline-offset-4">
+          <div className="flex items-center gap-0.5 sm:gap-3">
+            <a href={URL_ENTRAR} className="inline-flex min-h-10 items-center rounded-lg px-2.5 text-[14px] font-semibold text-ink hover:underline hover:underline-offset-4 sm:px-3">
               Entrar
             </a>
-            <a href={URL_REGISTRARME} className="inline-flex min-h-10 items-center rounded-[12px] bg-azul px-4 text-[14px] font-bold text-on-azul transition-colors hover:bg-azul-hover">
+            <a href={URL_REGISTRARME} className="inline-flex min-h-10 items-center rounded-[12px] bg-azul px-3.5 text-[13px] font-bold text-on-azul transition-colors hover:bg-azul-hover sm:px-4 sm:text-[14px]">
               Empezar gratis
             </a>
           </div>
