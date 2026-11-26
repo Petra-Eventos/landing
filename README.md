@@ -28,7 +28,7 @@ Y abrí http://localhost:3000.
 | `components/logo.tsx`  | Isotipo, firma y recurso de las piedras (no modificar)                       |
 | `lib/enlaces.ts`       | Links al sistema (registrarme, entrar, términos, privacidad) y al WhatsApp   |
 | `app/icon.svg`         | Favicon                                                                      |
-| `app/fonts/`           | Fraunces y Manrope, incluidas en el proyecto (licencia OFL)                  |
+| `app/fonts/`           | Fraunces (recortada al grosor 600) y Manrope, incluidas en el proyecto (licencia OFL) |
 
 ## La dirección del sistema
 

@@ -125,6 +125,7 @@ export default function Home() {
             fill
             priority
             sizes="100vw"
+            quality={60}
             className="pointer-events-none object-cover object-[center_72%]"
           />
           <div
@@ -315,7 +316,7 @@ export default function Home() {
         <div className={`${contenedor} flex flex-col gap-6 py-12 text-[14px] text-on-marino-muted sm:flex-row sm:items-center sm:justify-between`}>
           <div className="flex flex-col gap-2">
             <Firma variante="clara" />
-            <span className="font-display text-[17px]">Tus eventos sobre la roca</span>
+            <span className="font-display text-[17px] font-semibold">Tus eventos sobre la roca</span>
           </div>
           <nav aria-label="Contacto y legales" className="flex flex-wrap gap-x-5 gap-y-2">
             <a href={URL_WHATSAPP} target="_blank" rel="noopener noreferrer" className="hover:text-on-marino">WhatsApp</a>

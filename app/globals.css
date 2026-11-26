@@ -427,7 +427,7 @@ html.cargando #pantalla-carga {
   align-items: center;
   justify-content: center;
   background: var(--surface);
-  transition: opacity 0.45s ease;
+  transition: opacity 0.3s ease;
 }
 html.carga-lista #pantalla-carga {
   opacity: 0;

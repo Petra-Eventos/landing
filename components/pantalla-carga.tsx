@@ -6,17 +6,21 @@
  * Cómo funciona (sin depender de React, para que actúe antes que todo):
  * - En <head>, CARGA_INICIO marca <html> con "cargando". Solo con esa marca se ve la pantalla y se
  *   pausan las animaciones de la página. Sin JavaScript no hay marca: la web se ve normal.
- * - CARGA_FIN la saca cuando la página terminó de cargar (fotos y letras), con un mínimo de 0,8 s para
- *   que no parpadee y un máximo de 4 s por si algo tarda. Avisa con el evento "petra:lista".
+ * - CARGA_FIN la saca apenas bajaron las dos tipografías (Fraunces y Manrope), para que el texto no
+ *   "salte" al aparecer. No espera la foto de fondo ni el resto del código: aparecen cuando llegan.
+ *   Tiene un mínimo de 0,4 s para que no parpadee y un máximo de 2,5 s por si algo tarda.
+ *   Avisa con el evento "petra:lista".
  */
 
 export const CARGA_INICIO = `document.documentElement.classList.add("cargando");`;
 
 export const CARGA_FIN = `(function(){var h=document.documentElement,hecho=false;
-function listo(){if(hecho)return;hecho=true;var falta=Math.max(0,800-performance.now());
+function listo(){if(hecho)return;hecho=true;var falta=Math.max(0,400-performance.now());
 setTimeout(function(){h.classList.add("carga-lista");setTimeout(function(){h.classList.remove("cargando","carga-lista");
-window.dispatchEvent(new Event("petra:lista"));},450);},falta);}
-if(document.readyState==="complete")listo();else window.addEventListener("load",listo);setTimeout(listo,4000);})();`;
+window.dispatchEvent(new Event("petra:lista"));},300);},falta);}
+try{var cs=getComputedStyle(h),fam=function(v){return cs.getPropertyValue(v).split(",")[0];};
+Promise.all([document.fonts.load("600 40px "+fam("--font-fraunces")),document.fonts.load("400 16px "+fam("--font-manrope"))]).then(listo,listo);}catch(e){listo();}
+setTimeout(listo,2500);})();`;
 
 const AZUL = "#1C79A4";
 const OLIVA = "#6B7A3A";

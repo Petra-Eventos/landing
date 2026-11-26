@@ -5,10 +5,11 @@ import { CARGA_FIN, CARGA_INICIO, PantallaCarga } from "@/components/pantalla-ca
 import "./globals.css";
 
 // Fraunces y Manrope (las mismas de Google Fonts), incluidas en el proyecto.
+// Fraunces está recortada al grosor 600, el único que usa la landing (conserva el ajuste por tamaño): pesa la mitad.
 const fraunces = localFont({
   src: "./fonts/Fraunces.woff2",
   variable: "--font-fraunces",
-  weight: "100 900",
+  weight: "600",
   display: "swap",
 });
 
