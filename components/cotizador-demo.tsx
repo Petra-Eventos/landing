@@ -128,6 +128,9 @@ export function CotizadorDemo() {
   const [aLaVista, setALaVista] = useState(false);
   const [conDedo, setConDedo] = useState(false);
   const [dedo, setDedo] = useState<{ x: number; y: number; fase: "entra" | "toca" | "sale" } | null>(null);
+  // Con el mouse encima, la animación no se frena de golpe: un aviso chico cuenta 5 segundos y recién ahí se
+  // frena. Si el mouse se va antes, sigue. Así quien recién llega no la corta sin querer.
+  const [cuenta, setCuenta] = useState<number | null>(null);
 
   useEffect(() => {
     const dedoSi = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -223,11 +226,23 @@ export function CotizadorDemo() {
     };
   }, [intro, solo, vista, paso, aLaVista, conDedo]);
 
+  useEffect(() => {
+    if (cuenta === null) return;
+    if (cuenta === 0) {
+      parar();
+      return;
+    }
+    const id = window.setTimeout(() => setCuenta((c) => (c === null ? null : c - 1)), 1000);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cuenta]);
+
   const parar = () => {
     // La primera vez que la persona lo usa, el ejemplo vuelve a como estaba (con todo elegido).
     if (solo && conDedo) setSel(SELECCION_INICIAL);
     setSolo(false);
     setDedo(null);
+    setCuenta(null);
   };
   const total = precioSugerido(sel);
   const cambiar = (c: Partial<Seleccion>) => setSel((s) => ({ ...s, ...c }));
@@ -268,7 +283,10 @@ export function CotizadorDemo() {
         <div
           ref={celular}
           onPointerEnter={(e) => {
-            if (e.pointerType === "mouse") parar();
+            if (e.pointerType === "mouse" && solo) setCuenta(5);
+          }}
+          onPointerLeave={(e) => {
+            if (e.pointerType === "mouse") setCuenta(null);
           }}
           className={`relative rounded-[42px] bg-marino p-3 shadow-[0_30px_60px_-12px_#2a457366] ${intro ? "celular-vibra" : ""}`}
         >
@@ -299,7 +317,16 @@ export function CotizadorDemo() {
           </div>
         </div>
       </div>
-      <p className="mt-5 text-center text-[12px] leading-4">Demostración con precios de ejemplo.</p>
+      {/* Mientras cuenta (mouse encima), el aviso ocupa el lugar de esta línea. */}
+      <p className="mt-5 flex h-6 items-center justify-center text-center text-[12px] leading-4" aria-live="polite">
+        {cuenta !== null && cuenta > 0 ? (
+          <span className="rounded-full bg-marino px-3 py-1 text-[11px] leading-4 font-semibold whitespace-nowrap text-white">
+            La animación finalizará en {cuenta}
+          </span>
+        ) : (
+          "Demostración con precios de ejemplo."
+        )}
+      </p>
       </div>
 
       <p id={idVistas} className="sr-only">
