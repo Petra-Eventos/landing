@@ -67,7 +67,7 @@ const POR_QUE = [
 ];
 
 const PREGUNTAS = [
-  { p: "¿Cuánto cuesta?", r: "Nada durante un año: todo Petra es gratis los primeros 12 meses y no te pedimos tarjeta." },
+  { p: "¿Cuánto cuesta?", r: "Nada: hoy Petra es gratis y no te pedimos tarjeta. Si más adelante sumamos planes pagos, te avisamos antes y no perdés nada de lo que cargaste." },
   { p: "¿El cliente reserva la fecha solo?", r: "No. Ve qué fechas tenés libres y te manda el pedido. La fecha la confirmás vos, cuando cierran." },
   { p: "¿Necesito saber de tecnología?", r: "No. Si tenés tu PDF de promos, en un rato tenés tu link. Y te ayudamos por WhatsApp." },
   { p: "¿Quién ve mis precios y mis costos?", r: "Tu cliente ve el precio que vos decidís. Tus costos y tu ganancia no los ve nadie, y nadie más entra a tus datos." },
@@ -85,7 +85,7 @@ const FICHA_GOOGLE = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   inLanguage: "es-AR",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "ARS", description: "Gratis durante el primer año" },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "ARS", description: "Gratis para empezar" },
 };
 
 export default function Home() {
@@ -151,7 +151,7 @@ export default function Home() {
                 </a>
               </div>
               <ul style={{ "--orden": "1.2s" } as React.CSSProperties} className="aparecer mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] font-semibold text-ink lg:justify-start">
-                {["Gratis por un año", "Sin tarjeta", "Con tu marca"].map((t) => (
+                {["Gratis para empezar", "Sin tarjeta", "Con tu marca"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5">
                     <Check size={16} strokeWidth={2.4} className="text-oliva" aria-hidden="true" />
                     {t}
@@ -297,7 +297,7 @@ export default function Home() {
           <div className={contenedor}>
             <div className="flex flex-col items-center rounded-[28px] bg-azul-soft px-5 py-14 text-center sm:px-10 sm:py-20">
               <h2 id="titulo-cierre" className="revelar type-titulo max-w-[680px] text-balance text-ink">
-                Armá tu cotizador hoy. <span className="subrayado">Es gratis por un año.</span>
+                Armá tu cotizador hoy. <span className="subrayado">Es gratis.</span>
               </h2>
               <div className="mt-8 flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row">
                 <a href={URL_REGISTRARME} className={`${botonPrincipal} w-full sm:w-auto`}>
